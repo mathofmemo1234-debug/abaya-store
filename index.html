@@ -1796,6 +1796,12 @@
       initAudio();
       initZoomLens();
       hookAuthObserver();
+      updateCartUI(); // Load and display saved cart contents automatically
+      
+      // Save cart state before page reload
+      window.addEventListener("beforeunload", () => {
+        saveCartToLocalStorage();
+      });
       
       // Scroll Reveal Trigger
       const scrollObserver = new IntersectionObserver((entries) => {
