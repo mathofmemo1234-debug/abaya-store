@@ -758,6 +758,245 @@
       .hero h1 { font-size: 2.5rem; }
       .hero-stats { gap: 1.5rem; }
     }
+
+    /* Shipping Tracker */
+    .shipping-tracker-wrap {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .shipping-tracker-text {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      margin-bottom: 0.5rem;
+      text-align: right;
+    }
+    .shipping-tracker-bar-bg {
+      background: rgba(255,255,255,0.06);
+      height: 6px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    .shipping-tracker-bar {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      height: 100%;
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 3D Credit Card Simulation */
+    .card-container {
+      perspective: 1000px;
+      width: 100%;
+      max-width: 320px;
+      height: 190px;
+      margin: 0 auto 1.5rem;
+    }
+    .card-sim {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+    .card-sim.flipped {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      border-radius: 15px;
+      padding: 1.2rem;
+      color: white;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-front {
+      background: linear-gradient(135deg, #1f1c18, #473e35);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .card-back {
+      background: linear-gradient(135deg, #473e35, #1f1c18);
+      transform: rotateY(180deg);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .card-chip {
+      width: 40px;
+      height: 30px;
+      background: linear-gradient(135deg, #e5c07b, #abb2bf);
+      border-radius: 5px;
+      position: relative;
+    }
+    .card-brand {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .card-brand img {
+      max-height: 25px;
+      object-fit: contain;
+    }
+    .card-number-display {
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      font-family: monospace;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .card-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 0.8rem;
+    }
+    .card-magnetic-strip {
+      background: #121212;
+      height: 35px;
+      width: calc(100% + 2.4rem);
+      margin: 0.2rem -1.2rem 0;
+    }
+    .card-signature-area {
+      background: #fff;
+      color: #121212;
+      height: 30px;
+      flex: 1;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 10px;
+      font-style: italic;
+      font-weight: 700;
+    }
+    .card-cvv-strip {
+      background: #eee;
+      color: #333;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-family: monospace;
+    }
+    
+    /* Payment Method Grid */
+    .payment-methods-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .payment-method-card {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    .payment-method-card img {
+      height: 24px;
+      object-fit: contain;
+    }
+    .payment-method-card span {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    .payment-method-card.active {
+      border-color: var(--primary-light);
+      background: rgba(212, 175, 55, 0.05);
+    }
+    .payment-method-card.active span {
+      color: var(--primary-light);
+    }
+
+    /* Tabby / Tamara Simulation Widgets */
+    .installment-widget {
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .tabby-badge, .tamara-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 0.75rem;
+    }
+    .tabby-badge { background: #50e3c2; color: #121212; }
+    .tamara-badge { background: #ff7d66; color: white; }
+
+    /* Legal / Policy Modal Panels */
+    .policy-modal {
+      position: fixed; inset: 0; z-index: 1050;
+      background: rgba(12, 10, 8, 0.9); backdrop-filter: blur(12px);
+      display: none; align-items: center; justify-content: center; padding: 2rem 1rem;
+    }
+    .policy-modal.active { display: flex; animation: fadeIn 0.3s ease both; }
+    .policy-modal-content {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); width: 100%; max-width: 650px;
+      max-height: 85vh; overflow-y: auto; padding: 2.5rem;
+      position: relative; box-shadow: var(--shadow);
+      text-align: right;
+    }
+    .policy-title { font-size: 1.5rem; font-weight: 800; color: var(--primary-light); margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); padding-bottom: 0.6rem; }
+    .policy-body { font-size: 0.95rem; line-height: 1.8; color: var(--text-secondary); }
+    .policy-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    .policy-body p { margin-bottom: 1rem; }
+    .policy-body ul { margin-bottom: 1.2rem; padding-right: 1.5rem; }
+    .policy-body li { margin-bottom: 0.5rem; }
+
+    /* Fast Search feedback styles */
+    .search-stats {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: -0.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: 600;
+    }
+    .search-highlight {
+      background: rgba(212, 175, 55, 0.25);
+      color: var(--primary-light);
+      padding: 0 2px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+    .no-results-card {
+      background: var(--bg-card);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      text-align: center;
+      max-width: 500px;
+      margin: 2rem auto;
+      box-shadow: var(--shadow);
+    }
+    .no-results-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -858,9 +1097,11 @@
 
     <div class="catalog-controls">
       <!-- Search -->
-      <div class="search-bar-wrap">
-        <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحثي عن اسم عباية، قماش، أو مواصفات..." oninput="filterCatalog()" />
+      <div class="search-bar-wrap" style="position: relative; width: 100%; max-width: 600px; margin: 0 auto;">
+        <input type="text" id="search-input" class="search-input" placeholder="🔍 ابحثي عن اسم عباية، قماش، أو مواصفات..." oninput="filterCatalog()" style="width: 100%; padding-left: 3rem;" />
+        <button id="search-clear-btn" onclick="clearSearch()" style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; display: none;">✕</button>
       </div>
+      <div id="search-stats" class="search-stats" style="display: none; margin-top: 0.5rem;"></div>
 
       <!-- Categories -->
       <ul class="filter-tabs">
@@ -930,9 +1171,25 @@
     
     <!-- Cart footer -->
     <div class="cart-footer">
+      <!-- Shipping Tracker Bar -->
+      <div class="shipping-tracker-wrap" id="shipping-tracker-wrap">
+        <div class="shipping-tracker-text" id="shipping-tracker-text">أضيفي منتجات بقيمة 350 ر.س للحصول على شحن مجاني! 🚚</div>
+        <div class="shipping-tracker-bar-bg">
+          <div class="shipping-tracker-bar" id="shipping-tracker-bar" style="width: 0%;"></div>
+        </div>
+      </div>
+
       <div class="cart-total-row">
-        <span>الإجمالي التقريبي:</span>
+        <span>قيمة المنتجات:</span>
         <span class="cart-total-val" id="cart-total-value">0 ر.س</span>
+      </div>
+      <div class="cart-total-row" style="font-size: 0.95rem; opacity: 0.85; border-top: none; padding-top: 0; margin-top: 0.3rem;">
+        <span>تكلفة الشحن:</span>
+        <span id="cart-shipping-value">0 ر.س</span>
+      </div>
+      <div class="cart-total-row" style="font-size: 1.3rem; border-top: 1px solid var(--border); padding-top: 0.8rem; margin-top: 0.5rem;">
+        <span>الإجمالي النهائي:</span>
+        <span class="cart-total-val" id="cart-grand-total-value" style="color: var(--primary-light);">0 ر.س</span>
       </div>
       
       <!-- Checkout Form -->
@@ -943,21 +1200,34 @@
         </div>
         <div class="form-group">
           <label for="c-phone">رقم الجوال (واتساب) <span>*</span></label>
-          <input type="tel" id="c-phone" class="form-control" placeholder="0568192263" required />
+          <input type="tel" id="c-phone" class="form-control" placeholder="05xxxxxxxx" required />
         </div>
         <div class="form-group">
-          <label for="c-city">المدينة وعنوان التوصيل <span>*</span></label>
-          <input type="text" id="c-city" class="form-control" placeholder="مثال: الرياض - حي النرجس" required />
+          <label for="c-city">المدينة <span>*</span></label>
+          <select id="c-city" class="form-control" required onchange="calculateShipping()">
+            <option value="" disabled selected>اختر المدينة لمشاهدة سعر الشحن...</option>
+            <option value="Riyadh">الرياض (المنطقة الوسطى) - 20 ر.س</option>
+            <option value="Jeddah">جدة (المنطقة الغربية) - 30 ر.س</option>
+            <option value="Makkah">مكة المكرمة - 30 ر.س</option>
+            <option value="Madinah">المدينة المنورة - 30 ر.س</option>
+            <option value="Dammam">الدمام والمنطقة الشرقية - 30 ر.س</option>
+            <option value="Abha">أبها وخميس مشيط - 35 ر.س</option>
+            <option value="Jazan">جازان والمنطقة الجنوبية - 35 ر.س</option>
+            <option value="Tabuk">تبوك والمنطقة الشمالية - 35 ر.س</option>
+            <option value="Other">مدينة أخرى - 40 ر.س</option>
+            <option value="Gulf">دول الخليج الأخرى - 60 ر.س</option>
+          </select>
+        </div>
+        <div class="form-group" id="c-address-group" style="margin-top: 0.8rem;">
+          <label for="c-address">الحي والشارع (عنوان التوصيل) <span>*</span></label>
+          <input type="text" id="c-address" class="form-control" placeholder="مثال: حي النرجس - شارع التحلية" required />
         </div>
         <div class="form-group">
           <label for="c-notes">ملاحظات أو تعديلات خاصة (تعديل طول، إضافة طقطق، إلخ)</label>
           <input type="text" id="c-notes" class="form-control" placeholder="اكتبِ طلباتك هنا..." />
         </div>
-        <button type="submit" class="btn-checkout" style="margin-top: 1rem;">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
-          تأكيد الطلب عبر واتساب
+        <button type="submit" class="btn-checkout" style="margin-top: 1rem; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border: none; color: #12100e; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 0.6rem;">
+          <span>المتابعة لإتمام الدفع 💳</span>
         </button>
       </form>
     </div>
@@ -1048,6 +1318,198 @@
     </div>
   </div>
 
+  <!-- CHECKOUT PAYMENT MODAL (HIGH-FIDELITY SIMULATION) -->
+  <div class="modal" id="checkout-payment-modal" style="z-index: 1060;">
+    <div class="modal-content" style="max-width: 500px; grid-template-columns: 1fr; padding: 2rem 1.5rem; max-height: 90vh;">
+      <button class="modal-close" onclick="togglePaymentModal(false)">✕</button>
+      
+      <h2 style="text-align:center; margin-bottom:1.2rem; font-weight:800; color:var(--primary-light);">💳 بوابة الدفع الآمنة</h2>
+      
+      <!-- Invoice Summary Card -->
+      <div style="background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:1rem; margin-bottom:1.5rem; text-align:right;">
+        <h4 style="margin-bottom:0.5rem; border-bottom:1px solid var(--border); padding-bottom:0.4rem; color:var(--text-primary);">ملخص الفاتورة:</h4>
+        <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.3rem;">
+          <span>قيمة المنتجات:</span>
+          <span id="pay-summary-subtotal">0 ر.س</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:0.3rem;">
+          <span>تكلفة الشحن:</span>
+          <span id="pay-summary-shipping">0 ر.س</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:1.1rem; font-weight:800; margin-top:0.4rem; padding-top:0.4rem; border-top:1px dashed var(--border); color:var(--primary-light);">
+          <span>الإجمالي النهائي:</span>
+          <span id="pay-summary-total">0 ر.س</span>
+        </div>
+      </div>
+
+      <!-- Payment Method Grid -->
+      <div class="payment-methods-grid">
+        <div class="payment-method-card active" onclick="selectPaymentMethod('card')">
+          <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa" id="pay-icon-card" style="height:20px;" />
+          <span>مدى / بطاقة ائتمانية</span>
+        </div>
+        <div class="payment-method-card" onclick="selectPaymentMethod('applepay')">
+          <img src="https://img.icons8.com/color/48/000000/apple-pay.png" alt="Apple Pay" style="height:20px; filter:invert(1);" />
+          <span>Apple Pay</span>
+        </div>
+        <div class="payment-method-card" onclick="selectPaymentMethod('tabby')">
+          <span class="tabby-badge">Tabby</span>
+          <span>تقسيط تابي</span>
+        </div>
+        <div class="payment-method-card" onclick="selectPaymentMethod('tamara')">
+          <span class="tamara-badge">Tamara</span>
+          <span>تقسيط تمارا</span>
+        </div>
+        <div class="payment-method-card" onclick="selectPaymentMethod('cod')" style="grid-column: span 2;">
+          <span>📦 الدفع عند الاستلام (COD)</span>
+        </div>
+      </div>
+
+      <!-- Option 1: Card Form with 3D Card simulation -->
+      <div id="payment-area-card" class="payment-area">
+        <!-- 3D Credit Card Simulation -->
+        <div class="card-container">
+          <div class="card-sim" id="card-sim-element">
+            <div class="card-front">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="card-chip"></div>
+                <div class="card-brand" id="card-brand-logo">
+                  <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa" />
+                </div>
+              </div>
+              <div class="card-number-display" id="card-num-display">•••• •••• •••• ••••</div>
+              <div class="card-bottom-row">
+                <div>
+                  <div style="font-size:0.6rem; opacity:0.6; text-transform:uppercase;">صاحب البطاقة</div>
+                  <div id="card-name-display" style="font-weight:700; font-size:0.85rem; max-width:180px; overflow:hidden; white-space:nowrap;">AL GHAYD CUSTOMER</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:0.6rem; opacity:0.6; text-transform:uppercase;">ينتهي في</div>
+                  <div id="card-expiry-display" style="font-weight:700; font-size:0.85rem;">MM/YY</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-back">
+              <div class="card-magnetic-strip"></div>
+              <div style="margin: 1.5rem 0 0.5rem; text-align:right; font-size:0.6rem; opacity:0.6;">رمز التحقق (CVV)</div>
+              <div style="display:flex; align-items:center;">
+                <div class="card-signature-area">xxxx xxxx xxxx</div>
+                <div class="card-cvv-strip" id="card-cvv-display">•••</div>
+              </div>
+              <div style="font-size:0.5rem; opacity:0.4; text-align:center; margin-top:1rem;">بوابة دفع آمنة 100% ومشفرة ومحمية</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form fields -->
+        <form id="payment-card-form" onsubmit="executePaymentSimulation(event)">
+          <div class="form-group" style="margin-bottom:0.8rem; text-align:right;">
+            <label style="display:block; font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.2rem;">رقم البطاقة *</label>
+            <input type="text" id="card-number" class="form-control" placeholder="4000 1234 5678 9010" required maxLength="19" oninput="updateCardNumber(this)" style="width:100%; direction:ltr; text-align:left;" />
+          </div>
+          <div class="form-group" style="margin-bottom:0.8rem; text-align:right;">
+            <label style="display:block; font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.2rem;">اسم صاحب البطاقة *</label>
+            <input type="text" id="card-holder" class="form-control" placeholder="الاسم كما يظهر على البطاقة" required oninput="updateCardHolder(this)" style="width:100%; text-transform:uppercase;" />
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+            <div class="form-group" style="margin-bottom:1.2rem; text-align:right;">
+              <label style="display:block; font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.2rem;">تاريخ الانتهاء *</label>
+              <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" required maxLength="5" oninput="updateCardExpiry(this)" style="width:100%; direction:ltr; text-align:left;" />
+            </div>
+            <div class="form-group" style="margin-bottom:1.2rem; text-align:right;">
+              <label style="display:block; font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.2rem;">الرمز السري (CVV) *</label>
+              <input type="text" id="card-cvv" class="form-control" placeholder="123" required maxLength="4" onfocus="flipCard(true)" onblur="flipCard(false)" oninput="updateCardCVV(this)" style="width:100%; direction:ltr; text-align:left;" />
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; padding:0.8rem; border-radius:50px;">🔒 إكمال الدفع الآمن</button>
+        </form>
+      </div>
+
+      <!-- Option 2: Apple Pay -->
+      <div id="payment-area-applepay" class="payment-area" style="display:none; text-align:center; padding:1.5rem 0;">
+        <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:1.5rem;">تأكيد الشراء الفوري وبأمان تام عبر Apple Pay</p>
+        <button onclick="simulateApplePay()" style="background:black; color:white; border:none; border-radius:50px; width:100%; padding:0.9rem; font-weight:800; font-family:'Cairo'; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.6rem; margin-bottom:1rem; box-shadow:0 4px 15px rgba(0,0,0,0.15);">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="white" style="display:block;">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.71-1.16 1.85-1.01 2.96 1.12.09 2.27-.57 2.94-1.39z"/>
+          </svg>
+          الدفع باستخدام Apple Pay
+        </button>
+      </div>
+
+      <!-- Option 3: Tabby -->
+      <div id="payment-area-tabby" class="payment-area" style="display:none; text-align:right;">
+        <div class="installment-widget">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="tabby-badge">Tabby</span>
+            <span style="font-weight:700; font-size:0.85rem; color:var(--text-primary);">قسميها على 4 دفعات بدون فوائد</span>
+          </div>
+          <ul style="font-size:0.8rem; color:var(--text-secondary); margin-right:1rem;">
+            <li>دفعة أولى اليوم بقيمة: <strong id="tabby-payment-value" style="color:var(--primary-light);">0 ر.س</strong></li>
+            <li>و3 دفعات شهرية متساوية لاحقاً.</li>
+            <li>بدون أي فوائد أو رسوم إضافية، متوافق مع الشريعة الإسلامية.</li>
+          </ul>
+        </div>
+        <button onclick="simulateInstallments('tabby')" class="btn-primary" style="width:100%; padding:0.8rem; border-radius:50px; background:#50e3c2; color:#121212;">التسجيل والمتابعة مع Tabby</button>
+      </div>
+
+      <!-- Option 4: Tamara -->
+      <div id="payment-area-tamara" class="payment-area" style="display:none; text-align:right;">
+        <div class="installment-widget">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="tamara-badge">Tamara</span>
+            <span style="font-weight:700; font-size:0.85rem; color:var(--text-primary);">قسمي فاتورتكِ على 4 أشهر براحة</span>
+          </div>
+          <ul style="font-size:0.8rem; color:var(--text-secondary); margin-right:1rem;">
+            <li>الدفعة الأولى الآن بقيمة: <strong id="tamara-payment-value" style="color:var(--primary-light);">0 ر.س</strong></li>
+            <li>الدفعات المتبقية تُسدد تلقائياً كل شهر.</li>
+            <li>بدون فوائد، وبدون رسوم خفية ومطابق للشريعة.</li>
+          </ul>
+        </div>
+        <button onclick="simulateInstallments('tamara')" class="btn-primary" style="width:100%; padding:0.8rem; border-radius:50px; background:#ff7d66; color:white;">المتابعة والدفع عبر Tamara</button>
+      </div>
+
+      <!-- Option 5: COD -->
+      <div id="payment-area-cod" class="payment-area" style="display:none; text-align:center; padding:1.5rem 0;">
+        <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:1.5rem;">تأكيد طلبكِ مباشرة والدفع نقداً أو بالبطاقة عند الاستلام لشركة التوصيل</p>
+        <button onclick="simulateCOD()" class="btn-primary" style="width:100%; padding:0.8rem; border-radius:50px;">📦 تأكيد الطلب والدفع عند الاستلام</button>
+      </div>
+
+      <!-- Simulation Loading Screen (Hidden) -->
+      <div id="payment-loading-screen" style="display:none; position:absolute; inset:0; background:var(--bg-card); z-index:10; flex-direction:column; align-items:center; justify-content:center; padding:2rem;">
+        <div class="loader-circle" style="width:50px; height:50px; border:4px solid var(--border); border-top-color:var(--primary-light); border-radius:50%; animation:spin 1s linear infinite; margin-bottom:1.5rem;"></div>
+        <h3 id="payment-loading-text" style="font-weight:700; text-align:center; margin-bottom:0.5rem;">جاري معالجة الدفع بأمان...</h3>
+        <p style="font-size:0.8rem; color:var(--text-muted); text-align:center;">يرجى عدم إغلاق الصفحة أو التحديث لحماية أمان بياناتك</p>
+      </div>
+
+      <!-- Simulation OTP / SMS Screen (Hidden) -->
+      <div id="payment-otp-screen" style="display:none; position:absolute; inset:0; background:var(--bg-card); z-index:10; flex-direction:column; align-items:center; justify-content:center; padding:2rem; text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">💬</div>
+        <h3 style="font-weight:800; margin-bottom:0.5rem;" id="otp-screen-title">رمز التحقق ثلاثي الأمان</h3>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.5rem;" id="otp-screen-desc">تم إرسال رمز تحقق مؤقت إلى جوالك المسجل. يرجى إدخال الرمز لتأكيد العملية.</p>
+        <div style="display:flex; justify-content:center; gap:0.5rem; direction:ltr; margin-bottom:1.5rem;">
+          <input type="text" maxLength="1" class="form-control" style="width:45px; height:45px; font-size:1.5rem; font-weight:700; text-align:center; padding:0;" oninput="focusNextOtp(this)" />
+          <input type="text" maxLength="1" class="form-control" style="width:45px; height:45px; font-size:1.5rem; font-weight:700; text-align:center; padding:0;" oninput="focusNextOtp(this)" />
+          <input type="text" maxLength="1" class="form-control" style="width:45px; height:45px; font-size:1.5rem; font-weight:700; text-align:center; padding:0;" oninput="focusNextOtp(this)" />
+          <input type="text" maxLength="1" class="form-control" style="width:45px; height:45px; font-size:1.5rem; font-weight:700; text-align:center; padding:0;" oninput="focusNextOtp(this)" />
+        </div>
+        <button onclick="verifyOtpSimulation()" class="btn-primary" style="padding:0.75rem 2.5rem; border-radius:50px; font-weight:700;">✅ تأكيد الرمز المالي</button>
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:1rem; cursor:pointer;" onclick="resendOtpSimulation()">إعادة إرسال الرمز (إرسال تجريبي جديد)</p>
+      </div>
+
+      <!-- Simulation Success Screen (Hidden) -->
+      <div id="payment-success-screen" style="display:none; position:absolute; inset:0; background:var(--bg-card); z-index:10; flex-direction:column; align-items:center; justify-content:center; padding:2rem; text-align:center;">
+        <div style="font-size:4rem; margin-bottom:1rem;">🎉</div>
+        <h3 style="font-weight:900; color:var(--green); margin-bottom:0.5rem; font-size:1.4rem;">تمت العملية بنجاح!</h3>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.3rem;" id="success-screen-desc">تم الدفع وتأكيد الطلب بنجاح.</p>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1.5rem;">رقم العملية المرجعي: <strong id="success-reference-num" style="color:var(--primary-light);">#F-82947</strong></p>
+        
+        <button onclick="sendOrderToWhatsapp()" class="btn-primary" style="padding:0.8rem 2.2rem; border-radius:50px; background:linear-gradient(135deg, #25d366, #128c7e); color:white; font-weight:800; border:none; display:inline-flex; align-items:center; gap:0.5rem; box-shadow:0 4px 15px rgba(37,211,102,0.3);">
+          إرسال الفاتورة وتأكيد الطلب عبر واتساب 💬
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- QUICK VIEW MODAL -->
   <div class="modal" id="quick-view-modal">
     <div class="modal-content">
@@ -1130,6 +1592,76 @@
     <source src="bg-music.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- POLICY MODAL: RETURN & EXCHANGE -->
+  <div class="policy-modal" id="policy-modal-return">
+    <div class="policy-modal-content">
+      <button class="modal-close" onclick="closePolicyModal('return')">✕</button>
+      <div class="policy-title">🔄 سياسة الاستبدال والاسترجاع</div>
+      <div class="policy-body">
+        <p>مرحباً بكِ في <strong>دار الغيد</strong>. نحرص دائماً على تقديم أفضل تجربة تسوق لكِ. نظراً لأن جميع عباياتنا تفصل وتصنع خصيصاً بناءً على طلبكِ ومقاساتكِ الخاصة، يرجى قراءة الشروط التالية بعناية:</p>
+        
+        <h3>1. شروط الاستبدال والاسترجاع:</h3>
+        <ul>
+          <li>يُسمح بالاستبدال أو الاسترجاع فقط في حال وجود <strong>عيب مصنعي واضح</strong> في القماش أو الخياطة، أو في حال <strong>استلام منتج خاطئ</strong> أو مقاس مختلف عن المقاس المطلوب في الطلب.</li>
+          <li>يجب تقديم طلب الاستبدال أو الاسترجاع خلال <strong>3 أيام</strong> من تاريخ استلام الطلب.</li>
+          <li>يجب أن يكون المنتج في حالته الأصلية، غير مستخدم، وبكافة بطاقاته وتغليفه الأصلي.</li>
+        </ul>
+
+        <h3>2. حالات لا يُسمح فيها بالاستبدال والاسترجاع:</h3>
+        <ul>
+          <li>لا يُسمح بالاستبدال أو الاسترجاع للعبايات التي تم تفصيلها وتعديل مقاساتها أو طولها بناءً على طلب العميل الخاص، إلا في حال وجود خطأ من طرفنا.</li>
+          <li>الأضرار الناتجة عن سوء الغسيل أو الكي أو الاستخدام غير الصحيح للعباية.</li>
+        </ul>
+
+        <h3>3. آلية الاستبدال والاسترجاع:</h3>
+        <p>في حال استيفاء الشروط، يرجى التواصل معنا عبر واتساب الإدارة وتزويدنا بصورة العيب أو الخطأ. سنقوم بإصدار بوليصة شحن مجانية لاستلام العبوة وشحن عباية بديلة لكِ فوراً أو استرداد المبلغ كاملاً.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- POLICY MODAL: TERMS & CONDITIONS -->
+  <div class="policy-modal" id="policy-modal-terms">
+    <div class="policy-modal-content">
+      <button class="modal-close" onclick="closePolicyModal('terms')">✕</button>
+      <div class="policy-title">⚖️ الشروط والأحكام</div>
+      <div class="policy-body">
+        <p>باستخدامكِ لمتجر <strong>دار الغيد</strong> الإلكتروني، فإنكِ توافقين على الشروط والأحكام التالية:</p>
+
+        <h3>1. شروط الطلب والتفصيل:</h3>
+        <p>يتم البدء في تفصيل العبايات وتجهيزها بعد إتمام عملية الدفع الإلكتروني (أو تأكيد الطلب للدفع عند الاستلام). قد تستغرق عملية التفصيل والتحضير من <strong>5 إلى 10 أيام عمل</strong> حسب الموسم وضغط العمل.</p>
+
+        <h3>2. دقة المقاسات والمواصفات:</h3>
+        <p>تتحمل العميلة المسؤولية الكاملة عن دقة المقاسات والطول المدخل في الطلب. يرجى مراجعة جدول المقاسات المعتمد بعناية قبل تأكيد الشراء.</p>
+
+        <h3>3. الأسعار والشحن:</h3>
+        <p>جميع الأسعار معلنة بالريال السعودي. نقوم بتوفير خدمات الشحن لكافة مناطق المملكة ودول الخليج عبر شركات شحن موثوقة. أي تأخير من طرف شركة الشحن خارج عن مسؤوليتنا المباشرة ولكننا نتابع الشحنة معكِ حتى وصولها بسلام.</p>
+
+        <h3>4. التعديل والإلغاء:</h3>
+        <p>يمكنكِ تعديل تفاصيل طلبكِ أو إلغائه خلال <strong>24 ساعة</strong> فقط من وقت تقديم الطلب، حيث لا يمكن التعديل بعد قص القماش والبدء في الخياطة.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- POLICY MODAL: PRIVACY POLICY -->
+  <div class="policy-modal" id="policy-modal-privacy">
+    <div class="policy-modal-content">
+      <button class="modal-close" onclick="closePolicyModal('privacy')">✕</button>
+      <div class="policy-title">🛡️ سياسة الخصوصية وسرية المعلومات</div>
+      <div class="policy-body">
+        <p>في <strong>دار الغيد</strong>، نولي سرية وخصوصية بياناتكِ أهمية قصوى. نلتزم بحماية كافة المعلومات الشخصية التي تقدمينها لنا:</p>
+
+        <h3>1. جمع المعلومات واستخدامها:</h3>
+        <p>نجمع البيانات اللازمة لمعالجة طلباتكِ وتوصيلها فقط، مثل: الاسم الكامل، رقم الجوال، عنوان التوصيل، والبريد الإلكتروني.</p>
+
+        <h3>2. سرية البيانات المالية:</h3>
+        <p>تتم معالجة كافة عمليات الدفع بشكل آمن ومشفر تماماً عبر بروتوكولات حماية متطورة. نحن لا نقوم بحفظ أو الإطلاع على بيانات بطاقتك الائتمانية في خوادمنا.</p>
+
+        <h3>3. عدم مشاركة المعلومات:</h3>
+        <p>نلتزم التزاماً تاماً بعدم بيع أو مشاركة أو تسريب بياناتكِ الشخصية أو أرقام جوالكِ لأي أطراف خارجية، باستثناء شركة الشحن المسؤولة عن تسليم الطلب لكِ.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATION -->
   <div class="page-toast" id="page-toast"></div>
 
@@ -1141,6 +1673,9 @@
       <a href="#home">الرئيسية</a>
       <a href="#shop">الكتالوج</a>
       <a href="#reviews">التقييمات</a>
+      <a href="#policy-return" onclick="openPolicyModal('return', event)">سياسة الاسترجاع</a>
+      <a href="#policy-terms" onclick="openPolicyModal('terms', event)">الشروط والأحكام</a>
+      <a href="#policy-privacy" onclick="openPolicyModal('privacy', event)">سياسة الخصوصية</a>
       <a href="admin.html">لوحة التحكم ⚙️</a>
     </div>
     <div class="footer-bottom">
@@ -1380,15 +1915,43 @@
       }).join('');
     }
 
+    let currentSearchQuery = '';
+
+    function highlightMatch(text, query) {
+      if (!query || !text) return text;
+      const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const reg = new RegExp(`(${escapedQuery})`, 'gi');
+      return text.replace(reg, '<span class="search-highlight">$1</span>');
+    }
+
+    function clearSearch() {
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.value = '';
+        filterCatalog();
+      }
+    }
+
     function renderProducts(products) {
       const container = document.getElementById('products-container');
       if (products.length === 0) {
-        container.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:3rem;">لا توجد نتائج مطابقة لبحثك 🌸</p>`;
+        container.innerHTML = `
+          <div class="no-results-card" style="grid-column: 1/-1;">
+            <div class="no-results-icon">🔎</div>
+            <h3 style="font-weight: 800; margin-bottom: 0.5rem;">عفواً، لا توجد عبايات مطابقة!</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">جربي كتابة كلمة بحث أخرى (مثل: بشت، كتان، حرير) أو تصفح الأقسام الأخرى.</p>
+            <button onclick="clearSearch()" class="btn-primary" style="padding: 0.6rem 2rem; border-radius: 50px; font-size: 0.85rem; cursor:pointer;">عرض كافة العبايات</button>
+          </div>
+        `;
         return;
       }
       container.innerHTML = products.map(p => {
-        const tags = p.features ? p.features.split(',').map(t => `<span class="feature-tag">${t.trim()}</span>`).join('') : '';
+        const featuresMatched = p.features ? highlightMatch(p.features, currentSearchQuery) : '';
+        const tags = featuresMatched ? featuresMatched.split(',').map(t => `<span class="feature-tag">${t.trim()}</span>`).join('') : '';
         const catLabel = getCategoryLabel(p.type);
+        const highlightedName = highlightMatch(p.name, currentSearchQuery);
+        const highlightedDesc = highlightMatch(p.description, currentSearchQuery);
+        
         return `
           <div class="product-card reveal visible">
             <div class="product-img">
@@ -1397,8 +1960,8 @@
             </div>
             <div class="product-body">
               <span class="product-category">${catLabel}</span>
-              <h3 class="product-name">${p.name}</h3>
-              <p class="product-desc">${p.description}</p>
+              <h3 class="product-name">${highlightedName}</h3>
+              <p class="product-desc">${highlightedDesc}</p>
               <div class="product-features">${tags}</div>
               <div class="product-footer">
                 <div class="product-price">${Number(p.price).toLocaleString()} <small>ر.س</small></div>
@@ -1452,6 +2015,13 @@
 
     function filterCatalog() {
       const query = document.getElementById('search-input').value.trim().toLowerCase();
+      currentSearchQuery = query;
+      
+      const clearBtn = document.getElementById('search-clear-btn');
+      if (clearBtn) {
+        clearBtn.style.display = query ? 'block' : 'none';
+      }
+      
       let filtered = localProducts;
       
       if (currentCategory !== 'all') {
@@ -1464,6 +2034,17 @@
           p.description.toLowerCase().includes(query) || 
           (p.features && p.features.toLowerCase().includes(query))
         );
+      }
+
+      // Update stats
+      const statsEl = document.getElementById('search-stats');
+      if (statsEl) {
+        if (query) {
+          statsEl.textContent = `تم العثور على ${filtered.length} عباية مطابقة لبحثك 🌸`;
+          statsEl.style.display = 'block';
+        } else {
+          statsEl.style.display = 'none';
+        }
       }
       
       renderProducts(filtered);
@@ -1625,7 +2206,81 @@
       showToast("🗑️ تم حذف العباية من الحقيبة");
     }
 
-    // ===== CHECKOUT PROCESS =====
+    // ===== SHIPPING & CHECKOUT PROCESS =====
+    let currentShippingCost = 0;
+    let currentCartSubtotal = 0;
+    let currentCartGrandTotal = 0;
+    let customerCheckoutData = {};
+    let selectedPaymentMethodVal = 'card';
+    let currentPaymentMethodName = '';
+    let currentPaymentStatus = '';
+    let currentPaymentReference = '';
+
+    function calculateShipping(subtotal) {
+      if (subtotal !== undefined) {
+        currentCartSubtotal = subtotal;
+      } else {
+        currentCartSubtotal = cart.reduce((sum, item) => sum + (item.product.price * item.qty), 0);
+      }
+
+      // Update Free Shipping Progress Bar
+      const trackerWrap = document.getElementById('shipping-tracker-wrap');
+      const trackerText = document.getElementById('shipping-tracker-text');
+      const trackerBar = document.getElementById('shipping-tracker-bar');
+      
+      if (trackerWrap) {
+        trackerWrap.style.display = "block";
+        const freeShippingThreshold = 350;
+        if (currentCartSubtotal >= freeShippingThreshold) {
+          trackerText.textContent = "مبروك! حصلتِ على شحن مجاني لطلبكِ 🚚✨";
+          trackerBar.style.width = "100%";
+          currentShippingCost = 0;
+        } else {
+          const remaining = freeShippingThreshold - currentCartSubtotal;
+          trackerText.textContent = `أضيفي منتجات بقيمة ${remaining} ر.س إضافية للحصول على شحن مجاني! 🚚`;
+          const percentage = (currentCartSubtotal / freeShippingThreshold) * 100;
+          trackerBar.style.width = `${percentage}%`;
+          
+          // Determine shipping cost by city selection
+          const citySelect = document.getElementById('c-city');
+          const city = citySelect ? citySelect.value : "";
+          currentShippingCost = getShippingCostByCity(city);
+        }
+      }
+
+      // Update values in UI
+      const shippingValEl = document.getElementById('cart-shipping-value');
+      const grandTotalValEl = document.getElementById('cart-grand-total-value');
+      
+      if (shippingValEl) {
+        shippingValEl.textContent = currentShippingCost === 0 ? "مجاني" : `${currentShippingCost} ر.س`;
+      }
+      
+      currentCartGrandTotal = currentCartSubtotal + currentShippingCost;
+      if (grandTotalValEl) {
+        grandTotalValEl.textContent = `${currentCartGrandTotal} ر.س`;
+      }
+    }
+
+    function getShippingCostByCity(city) {
+      if (!city) return 0;
+      switch (city) {
+        case 'Riyadh': return 20;
+        case 'Jeddah':
+        case 'Makkah':
+        case 'Madinah':
+        case 'Dammam':
+          return 30;
+        case 'Abha':
+        case 'Jazan':
+        case 'Tabuk':
+          return 35;
+        case 'Other': return 40;
+        case 'Gulf': return 60;
+        default: return 0;
+      }
+    }
+
     function handleCheckout(e) {
       e.preventDefault();
       if (cart.length === 0) {
@@ -1635,28 +2290,262 @@
       
       const name = document.getElementById('c-name').value.trim();
       const phone = document.getElementById('c-phone').value.trim();
-      const city = document.getElementById('c-city').value.trim();
+      const citySelect = document.getElementById('c-city');
+      const cityText = citySelect.options[citySelect.selectedIndex].text;
+      const address = document.getElementById('c-address').value.trim();
       const notes = document.getElementById('c-notes').value.trim();
+
+      customerCheckoutData = { name, phone, city: cityText, address, notes };
       
+      // Open Payment Modal
+      toggleCartDrawer(false);
+      openPaymentCheckoutGateway();
+    }
+
+    function openPaymentCheckoutGateway() {
+      document.getElementById('pay-summary-subtotal').textContent = `${currentCartSubtotal} ر.س`;
+      document.getElementById('pay-summary-shipping').textContent = currentShippingCost === 0 ? "مجاني" : `${currentShippingCost} ر.س`;
+      document.getElementById('pay-summary-total').textContent = `${currentCartGrandTotal} ر.س`;
+
+      const tabbyVal = Math.round(currentCartGrandTotal / 4);
+      document.getElementById('tabby-payment-value').textContent = `${tabbyVal} ر.س`;
+      document.getElementById('tamara-payment-value').textContent = `${tabbyVal} ر.س`;
+
+      const cardNameDisp = document.getElementById('card-name-display');
+      if (cardNameDisp && customerCheckoutData.name) {
+        cardNameDisp.textContent = customerCheckoutData.name.toUpperCase();
+        document.getElementById('card-holder').value = customerCheckoutData.name;
+      }
+
+      document.getElementById('payment-loading-screen').style.display = 'none';
+      document.getElementById('payment-otp-screen').style.display = 'none';
+      document.getElementById('payment-success-screen').style.display = 'none';
+
+      document.getElementById('card-number').value = '';
+      document.getElementById('card-expiry').value = '';
+      document.getElementById('card-cvv').value = '';
+      document.getElementById('card-num-display').textContent = '•••• •••• •••• ••••';
+      document.getElementById('card-expiry-display').textContent = 'MM/YY';
+      document.getElementById('card-cvv-display').textContent = '•••';
+
+      selectPaymentMethod('card');
+      togglePaymentModal(true);
+    }
+
+    function togglePaymentModal(show) {
+      const modal = document.getElementById('checkout-payment-modal');
+      if (show) {
+        modal.classList.add('active');
+      } else {
+        modal.classList.remove('active');
+      }
+    }
+
+    function selectPaymentMethod(method) {
+      selectedPaymentMethodVal = method;
+
+      document.querySelectorAll('.payment-method-card').forEach(card => {
+        card.classList.remove('active');
+      });
+
+      const cards = document.querySelectorAll('.payment-method-card');
+      if (method === 'card') cards[0].classList.add('active');
+      else if (method === 'applepay') cards[1].classList.add('active');
+      else if (method === 'tabby') cards[2].classList.add('active');
+      else if (method === 'tamara') cards[3].classList.add('active');
+      else if (method === 'cod') cards[4].classList.add('active');
+
+      document.querySelectorAll('.payment-area').forEach(area => {
+        area.style.display = 'none';
+      });
+
+      document.getElementById(`payment-area-${method}`).style.display = 'block';
+    }
+
+    // --- Interactive Card Input Functions ---
+    function updateCardNumber(input) {
+      let val = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+      let formatted = '';
+      for (let i = 0; i < val.length; i++) {
+        if (i > 0 && i % 4 === 0) formatted += ' ';
+        formatted += val[i];
+      }
+      input.value = formatted;
+      document.getElementById('card-num-display').textContent = formatted || '•••• •••• •••• ••••';
+
+      const brandLogo = document.getElementById('card-brand-logo');
+      const payIconCard = document.getElementById('pay-icon-card');
+      if (val.startsWith('4')) {
+        brandLogo.innerHTML = '<img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa" />';
+        payIconCard.src = "https://img.icons8.com/color/48/000000/visa.png";
+      } else if (val.startsWith('5')) {
+        brandLogo.innerHTML = '<img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="Mastercard" />';
+        payIconCard.src = "https://img.icons8.com/color/48/000000/mastercard.png";
+      } else if (val.startsWith('9') || val.startsWith('6')) {
+        brandLogo.innerHTML = '<span style="font-weight:900; color:var(--primary-light); font-size:1.1rem; font-style:italic;">mada</span>';
+      } else {
+        brandLogo.innerHTML = '<img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa" />';
+        payIconCard.src = "https://img.icons8.com/color/48/000000/visa.png";
+      }
+    }
+
+    function updateCardHolder(input) {
+      const val = input.value.toUpperCase();
+      document.getElementById('card-name-display').textContent = val || 'AL GHAYD CUSTOMER';
+    }
+
+    function updateCardExpiry(input) {
+      let val = input.value.replace(/\//g, '').replace(/[^0-9]/gi, '');
+      if (val.length >= 2) {
+        val = val.substring(0,2) + '/' + val.substring(2,4);
+      }
+      input.value = val;
+      document.getElementById('card-expiry-display').textContent = val || 'MM/YY';
+    }
+
+    function updateCardCVV(input) {
+      const val = input.value.replace(/[^0-9]/gi, '');
+      input.value = val;
+      document.getElementById('card-cvv-display').textContent = val.replace(/./g, '•') || '•••';
+    }
+
+    function flipCard(flipped) {
+      const card = document.getElementById('card-sim-element');
+      if (flipped) {
+        card.classList.add('flipped');
+      } else {
+        card.classList.remove('flipped');
+      }
+    }
+
+    function showLoadingScreen(text, duration, callback) {
+      const screen = document.getElementById('payment-loading-screen');
+      const textEl = document.getElementById('payment-loading-text');
+      textEl.textContent = text;
+      screen.style.display = 'flex';
+      
+      setTimeout(() => {
+        screen.style.display = 'none';
+        if (callback) callback();
+      }, duration);
+    }
+
+    function focusNextOtp(input) {
+      if (input.value.length === 1) {
+        const next = input.nextElementSibling;
+        if (next && next.tagName === 'INPUT') next.focus();
+      }
+    }
+
+    function executePaymentSimulation(e) {
+      if (e) e.preventDefault();
+      
+      showLoadingScreen('جاري معالجة الدفع والاتصال بالبنك المصدر... 🔒', 2500, () => {
+        document.getElementById('otp-screen-title').textContent = "🔐 رمز التحقق ثلاثي الأمان (3D Secure)";
+        document.getElementById('otp-screen-desc').textContent = `أدخل رمز التحقق (OTP) المؤقت لتأكيد دفع فاتورتك بقيمة ${currentCartGrandTotal} ر.س.`;
+        
+        const otpInputs = document.querySelectorAll('#payment-otp-screen input');
+        otpInputs.forEach(inp => inp.value = '');
+        
+        document.getElementById('payment-otp-screen').style.display = 'flex';
+        otpInputs[0].focus();
+        
+        currentPaymentMethodName = 'بطاقة بنكية (مدى/فيزا)';
+        currentPaymentStatus = 'مدفوع إلكترونياً بالبطاقة (بانتظار مطابقة العملية)';
+        currentPaymentReference = 'PAY-' + Math.floor(100000 + Math.random() * 900000);
+      });
+    }
+
+    function simulateApplePay() {
+      showLoadingScreen('جاري استدعاء Apple Pay والتحقق من الهوية... 🍏', 2200, () => {
+        currentPaymentMethodName = 'Apple Pay';
+        currentPaymentStatus = 'مدفوع ومصادق عليه عبر Apple Pay بالكامل';
+        currentPaymentReference = 'APAY-' + Math.floor(100000 + Math.random() * 900000);
+        showPaymentSuccessScreen('applepay', 'تم الدفع وتأكيد الحجز الفوري بأمان عبر Apple Pay.');
+      });
+    }
+
+    function simulateInstallments(provider) {
+      const name = provider === 'tabby' ? 'Tabby' : 'Tamara';
+      
+      showLoadingScreen(`جاري تحويلك إلى واجهة ${name} الآمنة... 📲`, 1800, () => {
+        document.getElementById('otp-screen-title').textContent = `🔒 تأكيد الشراء بالتقسيط مع ${name}`;
+        document.getElementById('otp-screen-desc').textContent = `أدخل رمز التحقق (OTP) لتفعيل خطة تقسيط 4 دفعات بقيمة ${Math.round(currentCartGrandTotal / 4)} ر.س شهرياً.`;
+        
+        const otpInputs = document.querySelectorAll('#payment-otp-screen input');
+        otpInputs.forEach(inp => inp.value = '');
+        
+        document.getElementById('payment-otp-screen').style.display = 'flex';
+        otpInputs[0].focus();
+        
+        currentPaymentMethodName = `تقسيط ${name}`;
+        currentPaymentStatus = `مقبول ومؤكد تقسيطاً عبر ${name} (4 دفعات)`;
+        currentPaymentReference = `${name.toUpperCase()}-` + Math.floor(100000 + Math.random() * 900000);
+      });
+    }
+
+    function simulateCOD() {
+      showLoadingScreen('جاري تجهيز الفاتورة وحجز الطلب... 📦', 1500, () => {
+        currentPaymentMethodName = 'الدفع عند الاستلام (COD)';
+        currentPaymentStatus = 'بانتظار التحصيل نقداً أو بالبطاقة عند الاستلام';
+        currentPaymentReference = 'COD-' + Math.floor(100000 + Math.random() * 900000);
+        showPaymentSuccessScreen('cod', 'تم تأكيد طلبكِ بنجاح وسيتصل بكِ المندوب للتوصيل والدفع.');
+      });
+    }
+
+    function verifyOtpSimulation() {
+      showLoadingScreen('جاري التحقق من صحة الرمز وتفويض العملية... 🔐', 2000, () => {
+        document.getElementById('payment-otp-screen').style.display = 'none';
+        showPaymentSuccessScreen(selectedPaymentMethodVal, `تم تفويض الدفع بنجاح عبر ${currentPaymentMethodName}.`);
+      });
+    }
+
+    function resendOtpSimulation() {
+      showToast("💬 تم إعادة إرسال رمز التحقق التجريبي بنجاح!");
+    }
+
+    function showPaymentSuccessScreen(method, text) {
+      document.getElementById('payment-success-screen').style.display = 'flex';
+      document.getElementById('success-screen-desc').textContent = text;
+      document.getElementById('success-reference-num').textContent = currentPaymentReference;
+    }
+
+    function sendOrderToWhatsapp() {
       let orderList = "";
-      let grandTotal = 0;
       
       cart.forEach((item, index) => {
         const cost = item.product.price * item.qty;
-        grandTotal += cost;
         orderList += `${index + 1}. *${item.product.name}*\n   - المقاس: ${item.size}\n   - الطول: ${item.length} إنش\n   - الكمية: ${item.qty}\n   - السعر: ${cost} ر.س\n`;
       });
       
-      const msg = `👑 *طلب شراء جديد من متجر دار الغيد للعبايات*\n\n👤 *اسم العميل:* ${name}\n📞 *رقم الجوال:* ${phone}\n📍 *العنوان:* ${city}\n\n📦 *الطلبات:*\n${orderList}\n💰 *الإجمالي التقريبي:* ${grandTotal} ر.س\n\n📝 *ملاحظات وتعديلات:* ${notes || 'لا يوجد'}\n\n_يرجى مراجعة وتأكيد الطلب وبدء التفصيل والتحضير._`;
-      
+      const msg = `👑 *طلب شراء جديد من متجر دار الغيد للعبايات*
+
+👤 *اسم العميل:* ${customerCheckoutData.name}
+📞 *رقم الجوال:* ${customerCheckoutData.phone}
+📍 *العنوان:* ${customerCheckoutData.city} - ${customerCheckoutData.address}
+
+📦 *الطلبات:*
+${orderList}
+💰 *قيمة المنتجات:* ${currentCartSubtotal} ر.س
+🚚 *الشحن:* ${currentShippingCost === 0 ? 'شحن مجاني' : currentShippingCost + ' ر.س'}
+💰 *الإجمالي النهائي:* ${currentCartGrandTotal} ر.س
+
+💳 *تفاصيل الدفع:*
+   - *طريقة الدفع:* ${currentPaymentMethodName}
+   - *حالة الدفع:* ${currentPaymentStatus}
+   - *معرف العملية:* ${currentPaymentReference}
+
+📝 *ملاحظات وتعديلات:* ${customerCheckoutData.notes || 'لا يوجد'}
+
+_تمت العملية وتأكيد الفاتورة بنجاح. يرجى البدء في التفصيل والتحضير._`;
+
       window.open(`https://wa.me/${activeWhatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-      showToast("🚀 جاري تحويلك إلى الواتساب لإرسال تفاصيل الطلب!");
+      showToast("🚀 جاري توجيهك للواتساب لإرسال الفاتورة الرسمية للمدير!");
       
       // Clear Cart
       cart = [];
       updateCartUI();
-      toggleCartDrawer(false);
-      e.target.reset();
+      togglePaymentModal(false);
     }
 
     // ===== REVIEWS CONTROLLER =====
@@ -2141,6 +3030,22 @@
           if (profileMenu) profileMenu.style.display = 'none';
         }
       });
+    }
+
+    // ===== POLICY MODALS CONTROLLER =====
+    function openPolicyModal(type, e) {
+      if (e) e.preventDefault();
+      const modal = document.getElementById(`policy-modal-${type}`);
+      if (modal) {
+        modal.classList.add('active');
+      }
+    }
+
+    function closePolicyModal(type) {
+      const modal = document.getElementById(`policy-modal-${type}`);
+      if (modal) {
+        modal.classList.remove('active');
+      }
     }
   </script>
 </body>
