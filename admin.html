@@ -163,22 +163,22 @@
         </div>
     </div>
 
-    <!-- لوحة التحكم الرئيسية (تظهر بعد الدخول) -->
+    <!-- لوحة التحكم الرئيسية -->
     <div id="dashboard-screen">
         <h2>مرحباً بك في لوحة التحكم</h2>
         <p>تم تسجيل الدخول بنجاح!</p>
         <button id="logout-btn" style="padding: 0.5rem 1.5rem; margin-top: 1.5rem; background: var(--red-error); color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">تسجيل الخروج</button>
     </div>
 
-    <!-- 1. مكتبات Firebase SDK (نسخة Compat المستقرة) -->
+    <!-- 1. مكتبات Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
-    <!-- 2. تهيئة Firebase والربط المباشر -->
+    <!-- 2. تهيئة Firebase بالمفتاح الجديد -->
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyB_8kYwHjEF1oJn-zADngAMCqj03Zx8GtE",
+            apiKey: "AIzaSyB97BG6mc4kYM7fuauQAU9NFHT5ffE07mo",
             authDomain: "abaya-store-b8841.firebaseapp.com",
             databaseURL: "https://abaya-store-b8841-default-rtdb.firebaseio.com",
             projectId: "abaya-store-b8841",
@@ -198,7 +198,7 @@
         const dashboardScreen = document.getElementById('dashboard-screen');
         const logoutBtn = document.getElementById('logout-btn');
 
-        // التبديل بين شاشة الدخول ولعلوماتDashboard
+        // مراقبة حالة تسجيل الدخول
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 if (loginScreen) loginScreen.style.display = 'none';
@@ -209,7 +209,7 @@
             }
         });
 
-        // حدث تسجيل الدخول
+        // تسجيل الدخول
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -223,14 +223,14 @@
                         console.log("تم تسجيل الدخول بنجاح:", userCredential.user);
                     })
                     .catch((error) => {
-                        console.error("خطأ أثناء الدخول:", error);
+                        console.error("Login Error:", error);
                         errorMsg.style.display = 'block';
                         errorMsg.innerText = `❌ خطأ في تسجيل الدخول: ${error.message}`;
                     });
             });
         }
 
-        // حدث تسجيل الخروج
+        // تسجيل الخروج
         if (logoutBtn) {
             logoutBtn.addEventListener('click', () => {
                 firebase.auth().signOut();
