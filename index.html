@@ -909,7 +909,7 @@
   </button>
 
   <audio id="bg-audio" loop preload="auto">
-    <source src="../ac-store/bg-music.mp3" type="audio/mpeg">
+    <source src="https://assets.codepen.co/4358584/Ancients.mp3" type="audio/mpeg">
   </audio>
 
   <!-- TOAST NOTIFICATION -->
@@ -1045,6 +1045,16 @@
           const val = snap.val();
           if (val) {
             if (val.whatsapp) activeWhatsapp = val.whatsapp;
+            if (val.background_music) {
+              const audioEl = document.getElementById('bg-audio');
+              if (audioEl) {
+                const sourceEl = audioEl.querySelector('source') || audioEl;
+                if (sourceEl.src !== val.background_music) {
+                  sourceEl.src = val.background_music;
+                  audioEl.load();
+                }
+              }
+            }
             // Update WhatsApp hrefs
             document.getElementById('whatsapp-btn').href = `https://wa.me/${activeWhatsapp}?text=مرحباً، أود الاستفسار عن كولكشن عبايات دار الغيد والأسعار...`;
             document.querySelector('.nav-links a[href*="wa.me"]').href = `https://wa.me/${activeWhatsapp}`;
@@ -1099,6 +1109,22 @@
         });
       } else {
         console.warn("Using Offline Fallback Mode. Database settings are mock.");
+        
+        const mockSettings = JSON.parse(localStorage.getItem("abaya_mock_settings")) || {};
+        if (mockSettings.whatsapp) {
+          activeWhatsapp = mockSettings.whatsapp;
+          document.getElementById('whatsapp-btn').href = `https://wa.me/${activeWhatsapp}?text=مرحباً، أود الاستفسار عن كولكشن عبايات دار الغيد والأسعار...`;
+          document.querySelector('.nav-links a[href*="wa.me"]').href = `https://wa.me/${activeWhatsapp}`;
+        }
+        if (mockSettings.background_music) {
+          const audioEl = document.getElementById('bg-audio');
+          if (audioEl) {
+            const sourceEl = audioEl.querySelector('source') || audioEl;
+            sourceEl.src = mockSettings.background_music;
+            audioEl.load();
+          }
+        }
+        
         localProducts = fallbackProducts;
         localOffers = fallbackOffers;
         localReviews = fallbackReviews;

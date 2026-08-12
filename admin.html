@@ -450,6 +450,12 @@
                   <input type="text" id="set-whatsapp" class="form-control" placeholder="966568192263" required />
                   <small style="color:var(--text-muted);">اكتب الرقم كاملاً بدون علامة + ومبتدئاً بمفتاح الدولة (مثال: 966568192263)</small>
                 </div>
+                <div class="form-group" style="margin-top: 1.5rem;">
+                  <label for="set-audio-file">الملف الصوتي لخلفية الموقع (تحميل مباشر بدون رابط) *</label>
+                  <input type="file" id="set-audio-file" class="form-control" accept="audio/*" />
+                  <input type="url" id="set-audio-url" class="form-control" placeholder="أو ضع رابط ملف الصوت MP3 هنا..." style="margin-top: 0.5rem;" />
+                  <small style="color:var(--primary-light); display:block; margin-top:0.25rem;" id="set-audio-status"></small>
+                </div>
               </div>
               <div class="form-actions" style="margin-top: 2rem;">
                 <button type="submit" class="btn btn-main" style="width: 100%;">حفظ إعدادات المتجر</button>
@@ -480,6 +486,7 @@
   <script>
     // ===== SYSTEM VARIABLES & FALLBACK CRUD DATA =====
     let activeWhatsapp = "966568192263";
+    let activeMusicUrl = "";
     
     let localProducts = [];
     let localOffers = [];
@@ -596,8 +603,12 @@
           const val = snap.val();
           if (val) {
             if (val.whatsapp) activeWhatsapp = val.whatsapp;
+            if (val.background_music) activeMusicUrl = val.background_music;
           }
           document.getElementById('set-whatsapp').value = activeWhatsapp;
+          document.getElementById('set-audio-url').value = activeMusicUrl || "";
+          document.getElementById('set-audio-file').value = "";
+          document.getElementById('set-audio-status').textContent = "";
         });
 
         // Load Products
@@ -630,7 +641,13 @@
         localOffers = JSON.parse(localStorage.getItem("abaya_mock_offers")) || fallbackOffers;
         localReviews = JSON.parse(localStorage.getItem("abaya_mock_reviews")) || fallbackReviews;
         
+        const savedSettings = JSON.parse(localStorage.getItem("abaya_mock_settings")) || { whatsapp: activeWhatsapp, background_music: "" };
+        activeWhatsapp = savedSettings.whatsapp;
+        activeMusicUrl = savedSettings.background_music;
         document.getElementById('set-whatsapp').value = activeWhatsapp;
+        document.getElementById('set-audio-url').value = activeMusicUrl || "";
+        document.getElementById('set-audio-file').value = "";
+        document.getElementById('set-audio-status').textContent = "";
 
         renderProductsTable(localProducts);
         renderOffersTable(localOffers);
@@ -1050,18 +1067,64 @@
     function saveSettings(e) {
       e.preventDefault();
       const whatsapp = document.getElementById('set-whatsapp').value.trim();
+      const fileInput = document.getElementById('set-audio-file');
+      const urlInput = document.getElementById('set-audio-url');
+      const statusEl = document.getElementById('set-audio-status');
+      
+      const submitBtn = e.target.querySelector("button[type='submit']");
       
       if (!whatsapp) return;
       
-      if (isFirebaseConfigured) {
-        fbDb.ref('abaya_settings').set({
-          whatsapp
-        }).then(() => {
-          showToast("⚙️ تم حفظ رقم الجوال في Firebase!");
-        });
+      let bgMusicUrl = urlInput.value.trim();
+      
+      const proceedWithSaveSettings = (finalMusicUrl) => {
+        const settingsData = {
+          whatsapp,
+          background_music: finalMusicUrl
+        };
+
+        if (isFirebaseConfigured) {
+          fbDb.ref('abaya_settings').set(settingsData).then(() => {
+            showToast("⚙️ تم حفظ إعدادات المتجر في Firebase!");
+          });
+        } else {
+          activeWhatsapp = whatsapp;
+          activeMusicUrl = finalMusicUrl;
+          localStorage.setItem("abaya_mock_settings", JSON.stringify(settingsData));
+          showToast("⚙️ تم حفظ إعدادات المتجر محلياً!");
+        }
+      };
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        statusEl.textContent = "⏳ جاري رفع الملف الصوتي...";
+        submitBtn.disabled = true;
+        
+        if (isFirebaseConfigured) {
+          const storageRef = firebase.storage().ref(`abaya_audio/${Date.now()}_${file.name}`);
+          storageRef.put(file).then(snapshot => {
+            return snapshot.ref.getDownloadURL();
+          }).then(downloadURL => {
+            statusEl.textContent = "✅ تم الرفع بنجاح!";
+            submitBtn.disabled = false;
+            proceedWithSaveSettings(downloadURL);
+          }).catch(error => {
+            console.error(error);
+            statusEl.textContent = "❌ فشل الرفع: " + error.message;
+            submitBtn.disabled = false;
+            showToast("❌ فشل رفع الملف الصوتي!");
+          });
+        } else {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            statusEl.textContent = "✅ تم التحميل محلياً!";
+            submitBtn.disabled = false;
+            proceedWithSaveSettings(event.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
       } else {
-        activeWhatsapp = whatsapp;
-        showToast("⚙️ تم حفظ رقم الجوال محلياً!");
+        proceedWithSaveSettings(bgMusicUrl);
       }
     }
 
