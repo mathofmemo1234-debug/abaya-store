@@ -1674,14 +1674,14 @@
         if (y < 0) y = 0;
         if (y > rect.height) y = rect.height;
         
-        // Position lens
-        lens.style.left = `${x - lens.offsetWidth / 2}px`;
-        lens.style.top = `${y - lens.offsetHeight / 2}px`;
+        // Position lens (lens is 160x160, half is 80)
+        lens.style.left = `${x - 80}px`;
+        lens.style.top = `${y - 80}px`;
         
         // Update magnifying background
         lens.style.backgroundImage = `url('${img.src}')`;
         lens.style.backgroundSize = `${rect.width * zoom}px ${rect.height * zoom}px`;
-        lens.style.backgroundPosition = `-${x * zoom - lens.offsetWidth / 2}px -${y * zoom - lens.offsetHeight / 2}px`;
+        lens.style.backgroundPosition = `-${x * zoom - 80}px -${y * zoom - 80}px`;
       }
 
       function showLens(e) {
@@ -1695,15 +1695,15 @@
         lens.style.display = 'none';
       }
 
-      // Mouse events
-      img.addEventListener('mousemove', moveLens);
-      img.addEventListener('mouseenter', showLens);
-      img.addEventListener('mouseleave', hideLens);
+      // Mouse events on wrapper
+      imgWrap.addEventListener('mousemove', moveLens);
+      imgWrap.addEventListener('mouseenter', showLens);
+      imgWrap.addEventListener('mouseleave', hideLens);
 
-      // Touch events
-      img.addEventListener('touchstart', showLens, { passive: false });
-      img.addEventListener('touchmove', moveLens, { passive: false });
-      img.addEventListener('touchend', hideLens);
+      // Touch events on wrapper
+      imgWrap.addEventListener('touchstart', showLens, { passive: false });
+      imgWrap.addEventListener('touchmove', moveLens, { passive: false });
+      imgWrap.addEventListener('touchend', hideLens);
     }
   </script>
 </body>
