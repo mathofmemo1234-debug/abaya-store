@@ -283,8 +283,10 @@
                   <input type="text" id="p-features" class="form-control" placeholder="مثال: حرير كوري, سواد ملكي, كلوش" required />
                 </div>
                 <div class="form-group">
-                  <label for="p-image">رابط صورة العباية *</label>
-                  <input type="url" id="p-image" class="form-control" placeholder="https://example.com/abaya.jpg" required />
+                  <label for="p-image-file">صورة العباية (تحميل مباشر بدون رابط) *</label>
+                  <input type="file" id="p-image-file" class="form-control" accept="image/*" />
+                  <input type="url" id="p-image" class="form-control" placeholder="أو ضع رابط الصورة هنا..." style="margin-top: 0.5rem;" />
+                  <small style="color:var(--primary-light); display:block; margin-top:0.25rem;" id="p-upload-status"></small>
                 </div>
                 <div class="form-group full">
                   <label for="p-desc">الوصف التفصيلي *</label>
@@ -344,8 +346,10 @@
                   <input type="text" id="o-price" class="form-control" placeholder="مثال: خصم 20% أو 300 ر.س" required />
                 </div>
                 <div class="form-group">
-                  <label for="o-image">رابط صورة العرض (اختياري)</label>
-                  <input type="url" id="o-image" class="form-control" placeholder="https://example.com/banner.jpg" />
+                  <label for="o-image-file">صورة العرض (تحميل مباشر بدون رابط) *</label>
+                  <input type="file" id="o-image-file" class="form-control" accept="image/*" />
+                  <input type="url" id="o-image" class="form-control" placeholder="أو ضع رابط الصورة هنا..." style="margin-top: 0.5rem;" />
+                  <small style="color:var(--primary-light); display:block; margin-top:0.25rem;" id="o-upload-status"></small>
                 </div>
                 <div class="form-group">
                   <label for="o-old-price">السعر الأصلي (اختياري، للشطب بالخط)</label>
@@ -469,6 +473,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
   <!-- Custom Firebase Config -->
   <script src="firebase-config.js"></script>
 
@@ -764,6 +769,7 @@
     function openProductForm() {
       document.getElementById("product-form").reset();
       document.getElementById("p-id").value = "";
+      document.getElementById("p-upload-status").textContent = "";
       document.getElementById("product-form-title").textContent = "إضافة عباية جديدة";
       document.getElementById("product-form-card").style.display = "block";
       document.getElementById("product-form-card").scrollIntoView({behavior:"smooth"});
@@ -781,34 +787,79 @@
       const price = parseFloat(document.getElementById("p-price").value);
       const badge = document.getElementById("p-badge").value.trim();
       const features = document.getElementById("p-features").value.trim();
-      const imageUrl = document.getElementById("p-image").value.trim();
-      const description = document.getElementById("p-desc").value.trim();
+      const desc = document.getElementById("p-desc").value.trim();
       
-      const productData = {
-        name, type, price, badge, features, imageUrl, description,
-        createdAt: id ? localProducts.find(p => p.id === id).createdAt : Date.now()
+      const fileInput = document.getElementById("p-image-file");
+      const urlInput = document.getElementById("p-image");
+      const statusEl = document.getElementById("p-upload-status");
+      
+      const submitBtn = e.target.querySelector("button[type='submit']");
+      
+      let imageUrl = urlInput.value.trim();
+      
+      const proceedWithSave = (finalImageUrl) => {
+        if (!finalImageUrl) {
+          showToast("❌ يرجى اختيار ملف صورة أو وضع رابط للصورة!");
+          return;
+        }
+        
+        const productData = {
+          name, type, price, badge, features, description: desc,
+          imageUrl: finalImageUrl,
+          createdAt: id ? localProducts.find(p => p.id === id).createdAt : Date.now()
+        };
+
+        if (isFirebaseConfigured) {
+          const ref = id ? fbDb.ref(`abaya_products/${id}`) : fbDb.ref('abaya_products').push();
+          ref.set(productData).then(() => {
+            showToast(id ? "📝 تم تحديث بيانات العباية!" : "✅ تم إضافة العباية للمتجر بنجاح!");
+            closeProductForm();
+          });
+        } else {
+          if (id) {
+            const idx = localProducts.findIndex(p => p.id === id);
+            localProducts[idx] = { id, ...productData };
+          } else {
+            const mockId = "mock_prod_" + Date.now();
+            localProducts.push({ id: mockId, ...productData });
+          }
+          localStorage.setItem("abaya_mock_products", JSON.stringify(localProducts));
+          renderProductsTable(localProducts);
+          showToast("✅ تم حفظ البيانات محلياً!");
+          closeProductForm();
+        }
       };
 
-      if (isFirebaseConfigured) {
-        const ref = id ? fbDb.ref(`abaya_products/${id}`) : fbDb.ref('abaya_products').push();
-        ref.set(productData).then(() => {
-          showToast(id ? "📝 تم تحديث بيانات العباية!" : "✅ تم إضافة العباية للمتجر بنجاح!");
-          closeProductForm();
-        });
-      } else {
-        if (id) {
-          // Edit
-          const idx = localProducts.findIndex(p => p.id === id);
-          localProducts[idx] = { id, ...productData };
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        statusEl.textContent = "⏳ جاري رفع الصورة...";
+        submitBtn.disabled = true;
+        
+        if (isFirebaseConfigured) {
+          const storageRef = firebase.storage().ref(`abaya_images/${Date.now()}_${file.name}`);
+          storageRef.put(file).then(snapshot => {
+            return snapshot.ref.getDownloadURL();
+          }).then(downloadURL => {
+            statusEl.textContent = "✅ تم الرفع بنجاح!";
+            submitBtn.disabled = false;
+            proceedWithSave(downloadURL);
+          }).catch(error => {
+            console.error(error);
+            statusEl.textContent = "❌ فشل الرفع: " + error.message;
+            submitBtn.disabled = false;
+            showToast("❌ فشل رفع الصورة إلى Firebase Storage!");
+          });
         } else {
-          // Create
-          const mockId = "mock_prod_" + Date.now();
-          localProducts.push({ id: mockId, ...productData });
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            statusEl.textContent = "✅ تم التحميل محلياً!";
+            submitBtn.disabled = false;
+            proceedWithSave(event.target.result);
+          };
+          reader.readAsDataURL(file);
         }
-        localStorage.setItem("abaya_mock_products", JSON.stringify(localProducts));
-        renderProductsTable(localProducts);
-        showToast("✅ تم حفظ البيانات محلياً!");
-        closeProductForm();
+      } else {
+        proceedWithSave(imageUrl);
       }
     }
 
@@ -822,7 +873,9 @@
       document.getElementById("p-price").value = p.price;
       document.getElementById("p-badge").value = p.badge || "";
       document.getElementById("p-features").value = p.features;
-      document.getElementById("p-image").value = p.imageUrl;
+      document.getElementById("p-image").value = p.imageUrl || "";
+      document.getElementById("p-image-file").value = "";
+      document.getElementById("p-upload-status").textContent = "";
       document.getElementById("p-desc").value = p.description;
       
       document.getElementById("product-form-title").textContent = "تعديل بيانات العباية: " + p.name;
@@ -849,6 +902,7 @@
     function openOfferForm() {
       document.getElementById("offer-form").reset();
       document.getElementById("o-id").value = "";
+      document.getElementById("o-upload-status").textContent = "";
       document.getElementById("offer-form-title").textContent = "إضافة عرض ترويجي جديد";
       document.getElementById("offer-form-card").style.display = "block";
       document.getElementById("offer-form-card").scrollIntoView({behavior:"smooth"});
@@ -863,34 +917,75 @@
       const id = document.getElementById("o-id").value;
       const title = document.getElementById("o-title").value.trim();
       const price = document.getElementById("o-price").value.trim();
-      const imageUrl = document.getElementById("o-image").value.trim();
       const oldPrice = parseFloat(document.getElementById("o-old-price").value) || null;
       const description = document.getElementById("o-desc").value.trim();
       
-      const offerData = {
-        title, price, imageUrl, oldPrice, description,
-        active: id ? localOffers.find(o => o.id === id).active : true,
-        createdAt: id ? localOffers.find(o => o.id === id).createdAt : Date.now()
+      const fileInput = document.getElementById("o-image-file");
+      const urlInput = document.getElementById("o-image");
+      const statusEl = document.getElementById("o-upload-status");
+      
+      const submitBtn = e.target.querySelector("button[type='submit']");
+      
+      let imageUrl = urlInput.value.trim();
+      
+      const proceedWithSave = (finalImageUrl) => {
+        const offerData = {
+          title, price, imageUrl: finalImageUrl, oldPrice, description,
+          active: id ? localOffers.find(o => o.id === id).active : true,
+          createdAt: id ? localOffers.find(o => o.id === id).createdAt : Date.now()
+        };
+
+        if (isFirebaseConfigured) {
+          const ref = id ? fbDb.ref(`abaya_offers/${id}`) : fbDb.ref('abaya_offers').push();
+          ref.set(offerData).then(() => {
+            showToast(id ? "📝 تم تعديل العرض!" : "🔥 تم إضافة العرض بنجاح!");
+            closeOfferForm();
+          });
+        } else {
+          if (id) {
+            const idx = localOffers.findIndex(o => o.id === id);
+            localOffers[idx] = { id, ...offerData };
+          } else {
+            const mockId = "mock_off_" + Date.now();
+            localOffers.push({ id: mockId, ...offerData });
+          }
+          localStorage.setItem("abaya_mock_offers", JSON.stringify(localOffers));
+          renderOffersTable(localOffers);
+          showToast("✅ تم حفظ العرض محلياً!");
+          closeOfferForm();
+        }
       };
 
-      if (isFirebaseConfigured) {
-        const ref = id ? fbDb.ref(`abaya_offers/${id}`) : fbDb.ref('abaya_offers').push();
-        ref.set(offerData).then(() => {
-          showToast(id ? "📝 تم تعديل العرض!" : "🔥 تم إضافة العرض بنجاح!");
-          closeOfferForm();
-        });
-      } else {
-        if (id) {
-          const idx = localOffers.findIndex(o => o.id === id);
-          localOffers[idx] = { id, ...offerData };
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        statusEl.textContent = "⏳ جاري رفع الصورة...";
+        submitBtn.disabled = true;
+        
+        if (isFirebaseConfigured) {
+          const storageRef = firebase.storage().ref(`abaya_offers/${Date.now()}_${file.name}`);
+          storageRef.put(file).then(snapshot => {
+            return snapshot.ref.getDownloadURL();
+          }).then(downloadURL => {
+            statusEl.textContent = "✅ تم الرفع بنجاح!";
+            submitBtn.disabled = false;
+            proceedWithSave(downloadURL);
+          }).catch(error => {
+            console.error(error);
+            statusEl.textContent = "❌ فشل الرفع: " + error.message;
+            submitBtn.disabled = false;
+            showToast("❌ فشل رفع الصورة إلى Firebase Storage!");
+          });
         } else {
-          const mockId = "mock_off_" + Date.now();
-          localOffers.push({ id: mockId, ...offerData });
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            statusEl.textContent = "✅ تم التحميل محلياً!";
+            submitBtn.disabled = false;
+            proceedWithSave(event.target.result);
+          };
+          reader.readAsDataURL(file);
         }
-        localStorage.setItem("abaya_mock_offers", JSON.stringify(localOffers));
-        renderOffersTable(localOffers);
-        showToast("✅ تم حفظ العرض محلياً!");
-        closeOfferForm();
+      } else {
+        proceedWithSave(imageUrl);
       }
     }
 
