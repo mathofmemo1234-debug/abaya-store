@@ -1,7 +1,7 @@
 // إعدادات الاتصال بقاعدة بيانات Firebase المخصصة لمتجر العبايات
 // يرجى استبدال هذه الإعدادات ببيانات مشروع Firebase الجديد الخاص بك من لوحة تحكم Firebase Console
 const firebaseConfig = {
-  apiKey: "AIzaSyB_8kYwHjEF1oJn-zADngAMCqj03Zx8GtE",
+  apiKey: "AIzaSyB97BG6mc4kYM7fuauQAU9NFHT5ffE07mo",
   authDomain: "abaya-store-b8841.firebaseapp.com",
   databaseURL: "https://abaya-store-b8841-default-rtdb.firebaseio.com",
   projectId: "abaya-store-b8841",
