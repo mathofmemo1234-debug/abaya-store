@@ -531,7 +531,7 @@
           })
           .catch(error => {
             console.error(error);
-            err.textContent = "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة!";
+            err.textContent = `❌ خطأ في تسجيل الدخول: ${error.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة!"}`;
             err.style.display = "block";
             btn.textContent = "🔓 تسجيل الدخول";
             btn.disabled = false;
