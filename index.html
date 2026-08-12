@@ -632,12 +632,12 @@
 
     /* Auth Controls Styles */
     .btn-auth {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      color: var(--text-primary);
-      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border: 1px solid var(--primary-light);
+      color: #12100e !important;
+      padding: 0.5rem 1.2rem;
       border-radius: 50px;
-      font-weight: 700;
+      font-weight: 800;
       font-family: 'Cairo', sans-serif;
       font-size: 0.85rem;
       cursor: pointer;
@@ -646,12 +646,13 @@
       gap: 0.4rem;
       transition: all 0.3s;
       white-space: nowrap;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
     }
     .btn-auth:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      color: #12100e !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
     }
     .profile-btn {
       background: none;
@@ -787,7 +788,7 @@
       <!-- USER AUTH CONTROLS -->
       <div id="user-auth-section" style="display: flex; align-items: center; position: relative;">
         <button class="btn-auth" id="nav-login-btn" onclick="toggleAuthModal(true)">
-          <span>دخول 👤</span>
+          <span>تسجيل جديد / دخول 👤</span>
         </button>
         <div class="user-profile-menu" id="user-profile-menu" style="display: none; position: relative;">
           <button class="profile-btn" onclick="toggleProfileDropdown()">
@@ -1008,8 +1009,8 @@
           <input type="text" id="auth-reg-name" class="form-control" placeholder="الاسم الكامل" required style="width:100%;" />
         </div>
         <div class="form-group" style="margin-bottom:0.8rem; text-align:right;">
-          <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">رقم الجوال *</label>
-          <input type="text" id="auth-reg-phone" class="form-control" placeholder="05xxxxxxxx" required style="width:100%; direction:ltr; text-align:left;" />
+          <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">رقم الجوال (اختياري)</label>
+          <input type="text" id="auth-reg-phone" class="form-control" placeholder="05xxxxxxxx" style="width:100%; direction:ltr; text-align:left;" />
         </div>
         <div class="form-group" style="margin-bottom:0.8rem; text-align:right;">
           <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">البريد الإلكتروني *</label>
@@ -1039,8 +1040,8 @@
           <input type="text" id="profile-display-name" class="form-control" required style="width:100%;" />
         </div>
         <div class="form-group" style="margin-bottom:1.5rem; text-align:right;">
-          <label style="display:block; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.4rem;">رقم الجوال *</label>
-          <input type="text" id="profile-phone" class="form-control" placeholder="05xxxxxxxx" required style="width:100%; direction:ltr; text-align:left;" />
+          <label style="display:block; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.4rem;">رقم الجوال (اختياري)</label>
+          <input type="text" id="profile-phone" class="form-control" placeholder="05xxxxxxxx" style="width:100%; direction:ltr; text-align:left;" />
         </div>
         <button type="submit" class="btn-primary" style="width:100%; padding:0.75rem; border-radius:50px;">💾 حفظ التغييرات</button>
       </form>
