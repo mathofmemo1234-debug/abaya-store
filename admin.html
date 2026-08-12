@@ -538,13 +538,13 @@
           });
       } else {
         // Fallback local check
-        if (email === "admin@site.com" && pass === "1234") {
+        if (email === "mathofmemo1234@gmail.com" && pass === "admin123") {
           sessionStorage.setItem("abaya_admin_logged", "true");
           unlockDashboard();
           initData();
           showToast("🔓 تم تسجيل الدخول محلياً (وضع التجربة)!");
         } else {
-          err.textContent = "❌ بيانات الدخول التجريبية غير صحيحة! (استخدم: admin@site.com / 1234)";
+          err.textContent = "❌ بيانات الدخول التجريبية غير صحيحة! (استخدم: mathofmemo1234@gmail.com / admin123)";
           err.style.display = "block";
         }
       }
