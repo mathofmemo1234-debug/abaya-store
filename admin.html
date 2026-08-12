@@ -519,8 +519,14 @@
       if (isFirebaseConfigured) {
         auth.onAuthStateChanged(user => {
           if (user) {
-            unlockDashboard();
-            initData();
+            if (user.email === "admin@dar-alghaid.com") {
+              unlockDashboard();
+              initData();
+            } else {
+              auth.signOut();
+              lockDashboard();
+              showToast("❌ عفواً، هذا الحساب ليس له صلاحيات الإدارة!");
+            }
           } else {
             lockDashboard();
           }
@@ -546,6 +552,15 @@
       if (isFirebaseConfigured) {
         btn.textContent = "⏳ جاري الدخول...";
         btn.disabled = true;
+        
+        if (email !== "admin@dar-alghaid.com") {
+          err.textContent = "❌ خطأ: البريد الإلكتروني المدخل ليس حساب المدير المعتمد!";
+          err.style.display = "block";
+          btn.textContent = "🔓 تسجيل الدخول";
+          btn.disabled = false;
+          return;
+        }
+
         auth.signInWithEmailAndPassword(email, pass)
           .then(() => {
             err.style.display = "none";
@@ -559,13 +574,13 @@
           });
       } else {
         // Fallback local check
-        if (email === "mathofmemo1234@gmail.com" && pass === "admin123") {
+        if (email === "admin@dar-alghaid.com" && pass === "admin123") {
           sessionStorage.setItem("abaya_admin_logged", "true");
           unlockDashboard();
           initData();
           showToast("🔓 تم تسجيل الدخول محلياً (وضع التجربة)!");
         } else {
-          err.textContent = "❌ بيانات الدخول التجريبية غير صحيحة! (استخدم: mathofmemo1234@gmail.com / admin123)";
+          err.textContent = "❌ بيانات الدخول التجريبية غير صحيحة! (استخدم: admin@dar-alghaid.com / admin123)";
           err.style.display = "block";
         }
       }
