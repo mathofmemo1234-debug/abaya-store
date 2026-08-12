@@ -630,6 +630,99 @@
     .whatsapp-tooltip::before { content: ''; position: absolute; right: 100%; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-right-color: #25d366; }
     .whatsapp-float:hover .whatsapp-tooltip { opacity: 1; transform: translateX(0); }
 
+    /* Auth Controls Styles */
+    .btn-auth {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .btn-auth:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .profile-btn {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      transition: background 0.3s;
+      white-space: nowrap;
+    }
+    .profile-btn:hover {
+      background: var(--glass);
+    }
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      width: 220px;
+      box-shadow: var(--shadow);
+      z-index: 110;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      animation: fadeIn 0.25s ease;
+    }
+    .profile-dropdown.active {
+      display: flex;
+    }
+    .dropdown-header {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      word-break: break-all;
+      text-align: right;
+    }
+    .profile-dropdown a {
+      padding: 0.75rem 1.2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: right;
+      transition: background 0.2s, color 0.2s;
+    }
+    .profile-dropdown a:hover {
+      background: var(--bg-card2);
+      color: var(--primary-light);
+    }
+    .auth-tab {
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.4rem;
+    }
+    .auth-tab.active {
+      color: var(--primary-light) !important;
+      border-bottom-color: var(--primary-light);
+    }
+    .google-auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+    }
+
     /* Dynamic Page Toast */
     .page-toast {
       display: none; position: fixed; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
@@ -690,6 +783,26 @@
       <button class="theme-toggle" id="theme-toggle" aria-label="تبديل المظهر">
         <div class="theme-toggle-thumb" id="theme-thumb">🌙</div>
       </button>
+      
+      <!-- USER AUTH CONTROLS -->
+      <div id="user-auth-section" style="display: flex; align-items: center; position: relative;">
+        <button class="btn-auth" id="nav-login-btn" onclick="toggleAuthModal(true)">
+          <span>دخول 👤</span>
+        </button>
+        <div class="user-profile-menu" id="user-profile-menu" style="display: none; position: relative;">
+          <button class="profile-btn" onclick="toggleProfileDropdown()">
+            <img id="user-avatar" src="" alt="avatar" style="width:28px; height:28px; border-radius:50%; display:none; border:2px solid var(--primary-light);" />
+            <span id="user-display-name">أهلاً بكِ ✨</span>
+          </button>
+          <div class="profile-dropdown" id="profile-dropdown">
+            <div class="dropdown-header">
+              <span id="dropdown-user-email">email@example.com</span>
+            </div>
+            <a href="#profile" onclick="openProfileSettingsModal()">👤 إعدادات الحساب</a>
+            <a href="#" onclick="handleUserLogout(event)" style="color: var(--accent);">🚪 تسجيل الخروج</a>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -845,6 +958,91 @@
           </svg>
           تأكيد الطلب عبر واتساب
         </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CUSTOMER AUTH MODAL -->
+  <div class="modal" id="customer-auth-modal">
+    <div class="modal-content" style="max-width: 420px; grid-template-columns: 1fr; padding: 2rem 1.5rem; max-height: 95vh;">
+      <button class="modal-close" onclick="toggleAuthModal(false)">✕</button>
+      
+      <div class="auth-tabs" style="display:flex; justify-content:center; gap:2rem; margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
+        <span class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')" style="font-size:1.1rem; font-weight:700; cursor:pointer; transition:all 0.3s;">تسجيل الدخول</span>
+        <span class="auth-tab" id="tab-register" onclick="switchAuthTab('register')" style="font-size:1.1rem; font-weight:700; cursor:pointer; transition:all 0.3s;">إنشاء حساب</span>
+      </div>
+
+      <!-- Google Login Button -->
+      <button class="google-auth-btn" onclick="handleGoogleSignIn()" style="width:100%; display:flex; align-items:center; justify-content:center; gap:0.8rem; background:white; color:#121212; border:none; padding:0.75rem; border-radius:50px; font-weight:700; font-family:'Cairo'; cursor:pointer; margin-bottom:1.2rem; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:transform 0.2s;">
+        <svg viewBox="0 0 24 24" width="18" height="18" style="display:block;">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        الدخول بواسطة حساب Google
+      </button>
+
+      <div class="divider" style="text-align:center; position:relative; margin-bottom:1.2rem; color:var(--text-muted); font-size:0.8rem;">
+        <span style="background:var(--bg-card); padding:0 0.8rem; position:relative; z-index:2;">أو عبر البريد الإلكتروني</span>
+        <div style="position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border); z-index:1;"></div>
+      </div>
+
+      <!-- Login Form -->
+      <form id="customer-login-form" onsubmit="handleCustomerEmailLogin(event)">
+        <div class="form-group" style="margin-bottom:1rem; text-align:right;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">البريد الإلكتروني *</label>
+          <input type="email" id="auth-login-email" class="form-control" placeholder="example@mail.com" required style="width:100%; direction:ltr; text-align:left;" />
+        </div>
+        <div class="form-group" style="margin-bottom:1.2rem; text-align:right;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">كلمة المرور *</label>
+          <input type="password" id="auth-login-password" class="form-control" placeholder="••••••••" required style="width:100%; direction:ltr; text-align:left;" />
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; padding:0.75rem; border-radius:50px;">🔒 تسجيل الدخول</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="customer-register-form" onsubmit="handleCustomerEmailRegister(event)" style="display:none;">
+        <div class="form-group" style="margin-bottom:0.8rem; text-align:right;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">الاسم الكامل *</label>
+          <input type="text" id="auth-reg-name" class="form-control" placeholder="الاسم الكامل" required style="width:100%;" />
+        </div>
+        <div class="form-group" style="margin-bottom:0.8rem; text-align:right;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">رقم الجوال *</label>
+          <input type="text" id="auth-reg-phone" class="form-control" placeholder="05xxxxxxxx" required style="width:100%; direction:ltr; text-align:left;" />
+        </div>
+        <div class="form-group" style="margin-bottom:0.8rem; text-align:right;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">البريد الإلكتروني *</label>
+          <input type="email" id="auth-reg-email" class="form-control" placeholder="example@mail.com" required style="width:100%; direction:ltr; text-align:left;" />
+        </div>
+        <div class="form-group" style="margin-bottom:1.2rem; text-align:right;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.3rem;">كلمة المرور *</label>
+          <input type="password" id="auth-reg-password" class="form-control" placeholder="6 أحرف أو أكثر" required style="width:100%; direction:ltr; text-align:left;" />
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; padding:0.75rem; border-radius:50px;">👤 إنشاء حساب جديد</button>
+      </form>
+
+      <p id="auth-error-msg" style="color:var(--accent); font-weight:700; font-size:0.8rem; margin-top:1rem; text-align:center; display:none;"></p>
+    </div>
+  </div>
+
+  <!-- CUSTOMER PROFILE MODAL -->
+  <div class="modal" id="customer-profile-modal">
+    <div class="modal-content" style="max-width: 420px; grid-template-columns: 1fr; padding: 2rem 1.5rem;">
+      <button class="modal-close" onclick="toggleProfileModal(false)">✕</button>
+      
+      <h2 style="text-align:center; margin-bottom:1.5rem; font-weight:800;">👤 إعدادات حسابك</h2>
+      
+      <form id="customer-profile-form" onsubmit="saveCustomerProfile(event)">
+        <div class="form-group" style="margin-bottom:1rem; text-align:right;">
+          <label style="display:block; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.4rem;">الاسم الكامل *</label>
+          <input type="text" id="profile-display-name" class="form-control" required style="width:100%;" />
+        </div>
+        <div class="form-group" style="margin-bottom:1.5rem; text-align:right;">
+          <label style="display:block; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.4rem;">رقم الجوال *</label>
+          <input type="text" id="profile-phone" class="form-control" placeholder="05xxxxxxxx" required style="width:100%; direction:ltr; text-align:left;" />
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; padding:0.75rem; border-radius:50px;">💾 حفظ التغييرات</button>
       </form>
     </div>
   </div>
@@ -1045,6 +1243,7 @@
       initParticles();
       initAudio();
       initZoomLens();
+      hookAuthObserver();
       
       // Scroll Reveal Trigger
       const scrollObserver = new IntersectionObserver((entries) => {
@@ -1474,14 +1673,19 @@
       const text = document.getElementById('review-text').value.trim();
       if (!name || !text) return;
       
+      const reviewData = {
+        name: name,
+        stars: selectedStars,
+        text: text,
+        approved: false,
+        createdAt: Date.now()
+      };
+      if (typeof currentUser !== 'undefined' && currentUser) {
+        reviewData.userUid = currentUser.uid;
+      }
+      
       if (isFirebaseConfigured) {
-        fbDb.ref('abaya_reviews').push({
-          name: name,
-          stars: selectedStars,
-          text: text,
-          approved: false,
-          createdAt: Date.now()
-        }).then(() => {
+        fbDb.ref('abaya_reviews').push(reviewData).then(() => {
           showReviewSuccessUI();
         }).catch(err => {
           showToast("❌ حدث خطأ أثناء إرسال التقييم");
@@ -1704,6 +1908,237 @@
       imgWrap.addEventListener('touchstart', showLens, { passive: false });
       imgWrap.addEventListener('touchmove', moveLens, { passive: false });
       imgWrap.addEventListener('touchend', hideLens);
+    }
+
+    // ===== CUSTOMER AUTHENTICATION LOGIC =====
+    function toggleAuthModal(show) {
+      const modal = document.getElementById('customer-auth-modal');
+      if (show) {
+        modal.classList.add('active');
+        document.getElementById('auth-error-msg').style.display = 'none';
+        switchAuthTab('login');
+      } else {
+        modal.classList.remove('active');
+      }
+    }
+
+    function switchAuthTab(tab) {
+      const tabLogin = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const formLogin = document.getElementById('customer-login-form');
+      const formRegister = document.getElementById('customer-register-form');
+      const errorMsg = document.getElementById('auth-error-msg');
+      
+      errorMsg.style.display = 'none';
+      
+      if (tab === 'login') {
+        tabLogin.classList.add('active');
+        tabRegister.classList.remove('active');
+        formLogin.style.display = 'block';
+        formRegister.style.display = 'none';
+      } else {
+        tabLogin.classList.remove('active');
+        tabRegister.classList.add('active');
+        formLogin.style.display = 'none';
+        formRegister.style.display = 'block';
+      }
+    }
+
+    function toggleProfileDropdown() {
+      const dropdown = document.getElementById('profile-dropdown');
+      dropdown.classList.toggle('active');
+    }
+
+    // Close profile dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const profileMenu = document.getElementById('user-profile-menu');
+      const dropdown = document.getElementById('profile-dropdown');
+      if (profileMenu && !profileMenu.contains(e.target) && dropdown.classList.contains('active')) {
+        dropdown.classList.remove('active');
+      }
+    });
+
+    function toggleProfileModal(show) {
+      const modal = document.getElementById('customer-profile-modal');
+      if (show) {
+        modal.classList.add('active');
+        if (currentUser) {
+          document.getElementById('profile-display-name').value = currentUserDetails ? currentUserDetails.name : currentUser.displayName || "";
+          document.getElementById('profile-phone').value = currentUserDetails ? currentUserDetails.phone : "";
+        }
+      } else {
+        modal.classList.remove('active');
+      }
+    }
+
+    function openProfileSettingsModal() {
+      document.getElementById('profile-dropdown').classList.remove('active');
+      toggleProfileModal(true);
+    }
+
+    // --- Google Auth Sign In ---
+    function handleGoogleSignIn() {
+      const errorEl = document.getElementById('auth-error-msg');
+      errorEl.style.display = 'none';
+      
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          toggleAuthModal(false);
+          showToast(`👋 أهلاً بكِ، تم تسجيل الدخول بنجاح!`);
+        })
+        .catch((error) => {
+          console.error(error);
+          errorEl.textContent = `❌ فشل تسجيل الدخول بـ Google: ${error.message}`;
+          errorEl.style.display = 'block';
+        });
+    }
+
+    // --- Email/Password Login ---
+    function handleCustomerEmailLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-login-email').value.trim();
+      const pass = document.getElementById('auth-login-password').value;
+      const errorEl = document.getElementById('auth-error-msg');
+      
+      errorEl.style.display = 'none';
+      
+      firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then((result) => {
+          toggleAuthModal(false);
+          showToast(`👋 أهلاً بكِ، تم تسجيل الدخول بنجاح!`);
+          e.target.reset();
+        })
+        .catch((error) => {
+          console.error(error);
+          errorEl.textContent = `❌ خطأ: البريد الإلكتروني أو كلمة المرور غير صحيحة!`;
+          errorEl.style.display = 'block';
+        });
+    }
+
+    // --- Email/Password Registration ---
+    function handleCustomerEmailRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('auth-reg-name').value.trim();
+      const phone = document.getElementById('auth-reg-phone').value.trim();
+      const email = document.getElementById('auth-reg-email').value.trim();
+      const pass = document.getElementById('auth-reg-password').value;
+      const errorEl = document.getElementById('auth-error-msg');
+      
+      errorEl.style.display = 'none';
+      
+      firebase.auth().createUserWithEmailAndPassword(email, pass)
+        .then((result) => {
+          const user = result.user;
+          return user.updateProfile({ displayName: name }).then(() => {
+            return fbDb.ref('abaya_customers/' + user.uid).set({
+              name: name,
+              phone: phone,
+              email: email
+            });
+          });
+        })
+        .then(() => {
+          toggleAuthModal(false);
+          showToast(`✨ تم إنشاء حسابكِ بنجاح! أهلاً بكِ`);
+          e.target.reset();
+        })
+        .catch((error) => {
+          console.error(error);
+          errorEl.textContent = `❌ فشل التسجيل: ${error.message}`;
+          errorEl.style.display = 'block';
+        });
+    }
+
+    // --- Save Profile Changes ---
+    function saveCustomerProfile(e) {
+      e.preventDefault();
+      const name = document.getElementById('profile-display-name').value.trim();
+      const phone = document.getElementById('profile-phone').value.trim();
+      
+      if (!currentUser) return;
+      
+      currentUser.updateProfile({ displayName: name })
+        .then(() => {
+          return fbDb.ref('abaya_customers/' + currentUser.uid).update({
+            name: name,
+            phone: phone
+          });
+        })
+        .then(() => {
+          toggleProfileModal(false);
+          showToast(`⚙️ تم تحديث إعدادات حسابكِ بنجاح!`);
+        })
+        .catch((error) => {
+          console.error(error);
+          showToast(`❌ فشل حفظ التغييرات: ${error.message}`);
+        });
+    }
+
+    // --- Logout ---
+    function handleUserLogout(e) {
+      e.preventDefault();
+      document.getElementById('profile-dropdown').classList.remove('active');
+      firebase.auth().signOut().then(() => {
+        showToast("🚪 تم تسجيل الخروج بنجاح.");
+      });
+    }
+
+    // --- Auth Observer Hook ---
+    function hookAuthObserver() {
+      if (!isFirebaseConfigured) return;
+      
+      firebase.auth().onAuthStateChanged((user) => {
+        const loginBtn = document.getElementById('nav-login-btn');
+        const profileMenu = document.getElementById('user-profile-menu');
+        const displayNameEl = document.getElementById('user-display-name');
+        const avatarImg = document.getElementById('user-avatar');
+        const dropdownEmail = document.getElementById('dropdown-user-email');
+        
+        if (user) {
+          currentUser = user;
+          if (loginBtn) loginBtn.style.display = 'none';
+          if (profileMenu) profileMenu.style.display = 'block';
+          if (dropdownEmail) dropdownEmail.textContent = user.email;
+          
+          document.getElementById('c-name').value = user.displayName || "";
+          
+          fbDb.ref('abaya_customers/' + user.uid).on('value', snap => {
+            const val = snap.val();
+            if (val) {
+              currentUserDetails = val;
+              if (displayNameEl) displayNameEl.textContent = `أهلاً، ${val.name || 'بكِ'} ✨`;
+              if (val.phone) document.getElementById('c-phone').value = val.phone;
+              document.getElementById('c-name').value = val.name || user.displayName || "";
+            } else {
+              const name = user.displayName || "عميلة دار الغيد";
+              fbDb.ref('abaya_customers/' + user.uid).set({
+                name: name,
+                email: user.email,
+                phone: ""
+              });
+              if (displayNameEl) displayNameEl.textContent = `أهلاً، ${name} ✨`;
+            }
+          });
+
+          if (user.photoURL) {
+            avatarImg.src = user.photoURL;
+            avatarImg.style.display = 'block';
+          } else {
+            avatarImg.style.display = 'none';
+          }
+
+          const revNameInput = document.getElementById('review-name');
+          if (revNameInput && !revNameInput.value) {
+            revNameInput.value = user.displayName || "";
+          }
+        } else {
+          currentUser = null;
+          currentUserDetails = null;
+          if (loginBtn) loginBtn.style.display = 'flex';
+          if (profileMenu) profileMenu.style.display = 'none';
+        }
+      });
     }
   </script>
 </body>

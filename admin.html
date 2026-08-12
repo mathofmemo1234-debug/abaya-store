@@ -741,7 +741,10 @@
       } else {
         pendingTbody.innerHTML = pending.map(r => `
           <tr>
-            <td style="font-weight:700;">${r.name}</td>
+            <td style="font-weight:700;">
+              ${r.name}
+              ${r.userUid ? `<span style="background:var(--accent); color:white; font-size:0.7rem; padding:0.15rem 0.4rem; border-radius:50px; margin-right:5px; font-weight:normal; display:inline-block;">👤 مسجل</span>` : ''}
+            </td>
             <td>${r.text}</td>
             <td style="color:var(--gold);">${'★'.repeat(r.stars)}</td>
             <td>${r.createdAt ? new Date(r.createdAt).toLocaleDateString('ar-SA') : '-'}</td>
@@ -761,7 +764,10 @@
       } else {
         approvedTbody.innerHTML = approved.map(r => `
           <tr>
-            <td style="font-weight:700;">${r.name}</td>
+            <td style="font-weight:700;">
+              ${r.name}
+              ${r.userUid ? `<span style="background:var(--accent); color:white; font-size:0.7rem; padding:0.15rem 0.4rem; border-radius:50px; margin-right:5px; font-weight:normal; display:inline-block;">👤 مسجل</span>` : ''}
+            </td>
             <td>${r.text}</td>
             <td style="color:var(--gold);">${'★'.repeat(r.stars)}</td>
             <td>
