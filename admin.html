@@ -1,973 +1,226 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة تحكم دار الغيد | إدارة متجر العبايات</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --primary: hsl(36, 60%, 48%);
-      --primary-light: hsl(42, 70%, 65%);
-      --primary-dark: hsl(24, 45%, 28%);
-      --accent: hsl(345, 35%, 55%);
-      --bg-dark: hsl(20, 15%, 8%);
-      --bg-card: hsl(20, 10%, 12%);
-      --bg-card2: hsl(20, 8%, 15%);
-      --text-primary: hsl(36, 30%, 96%);
-      --text-secondary: hsl(36, 12%, 75%);
-      --text-muted: hsl(36, 8%, 52%);
-      --border: hsl(20, 10%, 18%);
-      --glass: rgba(255, 255, 255, 0.04);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --shadow: 0 20px 50px rgba(0,0,0,0.5);
-      --radius: 20px;
-      --radius-sm: 12px;
-      --green: #10b981;
-      --red: #f43f5e;
-      --yellow: #f59e0b;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
-
-    /* Login Screen */
-    #login-screen {
-      position: fixed; inset: 0; z-index: 1000;
-      background: var(--bg-dark);
-      display: flex; align-items: center; justify-content: center; padding: 2rem;
-    }
-    .login-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 3rem; max-width: 420px; width: 100%;
-      text-align: center; box-shadow: var(--shadow);
-    }
-    .login-icon {
-      font-size: 3rem; margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .login-card h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; }
-    .login-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم دار الغيد</title>
+    <!-- خط Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     
-    .form-group { display: flex; flex-direction: column; gap: 0.5rem; text-align: right; margin-bottom: 1.2rem; }
-    .form-group label { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); }
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-card: #1e1e1e;
+            --border: #333333;
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --accent-gold: #c59b27;
+            --accent-gold-hover: #a37f1e;
+            --red-error: #ef4444;
+        }
 
-    .form-control {
-      background: var(--bg-card2); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 0.85rem 1.2rem;
-      color: var(--text-primary); font-family: 'Cairo', sans-serif;
-      font-size: 0.95rem; width: 100%; transition: all 0.3s;
-    }
-    .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212,175,55,0.15); }
-    
-    .btn-submit {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white; border: none; width: 100%; padding: 0.9rem; border-radius: 50px;
-      font-weight: 800; font-family: 'Cairo', sans-serif; font-size: 1.05rem;
-      cursor: pointer; margin-top: 1.5rem; transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212,175,55,0.3); }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    /* Admin Layout */
-    #admin-layout { display: none; }
-    
-    /* Header */
-    header {
-      background: var(--bg-card); border-bottom: 1px solid var(--border);
-      padding: 1.2rem 3rem; display: flex; align-items: center; justify-content: space-between;
-    }
-    .brand { display: flex; align-items: center; gap: 0.8rem; }
-    .brand-icon { font-size: 1.8rem; }
-    .brand-title { font-size: 1.4rem; font-weight: 800; }
-    .brand-title span { color: var(--accent); }
-    
-    .status-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);
-      color: var(--green); padding: 0.4rem 1rem; border-radius: 50px;
-      font-size: 0.8rem; font-weight: 700;
-    }
-    .status-badge.offline {
-      background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2);
-      color: var(--yellow);
-    }
-    .btn-logout {
-      background: var(--glass); border: 1px solid var(--glass-border);
-      color: var(--text-primary); padding: 0.5rem 1.2rem; border-radius: 50px;
-      font-weight: 700; cursor: pointer; transition: all 0.3s; font-family: 'Cairo';
-    }
-    .btn-logout:hover { background: rgba(244,63,94,0.12); border-color: rgba(244,63,94,0.25); color: var(--red); }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    /* Main Container */
-    .admin-container { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 75px); }
-    
-    /* Sidebar */
-    aside {
-      background: var(--bg-card); border-left: 1px solid var(--border);
-      padding: 2rem 1rem; display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .nav-tab {
-      display: flex; align-items: center; gap: 0.8rem;
-      padding: 0.9rem 1.2rem; border-radius: 12px;
-      color: var(--text-secondary); font-weight: 700; cursor: pointer;
-      transition: all 0.3s;
-    }
-    .nav-tab:hover { background: var(--bg-card2); color: var(--text-primary); }
-    .nav-tab.active {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white; box-shadow: 0 4px 15px rgba(212,175,55,0.2);
-    }
+        /* شاشة تسجيل الدخول */
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
 
-    /* Content Area */
-    main { padding: 3rem; background: var(--bg-dark); }
-    .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; }
-    
-    /* Dashboard Tabs */
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
 
-    /* Cards */
-    .panel-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 2rem; margin-bottom: 2rem;
-      box-shadow: var(--shadow);
-    }
-    .panel-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem; }
-    
-    /* Form Grid */
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-    .form-group.full { grid-column: 1 / -1; }
-    .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
+        .login-card h2 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.75rem;
+        }
 
-    .btn {
-      padding: 0.75rem 2rem; border-radius: 50px; font-weight: 700;
-      font-family: 'Cairo', sans-serif; cursor: pointer; border: none; transition: all 0.3s;
-    }
-    .btn-main { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
-    .btn-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.3); }
-    .btn-danger { background: var(--red); color: white; }
-    .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,63,94,0.3); }
-    .btn-cancel { background: var(--border); color: var(--text-primary); }
+        .login-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
 
-    /* Tables */
-    .table-container { overflow-x: auto; margin-top: 1.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border); }
-    table { width: 100%; border-collapse: collapse; text-align: right; background: var(--bg-card); }
-    th, td { padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
-    th { background: var(--bg-card2); font-weight: 800; font-size: 0.9rem; color: var(--text-secondary); }
-    td { font-size: 0.92rem; vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    
-    .prod-thumb { width: 44px; height: 52px; border-radius: 6px; overflow: hidden; background: var(--bg-card2); }
-    .badge-item { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
-    .badge-cat { background: rgba(144, 93, 93, 0.15); color: var(--accent); }
-    .badge-tag { background: rgba(212, 175, 55, 0.12); color: var(--primary-light); }
+        .form-group {
+            margin-bottom: 1.25rem;
+            text-align: right;
+        }
 
-    .actions-cell { display: flex; gap: 0.5rem; }
-    .btn-action {
-      padding: 0.35rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 700;
-      cursor: pointer; border: none; font-family: 'Cairo'; transition: background 0.2s;
-    }
-    .btn-edit { background: rgba(212, 175, 55, 0.12); color: var(--primary-light); }
-    .btn-edit:hover { background: rgba(212, 175, 55, 0.25); }
-    .btn-del { background: rgba(244, 63, 94, 0.12); color: var(--red); }
-    .btn-del:hover { background: rgba(244, 63, 94, 0.25); }
-    .btn-approve { background: rgba(16, 185, 129, 0.12); color: var(--green); }
-    .btn-approve:hover { background: rgba(16, 185, 129, 0.25); }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-secondary);
+        }
 
-    /* Page Toast */
-    .page-toast {
-      display: none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      padding: 0.8rem 2rem; border-radius: 50px; font-weight: 700; font-family: 'Cairo', sans-serif; z-index: 1050;
-      background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 10px 40px rgba(16,185,129,0.3);
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp { from { opacity:0; transform:translate(-50%,20px); } to { opacity:1; transform:translate(-50%,0); } }
-  </style>
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #2a2a2a;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.85rem;
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-gold-hover);
+        }
+
+        #error-msg {
+            color: var(--red-error);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* لوحة التحكم (تظهر بعد تسجيل الدخول) */
+        #dashboard-screen {
+            display: none;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- LOGIN SCREEN -->
-  <div id="login-screen">
-    <div class="login-card">
-      <div class="login-icon">👑</div>
-      <h1>لوحة تحكم دار الغيد</h1>
-      <p>يرجى تسجيل الدخول للتحكم بعناصر المتجر</p>
-      <form onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label for="login-email">البريد الإلكتروني للإدارة *</label>
-          <input type="email" id="login-email" class="form-control" placeholder="admin@site.com" required style="direction: ltr; text-align: left;" />
+    <!-- شاشة تسجيل الدخول -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h2>لوحة تحكم دار الغيد</h2>
+            <p>يرجى تسجيل الدخول للتحكم بعناصر المتجر</p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني للإدارة *</label>
+                    <input type="email" id="email" required placeholder="mathofmemo1234@gmail.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">كلمة المرور *</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="btn-submit">🔒 تسجيل الدخول</button>
+            </form>
+
+            <div id="error-msg"></div>
         </div>
-        <div class="form-group">
-          <label for="login-password">كلمة المرور *</label>
-          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required style="direction: ltr; text-align: left;" />
-        </div>
-        <button type="submit" class="btn-submit">🔓 تسجيل الدخول</button>
-      </form>
-      <p id="login-error" style="color:var(--red); font-weight:700; font-size:0.9rem; margin-top:1.2rem; display:none;">⚠️ البريد أو كلمة المرور غير صحيحة!</p>
     </div>
-  </div>
 
-  <!-- ADMIN LAYOUT -->
-  <div id="admin-layout">
-    <!-- HEADER -->
-    <header>
-      <div class="brand">
-        <div class="brand-icon">✨</div>
-        <div class="brand-title">إدارة دار <span>الغيد</span></div>
-      </div>
-      <div>
-        <span class="status-badge" id="firebase-status">🔌 متصل بقاعدة Firebase</span>
-        <button class="btn-logout" onclick="handleLogout()" style="margin-right: 1.5rem;">🚪 خروج</button>
-      </div>
-    </header>
-
-    <div class="admin-container">
-      <!-- SIDEBAR -->
-      <aside>
-        <div class="nav-tab active" onclick="switchTab('products-tab', this)">📦 المنتجات</div>
-        <div class="nav-tab" onclick="switchTab('offers-tab', this)">🔥 بنرات العروض</div>
-        <div class="nav-tab" onclick="switchTab('reviews-tab', this)">⭐ التقييمات المعلقة <span id="pending-reviews-count" style="background:var(--accent); color:white; font-size:0.75rem; padding:0.1rem 0.4rem; border-radius:10px; display:none;">0</span></div>
-        <div class="nav-tab" onclick="switchTab('settings-tab', this)">⚙️ الإعدادات العامة</div>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main>
-        <!-- PRODUCTS TAB -->
-        <div class="tab-content active" id="products-tab">
-          <div class="section-title">
-            <span>إدارة العبايات (المنتجات)</span>
-            <button class="btn btn-main" onclick="openProductForm()" id="btn-add-product-toggle">+ إضافة عباية جديدة</button>
-          </div>
-
-          <!-- Product Form Card -->
-          <div class="panel-card" id="product-form-card" style="display: none;">
-            <h3 id="product-form-title">إضافة عباية جديدة</h3>
-            <form id="product-form" onsubmit="saveProduct(event)">
-              <input type="hidden" id="p-id" />
-              <div class="form-grid">
-                <div class="form-group">
-                  <label for="p-name">اسم العباية *</label>
-                  <input type="text" id="p-name" class="form-control" placeholder="مثال: عباية الكلاسيك الفاخرة" required />
-                </div>
-                <div class="form-group">
-                  <label for="p-type">التصنيف *</label>
-                  <select id="p-type" class="form-control">
-                    <option value="black">عبايات سوداء</option>
-                    <option value="colored">عبايات ملونة</option>
-                    <option value="travel">عبايات سفر</option>
-                    <option value="occasions">مناسبات فاخرة</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="p-price">السعر (ر.س) *</label>
-                  <input type="number" id="p-price" class="form-control" placeholder="مثال: 320" required />
-                </div>
-                <div class="form-group">
-                  <label for="p-badge">شارة مميزة (اختياري)</label>
-                  <input type="text" id="p-badge" class="form-control" placeholder="مثال: الأكثر مبيعاً, كولكشن جديد" />
-                </div>
-                <div class="form-group">
-                  <label for="p-features">الميزات (تفصل بفواصل) *</label>
-                  <input type="text" id="p-features" class="form-control" placeholder="مثال: حرير كوري, سواد ملكي, كلوش" required />
-                </div>
-                <div class="form-group">
-                  <label for="p-image">رابط صورة العباية *</label>
-                  <input type="url" id="p-image" class="form-control" placeholder="https://example.com/abaya.jpg" required />
-                </div>
-                <div class="form-group full">
-                  <label for="p-desc">الوصف التفصيلي *</label>
-                  <textarea id="p-desc" class="form-control" rows="3" placeholder="اكتب تفاصيل القماش والقصة وتوصيات المقاسات..." required style="resize:vertical;"></textarea>
-                </div>
-              </div>
-              <div class="form-actions">
-                <button type="button" class="btn btn-cancel" onclick="closeProductForm()">إلغاء</button>
-                <button type="submit" class="btn btn-main">حفظ البيانات</button>
-              </div>
-            </form>
-          </div>
-
-          <!-- Product Table Card -->
-          <div class="panel-card">
-            <h3>قائمة العبايات المعروضة بالمتجر</h3>
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>صورة</th>
-                    <th>الاسم</th>
-                    <th>التصنيف</th>
-                    <th>السعر</th>
-                    <th>الميزات</th>
-                    <th>الشارة</th>
-                    <th>العمليات</th>
-                  </tr>
-                </thead>
-                <tbody id="products-table-body">
-                  <!-- Dynamically loaded -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- OFFERS TAB -->
-        <div class="tab-content" id="offers-tab">
-          <div class="section-title">
-            <span>إدارة بنرات العروض</span>
-            <button class="btn btn-main" onclick="openOfferForm()">+ إضافة عرض جديد</button>
-          </div>
-
-          <!-- Offer Form Card -->
-          <div class="panel-card" id="offer-form-card" style="display: none;">
-            <h3 id="offer-form-title">إضافة عرض ترويجي جديد</h3>
-            <form id="offer-form" onsubmit="saveOffer(event)">
-              <input type="hidden" id="o-id" />
-              <div class="form-grid">
-                <div class="form-group">
-                  <label for="o-title">عنوان العرض *</label>
-                  <input type="text" id="o-title" class="form-control" placeholder="مثال: خصم كولكشن الصيف" required />
-                </div>
-                <div class="form-group">
-                  <label for="o-price">قيمة العرض (سعر أو نص) *</label>
-                  <input type="text" id="o-price" class="form-control" placeholder="مثال: خصم 20% أو 300 ر.س" required />
-                </div>
-                <div class="form-group">
-                  <label for="o-image">رابط صورة العرض (اختياري)</label>
-                  <input type="url" id="o-image" class="form-control" placeholder="https://example.com/banner.jpg" />
-                </div>
-                <div class="form-group">
-                  <label for="o-old-price">السعر الأصلي (اختياري، للشطب بالخط)</label>
-                  <input type="number" id="o-old-price" class="form-control" placeholder="مثال: 450" />
-                </div>
-                <div class="form-group full">
-                  <label for="o-desc">وصف العرض *</label>
-                  <textarea id="o-desc" class="form-control" rows="2" placeholder="اكتب تفاصيل الخصم والشحن المجاني وغيرها..." required style="resize:vertical;"></textarea>
-                </div>
-              </div>
-              <div class="form-actions">
-                <button type="button" class="btn btn-cancel" onclick="closeOfferForm()">إلغاء</button>
-                <button type="submit" class="btn btn-main">حفظ العرض</button>
-              </div>
-            </form>
-          </div>
-
-          <!-- Offers Table Card -->
-          <div class="panel-card">
-            <h3>بنرات العروض النشطة والمؤرشفة</h3>
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>الصورة</th>
-                    <th>عنوان العرض</th>
-                    <th>وصف العرض</th>
-                    <th>العرض</th>
-                    <th>سعر الشطب</th>
-                    <th>الحالة</th>
-                    <th>العمليات</th>
-                  </tr>
-                </thead>
-                <tbody id="offers-table-body">
-                  <!-- Dynamically loaded -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- REVIEWS TAB -->
-        <div class="tab-content" id="reviews-tab">
-          <div class="section-title">إدارة تقييمات العملاء</div>
-
-          <!-- Pending Reviews Card -->
-          <div class="panel-card">
-            <h3>التقييمات الجديدة بانتظار الموافقة</h3>
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>اسم العميل</th>
-                    <th>نص التقييم</th>
-                    <th>النجوم</th>
-                    <th>التاريخ</th>
-                    <th>العمليات</th>
-                  </tr>
-                </thead>
-                <tbody id="pending-reviews-table">
-                  <!-- Loaded dynamically -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Approved Reviews Card -->
-          <div class="panel-card">
-            <h3>التقييمات المعتمدة الظاهرة في المتجر</h3>
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>اسم العميل</th>
-                    <th>نص التقييم</th>
-                    <th>النجوم</th>
-                    <th>العمليات</th>
-                  </tr>
-                </thead>
-                <tbody id="approved-reviews-table">
-                  <!-- Loaded dynamically -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- SETTINGS TAB -->
-        <div class="tab-content" id="settings-tab">
-          <div class="section-title">إعدادات المتجر العامة</div>
-
-          <div class="panel-card" style="max-width: 600px; margin: 0 auto;">
-            <h3>تعديل إعدادات المتجر</h3>
-            <form id="settings-form" onsubmit="saveSettings(event)">
-              <div class="form-grid" style="grid-template-columns: 1fr;">
-                <div class="form-group">
-                  <label for="set-whatsapp">رقم جوال استقبال طلبات الواتساب *</label>
-                  <input type="text" id="set-whatsapp" class="form-control" placeholder="966568192263" required />
-                  <small style="color:var(--text-muted);">اكتب الرقم كاملاً بدون علامة + ومبتدئاً بمفتاح الدولة (مثال: 966568192263)</small>
-                </div>
-              </div>
-              <div class="form-actions" style="margin-top: 2rem;">
-                <button type="submit" class="btn btn-main" style="width: 100%;">حفظ إعدادات المتجر</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </main>
+    <!-- لوحة التحكم الرئيسية -->
+    <div id="dashboard-screen">
+        <h2>مرحباً بك في لوحة التحكم</h2>
+        <p>تم تسجيل الدخول بنجاح!</p>
+        <button id="logout-btn" style="padding: 0.5rem 1rem; margin-top: 1rem; background: #ef4444; color: #fff; border: none; border-radius: 6px; cursor: pointer;">تسجيل الخروج</button>
     </div>
-  </div>
 
-  <div class="page-toast" id="page-toast"></div>
+    <!-- 1. استدعاء مكتبات Firebase SDK المطلوبة -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
-  <!-- Firebase compat SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-  <!-- Custom Firebase Config -->
-  <script src="firebase-config.js"></script>
+    <!-- 2. استدعاء ملف التهيئة firebase-config.js (يحتوي على الـ apiKey الصحيح) -->
+    <script src="firebase-config.js"></script>
 
-  <script>
-    // ===== SYSTEM VARIABLES & FALLBACK CRUD DATA =====
-    let activeWhatsapp = "966568192263";
-    
-    let localProducts = [];
-    let localOffers = [];
-    let localReviews = [];
+    <!-- 3. كود الجافاسكربت الخاص بالصفحة لتسجيل الدخول -->
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const errorMsg = document.getElementById('error-msg');
+        const loginScreen = document.getElementById('login-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const logoutBtn = document.getElementById('logout-btn');
 
-    // Fallback Mock Data for demo mode
-    const fallbackProducts = [
-      { id: "fb_prod_1", name: "عباية الكلاسيك الفاخرة", type: "black", price: 320, badge: "⚡ الأكثر طلباً", features: "حرير ملكي, سواد داكن, كلوش كامل", description: "عباية سوداء كلاسيكية بقصة كلوش واسعة، منسوجة من قماش الحرير الملكي الفاخر الذي لا يتجعد وسهل العناية.", imageUrl: "classic_black_abaya.jpg", createdAt: 1786245225000 },
-      { id: "fb_prod_2", name: "عباية الدانتيل الفرنسي الأنيقة", type: "black", price: 385, badge: "👑 كولكشن جديد", features: "قماش ندى, دانتيل فرنسي, أكمام مربعة", description: "تصميم أنيق جداً يجمع بين قماش الندى الكوري الناعم وتطريز الدانتيل الفرنسي الراقي على الأكمام وأسفل العباية.", imageUrl: "lace_abaya.jpg", createdAt: 1786245224000 }
-    ];
-
-    const fallbackOffers = [
-      { id: "o1", title: "خصم كولكشن الصيف الحصري", description: "احصلي على خصم 15% عند طلب أي عبايتين من الكتالوج مع شحن مجاني لكافة مدن المملكة.", price: "عرض مميز", active: true, createdAt: 1786245225000 }
-    ];
-
-    const fallbackReviews = [
-      { id: "rev_1", name: "سارة العتيبي", text: "العباية تجنن وقماشها يجنن سواد فاحم وخياطة نظيفة ومرتبة، والتفصيل بالضبط نفس المقاس اللي طلبته، شكراً دار الغيد ♥️.", stars: 5, approved: true, createdAt: 1786245225000 },
-      { id: "rev_2", name: "أمل الحربي", text: "العباية تهبل وخدمة التوصيل سريعة، بس ودي بمقاسات أطول المرة الجاية.", stars: 4, approved: false, createdAt: 1786245224000 }
-    ];
-
-    // Check Firebase
-    const isFirebaseConfigured = typeof fbDb !== 'undefined' && firebaseConfig.apiKey !== 'YOUR_API_KEY_HERE';
-    let auth = null;
-    if (isFirebaseConfigured) {
-      auth = firebase.auth();
-    }
-
-    // Check Auth state changes or local session login
-    window.addEventListener("DOMContentLoaded", () => {
-      if (isFirebaseConfigured) {
-        auth.onAuthStateChanged(user => {
-          if (user) {
-            unlockDashboard();
-            initData();
-          } else {
-            lockDashboard();
-          }
-        });
-      } else {
-        // Fallback check
-        if (sessionStorage.getItem("abaya_admin_logged") === "true") {
-          unlockDashboard();
-          initData();
-        } else {
-          lockDashboard();
-        }
-      }
-    });
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById("login-email").value.trim();
-      const pass = document.getElementById("login-password").value.trim();
-      const btn = document.querySelector(".btn-submit");
-      const err = document.getElementById("login-error");
-      
-      if (isFirebaseConfigured) {
-        btn.textContent = "⏳ جاري الدخول...";
-        btn.disabled = true;
-        auth.signInWithEmailAndPassword(email, pass)
-          .then(() => {
-            err.style.display = "none";
-          })
-          .catch(error => {
-            console.error(error);
-            err.textContent = `❌ خطأ في تسجيل الدخول: ${error.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة!"}`;
-            err.style.display = "block";
-            btn.textContent = "🔓 تسجيل الدخول";
-            btn.disabled = false;
-          });
-      } else {
-        // Fallback local check
-        if (email === "mathofmemo1234@gmail.com" && pass === "admin123") {
-          sessionStorage.setItem("abaya_admin_logged", "true");
-          unlockDashboard();
-          initData();
-          showToast("🔓 تم تسجيل الدخول محلياً (وضع التجربة)!");
-        } else {
-          err.textContent = "❌ بيانات الدخول التجريبية غير صحيحة! (استخدم: mathofmemo1234@gmail.com / admin123)";
-          err.style.display = "block";
-        }
-      }
-    }
-
-    function unlockDashboard() {
-      document.getElementById("login-screen").style.display = "none";
-      document.getElementById("admin-layout").style.display = "block";
-    }
-
-    function lockDashboard() {
-      document.getElementById("login-screen").style.display = "flex";
-      document.getElementById("admin-layout").style.display = "none";
-    }
-
-    function handleLogout() {
-      if (isFirebaseConfigured) {
-        auth.signOut();
-      } else {
-        sessionStorage.removeItem("abaya_admin_logged");
-        location.reload();
-      }
-    }
-
-    // ===== DATA RETRIEVAL =====
-    function initData() {
-      const statusBadge = document.getElementById("firebase-status");
-      
-      if (isFirebaseConfigured) {
-        statusBadge.textContent = "🔌 متصل بقاعدة Firebase";
-        statusBadge.classList.remove("offline");
-        
-        // Load Settings
-        fbDb.ref('abaya_settings').on('value', snap => {
-          const val = snap.val();
-          if (val) {
-            if (val.whatsapp) activeWhatsapp = val.whatsapp;
-          }
-          document.getElementById('set-whatsapp').value = activeWhatsapp;
+        // مراقبة حالة تسجيل الدخول تلقائياً
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                loginScreen.style.display = 'none';
+                dashboardScreen.style.display = 'block';
+            } else {
+                loginScreen.style.display = 'flex';
+                dashboardScreen.style.display = 'none';
+            }
         });
 
-        // Load Products
-        fbDb.ref('abaya_products').orderByChild('createdAt').on('value', snap => {
-          const data = snap.val();
-          localProducts = data ? Object.entries(data).map(([id, p]) => ({id, ...p})).reverse() : [];
-          renderProductsTable(localProducts);
+        // التعامل مع نموذج تسجيل الدخول عند الضغط
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            errorMsg.style.display = 'none';
+            errorMsg.innerText = '';
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // تم تسجيل الدخول بنجاح
+                    console.log("Logged in successfully:", userCredential.user);
+                })
+                .catch((error) => {
+                    console.error("Login Error:", error);
+                    errorMsg.style.display = 'block';
+                    errorMsg.innerText = `❌ خطأ في تسجيل الدخول: ${error.message}`;
+                });
         });
 
-        // Load Offers
-        fbDb.ref('abaya_offers').orderByChild('createdAt').on('value', snap => {
-          const data = snap.val();
-          localOffers = data ? Object.entries(data).map(([id, o]) => ({id, ...o})).reverse() : [];
-          renderOffersTable(localOffers);
+        // تسجيل الخروج
+        logoutBtn.addEventListener('click', () => {
+            firebase.auth().signOut();
         });
-
-        // Load Reviews
-        fbDb.ref('abaya_reviews').on('value', snap => {
-          const data = snap.val();
-          localReviews = data ? Object.entries(data).map(([id, r]) => ({id, ...r})).reverse() : [];
-          renderReviewsTable(localReviews);
-        });
-
-      } else {
-        statusBadge.textContent = "⚠️ وضع التجربة المحلي (منفصل)";
-        statusBadge.classList.add("offline");
-        
-        // Load from storage or fallback
-        localProducts = JSON.parse(localStorage.getItem("abaya_mock_products")) || fallbackProducts;
-        localOffers = JSON.parse(localStorage.getItem("abaya_mock_offers")) || fallbackOffers;
-        localReviews = JSON.parse(localStorage.getItem("abaya_mock_reviews")) || fallbackReviews;
-        
-        document.getElementById('set-whatsapp').value = activeWhatsapp;
-
-        renderProductsTable(localProducts);
-        renderOffersTable(localOffers);
-        renderReviewsTable(localReviews);
-      }
-    }
-
-    // ===== TAB CONTROLLER =====
-    function switchTab(tabId, el) {
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      
-      el.classList.add('active');
-      document.getElementById(tabId).classList.add('active');
-    }
-
-    // ===== RENDER TABLES =====
-    function renderProductsTable(products) {
-      const tbody = document.getElementById("products-table-body");
-      if (products.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">لا توجد عبايات مسجلة حالياً 🌸</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = products.map(p => `
-        <tr>
-          <td><div class="prod-thumb"><img src="${p.imageUrl}" alt="${p.name}" /></div></td>
-          <td style="font-weight: 700;">${p.name}</td>
-          <td><span class="badge-item badge-cat">${getCategoryLabel(p.type)}</span></td>
-          <td style="font-weight: 800; color:var(--primary-light);">${p.price} ر.س</td>
-          <td>${p.features.split(',').map(f => `<span class="badge-item badge-tag" style="margin-left:4px;">${f.trim()}</span>`).join('')}</td>
-          <td>${p.badge ? `<span class="badge-item" style="background:#5c5a59; color:white;">${p.badge}</span>` : '<span style="color:var(--text-muted);">-</span>'}</td>
-          <td>
-            <div class="actions-cell">
-              <button class="btn-action btn-edit" onclick="editProduct('${p.id}')">تعديل</button>
-              <button class="btn-action btn-del" onclick="deleteProduct('${p.id}')">حذف</button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function renderOffersTable(offers) {
-      const tbody = document.getElementById("offers-table-body");
-      if (offers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">لا توجد عروض ترويجية مسجلة حالياً</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = offers.map(o => `
-        <tr>
-          <td>${o.imageUrl ? `<div class="prod-thumb"><img src="${o.imageUrl}" alt="${o.title}" /></div>` : '<span style="color:var(--text-muted);">-</span>'}</td>
-          <td style="font-weight: 700;">${o.title}</td>
-          <td style="font-size:0.85rem; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${o.description}</td>
-          <td style="font-weight: 800; color:var(--primary-light);">${o.price}</td>
-          <td>${o.oldPrice ? `${o.oldPrice} ر.س` : '-'}</td>
-          <td>
-            <span class="badge-item" style="background:${o.active ? 'rgba(16,185,129,0.15)' : 'rgba(244,63,94,0.15)'}; color:${o.active ? 'var(--green)' : 'var(--red)'};">
-              ${o.active ? 'نشط' : 'مؤرشف'}
-            </span>
-          </td>
-          <td>
-            <div class="actions-cell">
-              <button class="btn-action btn-edit" onclick="toggleOfferActive('${o.id}', ${o.active})">
-                ${o.active ? 'أرشفة' : 'تنشيط'}
-              </button>
-              <button class="btn-action btn-del" onclick="deleteOffer('${o.id}')">حذف</button>
-            </div>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function renderReviewsTable(reviews) {
-      const pendingTbody = document.getElementById("pending-reviews-table");
-      const approvedTbody = document.getElementById("approved-reviews-table");
-      const pendingCount = document.getElementById("pending-reviews-count");
-      
-      const pending = reviews.filter(r => !r.approved);
-      const approved = reviews.filter(r => r.approved);
-      
-      // Update badge
-      if (pending.length > 0) {
-        pendingCount.textContent = pending.length;
-        pendingCount.style.display = "inline-block";
-      } else {
-        pendingCount.style.display = "none";
-      }
-
-      // Render Pending
-      if (pending.length === 0) {
-        pendingTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">لا توجد تقييمات جديدة بانتظار الموافقة 🌸</td></tr>`;
-      } else {
-        pendingTbody.innerHTML = pending.map(r => `
-          <tr>
-            <td style="font-weight:700;">${r.name}</td>
-            <td>${r.text}</td>
-            <td style="color:var(--gold);">${'★'.repeat(r.stars)}</td>
-            <td>${r.createdAt ? new Date(r.createdAt).toLocaleDateString('ar-SA') : '-'}</td>
-            <td>
-              <div class="actions-cell">
-                <button class="btn-action btn-approve" onclick="approveReview('${r.id}')">موافقة ونشر</button>
-                <button class="btn-action btn-del" onclick="deleteReview('${r.id}')">حذف</button>
-              </div>
-            </td>
-          </tr>
-        `).join('');
-      }
-
-      // Render Approved
-      if (approved.length === 0) {
-        approvedTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">لا توجد تقييمات منشورة بالمتجر حالياً</td></tr>`;
-      } else {
-        approvedTbody.innerHTML = approved.map(r => `
-          <tr>
-            <td style="font-weight:700;">${r.name}</td>
-            <td>${r.text}</td>
-            <td style="color:var(--gold);">${'★'.repeat(r.stars)}</td>
-            <td>
-              <button class="btn-action btn-del" onclick="deleteReview('${r.id}')">حذف من المتجر</button>
-            </td>
-          </tr>
-        `).join('');
-      }
-    }
-
-    function getCategoryLabel(type) {
-      switch(type) {
-        case 'black': return 'عبايات سوداء';
-        case 'colored': return 'عبايات ملونة';
-        case 'travel': return 'عبايات سفر';
-        case 'occasions': return 'مناسبات فاخرة';
-        default: return 'أخرى';
-      }
-    }
-
-    // ===== PRODUCTS CRUD OPERATIONS =====
-    function openProductForm() {
-      document.getElementById("product-form").reset();
-      document.getElementById("p-id").value = "";
-      document.getElementById("product-form-title").textContent = "إضافة عباية جديدة";
-      document.getElementById("product-form-card").style.display = "block";
-      document.getElementById("product-form-card").scrollIntoView({behavior:"smooth"});
-    }
-
-    function closeProductForm() {
-      document.getElementById("product-form-card").style.display = "none";
-    }
-
-    function saveProduct(e) {
-      e.preventDefault();
-      const id = document.getElementById("p-id").value;
-      const name = document.getElementById("p-name").value.trim();
-      const type = document.getElementById("p-type").value;
-      const price = parseFloat(document.getElementById("p-price").value);
-      const badge = document.getElementById("p-badge").value.trim();
-      const features = document.getElementById("p-features").value.trim();
-      const imageUrl = document.getElementById("p-image").value.trim();
-      const description = document.getElementById("p-desc").value.trim();
-      
-      const productData = {
-        name, type, price, badge, features, imageUrl, description,
-        createdAt: id ? localProducts.find(p => p.id === id).createdAt : Date.now()
-      };
-
-      if (isFirebaseConfigured) {
-        const ref = id ? fbDb.ref(`abaya_products/${id}`) : fbDb.ref('abaya_products').push();
-        ref.set(productData).then(() => {
-          showToast(id ? "📝 تم تحديث بيانات العباية!" : "✅ تم إضافة العباية للمتجر بنجاح!");
-          closeProductForm();
-        });
-      } else {
-        if (id) {
-          // Edit
-          const idx = localProducts.findIndex(p => p.id === id);
-          localProducts[idx] = { id, ...productData };
-        } else {
-          // Create
-          const mockId = "mock_prod_" + Date.now();
-          localProducts.push({ id: mockId, ...productData });
-        }
-        localStorage.setItem("abaya_mock_products", JSON.stringify(localProducts));
-        renderProductsTable(localProducts);
-        showToast("✅ تم حفظ البيانات محلياً!");
-        closeProductForm();
-      }
-    }
-
-    function editProduct(id) {
-      const p = localProducts.find(prod => prod.id === id);
-      if (!p) return;
-      
-      document.getElementById("p-id").value = p.id;
-      document.getElementById("p-name").value = p.name;
-      document.getElementById("p-type").value = p.type;
-      document.getElementById("p-price").value = p.price;
-      document.getElementById("p-badge").value = p.badge || "";
-      document.getElementById("p-features").value = p.features;
-      document.getElementById("p-image").value = p.imageUrl;
-      document.getElementById("p-desc").value = p.description;
-      
-      document.getElementById("product-form-title").textContent = "تعديل بيانات العباية: " + p.name;
-      document.getElementById("product-form-card").style.display = "block";
-      document.getElementById("product-form-card").scrollIntoView({behavior:"smooth"});
-    }
-
-    function deleteProduct(id) {
-      if (!confirm("هل أنت متأكد من حذف هذه العباية نهائياً من المتجر؟")) return;
-      
-      if (isFirebaseConfigured) {
-        fbDb.ref(`abaya_products/${id}`).remove().then(() => {
-          showToast("🗑️ تم حذف العباية بنجاح!");
-        });
-      } else {
-        localProducts = localProducts.filter(p => p.id !== id);
-        localStorage.setItem("abaya_mock_products", JSON.stringify(localProducts));
-        renderProductsTable(localProducts);
-        showToast("🗑️ تم حذف العباية محلياً!");
-      }
-    }
-
-    // ===== OFFERS CRUD OPERATIONS =====
-    function openOfferForm() {
-      document.getElementById("offer-form").reset();
-      document.getElementById("o-id").value = "";
-      document.getElementById("offer-form-title").textContent = "إضافة عرض ترويجي جديد";
-      document.getElementById("offer-form-card").style.display = "block";
-      document.getElementById("offer-form-card").scrollIntoView({behavior:"smooth"});
-    }
-
-    function closeOfferForm() {
-      document.getElementById("offer-form-card").style.display = "none";
-    }
-
-    function saveOffer(e) {
-      e.preventDefault();
-      const id = document.getElementById("o-id").value;
-      const title = document.getElementById("o-title").value.trim();
-      const price = document.getElementById("o-price").value.trim();
-      const imageUrl = document.getElementById("o-image").value.trim();
-      const oldPrice = parseFloat(document.getElementById("o-old-price").value) || null;
-      const description = document.getElementById("o-desc").value.trim();
-      
-      const offerData = {
-        title, price, imageUrl, oldPrice, description,
-        active: id ? localOffers.find(o => o.id === id).active : true,
-        createdAt: id ? localOffers.find(o => o.id === id).createdAt : Date.now()
-      };
-
-      if (isFirebaseConfigured) {
-        const ref = id ? fbDb.ref(`abaya_offers/${id}`) : fbDb.ref('abaya_offers').push();
-        ref.set(offerData).then(() => {
-          showToast(id ? "📝 تم تعديل العرض!" : "🔥 تم إضافة العرض بنجاح!");
-          closeOfferForm();
-        });
-      } else {
-        if (id) {
-          const idx = localOffers.findIndex(o => o.id === id);
-          localOffers[idx] = { id, ...offerData };
-        } else {
-          const mockId = "mock_off_" + Date.now();
-          localOffers.push({ id: mockId, ...offerData });
-        }
-        localStorage.setItem("abaya_mock_offers", JSON.stringify(localOffers));
-        renderOffersTable(localOffers);
-        showToast("✅ تم حفظ العرض محلياً!");
-        closeOfferForm();
-      }
-    }
-
-    function toggleOfferActive(id, currentActive) {
-      if (isFirebaseConfigured) {
-        fbDb.ref(`abaya_offers/${id}/active`).set(!currentActive).then(() => {
-          showToast(currentActive ? "📦 تم أرشفة العرض" : "🟢 تم تنشيط العرض بنجاح!");
-        });
-      } else {
-        const idx = localOffers.findIndex(o => o.id === id);
-        localOffers[idx].active = !currentActive;
-        localStorage.setItem("abaya_mock_offers", JSON.stringify(localOffers));
-        renderOffersTable(localOffers);
-        showToast(currentActive ? "📦 تم أرشفة العرض محلياً" : "🟢 تم تنشيط العرض محلياً");
-      }
-    }
-
-    function deleteOffer(id) {
-      if (!confirm("هل أنت متأكد من حذف هذا العرض نهائياً؟")) return;
-      if (isFirebaseConfigured) {
-        fbDb.ref(`abaya_offers/${id}`).remove().then(() => {
-          showToast("🗑️ تم حذف العرض بنجاح!");
-        });
-      } else {
-        localOffers = localOffers.filter(o => o.id !== id);
-        localStorage.setItem("abaya_mock_offers", JSON.stringify(localOffers));
-        renderOffersTable(localOffers);
-        showToast("🗑️ تم حذف العرض محلياً!");
-      }
-    }
-
-    // ===== REVIEWS MODERATION OPERATIONS =====
-    function approveReview(id) {
-      if (isFirebaseConfigured) {
-        fbDb.ref(`abaya_reviews/${id}/approved`).set(true).then(() => {
-          showToast("🟢 تم اعتماد ونشر التقييم بنجاح!");
-        });
-      } else {
-        const idx = localReviews.findIndex(r => r.id === id);
-        localReviews[idx].approved = true;
-        localStorage.setItem("abaya_mock_reviews", JSON.stringify(localReviews));
-        renderReviewsTable(localReviews);
-        showToast("🟢 تم اعتماد ونشر التقييم محلياً!");
-      }
-    }
-
-    function deleteReview(id) {
-      if (!confirm("هل تريد حذف هذا التقييم نهائياً؟")) return;
-      if (isFirebaseConfigured) {
-        fbDb.ref(`abaya_reviews/${id}`).remove().then(() => {
-          showToast("🗑️ تم حذف التقييم بنجاح!");
-        });
-      } else {
-        localReviews = localReviews.filter(r => r.id !== id);
-        localStorage.setItem("abaya_mock_reviews", JSON.stringify(localReviews));
-        renderReviewsTable(localReviews);
-        showToast("🗑️ تم حذف التقييم محلياً!");
-      }
-    }
-
-    // ===== SETTINGS MANAGEMENT =====
-    function saveSettings(e) {
-      e.preventDefault();
-      const whatsapp = document.getElementById('set-whatsapp').value.trim();
-      
-      if (!whatsapp) return;
-      
-      if (isFirebaseConfigured) {
-        fbDb.ref('abaya_settings').set({
-          whatsapp
-        }).then(() => {
-          showToast("⚙️ تم حفظ رقم الجوال في Firebase!");
-        });
-      } else {
-        activeWhatsapp = whatsapp;
-        showToast("⚙️ تم حفظ رقم الجوال محلياً!");
-      }
-    }
-
-    // ===== UX TOAST =====
-    function showToast(msg) {
-      const t = document.getElementById('page-toast');
-      t.textContent = msg;
-      t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3000);
-    }
-  </script>
+    </script>
 </body>
 </html>
