@@ -849,32 +849,20 @@
 
       if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
-        statusEl.textContent = "⏳ جاري رفع الصورة...";
+        statusEl.textContent = "⏳ جاري معالجة وحفظ الصورة...";
         submitBtn.disabled = true;
         
-        if (isFirebaseConfigured) {
-          const storageRef = firebase.storage().ref(`abaya_images/${Date.now()}_${file.name}`);
-          storageRef.put(file).then(snapshot => {
-            return snapshot.ref.getDownloadURL();
-          }).then(downloadURL => {
-            statusEl.textContent = "✅ تم الرفع بنجاح!";
-            submitBtn.disabled = false;
-            proceedWithSave(downloadURL);
-          }).catch(error => {
-            console.error(error);
-            statusEl.textContent = "❌ فشل الرفع: " + error.message;
-            submitBtn.disabled = false;
-            showToast("❌ فشل رفع الصورة إلى Firebase Storage!");
-          });
-        } else {
-          const reader = new FileReader();
-          reader.onload = function(event) {
-            statusEl.textContent = "✅ تم التحميل محلياً!";
-            submitBtn.disabled = false;
-            proceedWithSave(event.target.result);
-          };
-          reader.readAsDataURL(file);
-        }
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          statusEl.textContent = "✅ تم تجهيز الصورة!";
+          submitBtn.disabled = false;
+          proceedWithSave(event.target.result);
+        };
+        reader.onerror = function() {
+          statusEl.textContent = "❌ فشل قراءة الصورة!";
+          submitBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
       } else {
         proceedWithSave(imageUrl);
       }
@@ -975,32 +963,20 @@
 
       if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
-        statusEl.textContent = "⏳ جاري رفع الصورة...";
+        statusEl.textContent = "⏳ جاري معالجة وحفظ الصورة...";
         submitBtn.disabled = true;
         
-        if (isFirebaseConfigured) {
-          const storageRef = firebase.storage().ref(`abaya_offers/${Date.now()}_${file.name}`);
-          storageRef.put(file).then(snapshot => {
-            return snapshot.ref.getDownloadURL();
-          }).then(downloadURL => {
-            statusEl.textContent = "✅ تم الرفع بنجاح!";
-            submitBtn.disabled = false;
-            proceedWithSave(downloadURL);
-          }).catch(error => {
-            console.error(error);
-            statusEl.textContent = "❌ فشل الرفع: " + error.message;
-            submitBtn.disabled = false;
-            showToast("❌ فشل رفع الصورة إلى Firebase Storage!");
-          });
-        } else {
-          const reader = new FileReader();
-          reader.onload = function(event) {
-            statusEl.textContent = "✅ تم التحميل محلياً!";
-            submitBtn.disabled = false;
-            proceedWithSave(event.target.result);
-          };
-          reader.readAsDataURL(file);
-        }
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          statusEl.textContent = "✅ تم تجهيز الصورة!";
+          submitBtn.disabled = false;
+          proceedWithSave(event.target.result);
+        };
+        reader.onerror = function() {
+          statusEl.textContent = "❌ فشل قراءة الصورة!";
+          submitBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
       } else {
         proceedWithSave(imageUrl);
       }
@@ -1097,32 +1073,20 @@
 
       if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
-        statusEl.textContent = "⏳ جاري رفع الملف الصوتي...";
+        statusEl.textContent = "⏳ جاري معالجة وحفظ الملف الصوتي...";
         submitBtn.disabled = true;
         
-        if (isFirebaseConfigured) {
-          const storageRef = firebase.storage().ref(`abaya_audio/${Date.now()}_${file.name}`);
-          storageRef.put(file).then(snapshot => {
-            return snapshot.ref.getDownloadURL();
-          }).then(downloadURL => {
-            statusEl.textContent = "✅ تم الرفع بنجاح!";
-            submitBtn.disabled = false;
-            proceedWithSaveSettings(downloadURL);
-          }).catch(error => {
-            console.error(error);
-            statusEl.textContent = "❌ فشل الرفع: " + error.message;
-            submitBtn.disabled = false;
-            showToast("❌ فشل رفع الملف الصوتي!");
-          });
-        } else {
-          const reader = new FileReader();
-          reader.onload = function(event) {
-            statusEl.textContent = "✅ تم التحميل محلياً!";
-            submitBtn.disabled = false;
-            proceedWithSaveSettings(event.target.result);
-          };
-          reader.readAsDataURL(file);
-        }
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          statusEl.textContent = "✅ تم تجهيز ملف الصوت!";
+          submitBtn.disabled = false;
+          proceedWithSaveSettings(event.target.result);
+        };
+        reader.onerror = function() {
+          statusEl.textContent = "❌ فشل قراءة ملف الصوت!";
+          submitBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
       } else {
         proceedWithSaveSettings(bgMusicUrl);
       }
