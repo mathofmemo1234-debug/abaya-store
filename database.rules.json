@@ -1,0 +1,35 @@
+{
+  "rules": {
+    "abaya_products": {
+      ".read": true,
+      ".write": "auth != null",
+      "$productId": {
+        ".validate": "newData.hasChildren(['name', 'type', 'description', 'features', 'price', 'imageUrl', 'createdAt'])",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 150" },
+        "type": { ".validate": "newData.isString() && (newData.val() == 'black' || newData.val() == 'colored' || newData.val() == 'travel' || newData.val() == 'occasions')" },
+        "price": { ".validate": "newData.isNumber() && newData.val() > 0" },
+        "imageUrl": { ".validate": "newData.isString()" },
+        "createdAt": { ".validate": "newData.isNumber()" }
+      }
+    },
+    "abaya_offers": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "abaya_reviews": {
+      ".read": true,
+      "$reviewId": {
+        ".write": "auth != null || (!data.exists() && newData.exists())",
+        ".validate": "auth != null || (newData.hasChildren(['name', 'stars', 'text', 'createdAt', 'approved']) && newData.child('approved').val() === false)",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100" },
+        "stars": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5" },
+        "text": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 1000" },
+        "createdAt": { ".validate": "newData.isNumber()" }
+      }
+    },
+    "abaya_settings": {
+      ".read": true,
+      ".write": "auth != null"
+    }
+  }
+}
