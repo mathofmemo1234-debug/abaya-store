@@ -408,7 +408,26 @@
       font-size: 1.2rem; transition: transform 0.3s; z-index: 10;
     }
     .modal-close:hover { transform: rotate(90deg); background: rgba(255,255,255,0.08); }
-    .modal-img-wrap { border-radius: var(--radius-sm); overflow: hidden; height: 420px; background: var(--bg-card2); }
+    .modal-img-wrap {
+      position: relative;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      height: 420px;
+      background: var(--bg-card2);
+      cursor: crosshair;
+    }
+    .zoom-lens {
+      position: absolute;
+      border: 3px solid var(--primary-light);
+      border-radius: 50%;
+      width: 160px;
+      height: 160px;
+      display: none;
+      pointer-events: none;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.3);
+      z-index: 10;
+      background-repeat: no-repeat;
+    }
     .modal-details { display: flex; flex-direction: column; gap: 1.2rem; }
     .modal-title { font-size: 1.6rem; font-weight: 800; }
     .modal-price { font-size: 1.8rem; font-weight: 900; color: var(--primary-light); }
@@ -1025,6 +1044,7 @@
       loadTheme();
       initParticles();
       initAudio();
+      initZoomLens();
       
       // Scroll Reveal Trigger
       const scrollObserver = new IntersectionObserver((entries) => {
@@ -1611,6 +1631,79 @@
           showToast("🔇 تم كتم الموسيقى");
         }
       });
+    }
+
+    // Zoom Lens function for product modal
+    function initZoomLens() {
+      const imgWrap = document.querySelector('.modal-img-wrap');
+      const img = document.getElementById('modal-product-img');
+      
+      if (!imgWrap || !img) return;
+
+      // Create lens div dynamically if it doesn't exist
+      let lens = document.getElementById('zoom-lens');
+      if (!lens) {
+        lens = document.createElement('div');
+        lens.id = 'zoom-lens';
+        lens.className = 'zoom-lens';
+        imgWrap.appendChild(lens);
+      }
+      
+      const zoom = 2.5; // Zoom scale factor
+
+      function moveLens(e) {
+        // Prevent screen scrolling when touching on mobile
+        if (e.type === 'touchmove') e.preventDefault();
+        
+        const rect = img.getBoundingClientRect();
+        
+        let x = 0;
+        let y = 0;
+        
+        if (e.touches && e.touches.length > 0) {
+          x = e.touches[0].clientX - rect.left;
+          y = e.touches[0].clientY - rect.top;
+        } else {
+          x = e.clientX - rect.left;
+          y = e.clientY - rect.top;
+        }
+        
+        // boundary checks
+        if (x < 0) x = 0;
+        if (x > rect.width) x = rect.width;
+        if (y < 0) y = 0;
+        if (y > rect.height) y = rect.height;
+        
+        // Position lens
+        lens.style.left = `${x - lens.offsetWidth / 2}px`;
+        lens.style.top = `${y - lens.offsetHeight / 2}px`;
+        
+        // Update magnifying background
+        lens.style.backgroundImage = `url('${img.src}')`;
+        lens.style.backgroundSize = `${rect.width * zoom}px ${rect.height * zoom}px`;
+        lens.style.backgroundPosition = `-${x * zoom - lens.offsetWidth / 2}px -${y * zoom - lens.offsetHeight / 2}px`;
+      }
+
+      function showLens(e) {
+        if (img.src && !img.src.endsWith('#') && img.src !== window.location.href) {
+          lens.style.display = 'block';
+          moveLens(e);
+        }
+      }
+
+      function hideLens() {
+        lens.style.display = 'none';
+      }
+
+      // Mouse events
+      img.addEventListener('mousemove', moveLens);
+      img.addEventListener('mouseenter', showLens);
+      img.addEventListener('mouseleave', hideLens);
+
+      // Touch events
+      img.addEventListener('touchstart', showLens, { passive: false });
+      img.addEventListener('touchmove', moveLens, { passive: false });
+      img.addEventListener('touchend', hideLens);
     }
   </script>
 </body>
