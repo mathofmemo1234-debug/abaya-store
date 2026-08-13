@@ -1206,7 +1206,7 @@
       </div>
 
       <!-- Hidden Google Translate Widget (driven programmatically) -->
-      <div id="google_translate_element" style="position:absolute; top:-9999px; left:-9999px; visibility:hidden;"></div>
+      <div id="google_translate_element" style="position:absolute; opacity:0; pointer-events:none; height:1px; overflow:hidden; top:60px; left:0; z-index:-1;"></div>
 
       <!-- USER AUTH CONTROLS -->
       <div id="user-auth-section" style="display: flex; align-items: center; position: relative;">
@@ -3802,6 +3802,16 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
       if (chevron) chevron.style.transform = langPickerOpen ? 'rotate(180deg)' : 'rotate(0deg)';
     }
 
+    function doGoogleTranslate(langCode) {
+      const combo = document.querySelector('.goog-te-combo');
+      if (combo) {
+        combo.value = langCode;
+        combo.dispatchEvent(new Event('change'));
+        return true;
+      }
+      return false;
+    }
+
     function selectLanguage(lang) {
       currentLangCode = lang.code;
       const flag   = document.getElementById('lang-picker-flag');
@@ -3815,14 +3825,14 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
         if (btn) btn.style.background = l.code === lang.code ? 'rgba(196,138,136,0.15)' : 'transparent';
       });
 
-      // Drive the hidden Google Translate combo
-      const combo = document.querySelector('.goog-te-combo');
-      if (combo) {
-        combo.value = lang.code;
-        combo.dispatchEvent(new Event('change'));
-      } else if (lang.code === 'ar') {
-        // If widget not ready and user wants Arabic (original), reload
-        window.location.reload();
+      // Try immediately, then retry up to 20 times (widget may still be loading)
+      if (!doGoogleTranslate(lang.code)) {
+        let attempts = 0;
+        const interval = setInterval(() => {
+          attempts++;
+          const ok = doGoogleTranslate(lang.code);
+          if (ok || attempts >= 20) clearInterval(interval);
+        }, 150);
       }
 
       // Close picker
