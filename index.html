@@ -9,52 +9,32 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    /* ===== DESIGN TOKENS — DARK (default) ===== */
+    /* ===== LUXURY LIGHT DESIGN TOKENS ===== */
     :root {
-      --primary: hsl(36, 60%, 48%);
-      --primary-light: hsl(42, 70%, 65%);
-      --primary-dark: hsl(24, 45%, 28%);
-      --accent: hsl(345, 35%, 55%);
-      --accent-rgb: 144, 93, 93;
-      --gold: hsl(42, 100%, 60%);
-      --bg-dark: hsl(20, 15%, 8%);
-      --bg-card: hsl(20, 10%, 12%);
-      --bg-card2: hsl(20, 8%, 15%);
-      --text-primary: hsl(36, 30%, 96%);
-      --text-secondary: hsl(36, 12%, 75%);
-      --text-muted: hsl(36, 8%, 52%);
-      --border: hsl(20, 10%, 18%);
-      --glass: rgba(255, 255, 255, 0.04);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --shadow: 0 20px 60px rgba(0,0,0,0.6);
+      --primary: #8c6239; /* Rich warm bronze */
+      --primary-light: #c5a080; /* Rose-gold / warm nude gold */
+      --primary-dark: #5c3e21; /* Dark bronze */
+      --accent: #c48a88; /* Soft dusty rose / rose-gold accent */
+      --accent-rgb: 196, 138, 136;
+      --gold: #d4af37; /* Metallic gold */
+      --bg-dark: #fdfbf7; /* Light cream background */
+      --bg-card: #fafafa; /* Soft off-white card bg */
+      --bg-card2: #f5f2eb; /* Warm cream/nude secondary card bg */
+      --text-primary: #3d3025; /* Warm dark brown text */
+      --text-secondary: #6e5d50; /* Soft warm brown text */
+      --text-muted: #9a8b7e; /* Dusty taupe text */
+      --border: #ebe6dd; /* Warm gray/cream border */
+      --glass: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(196, 138, 136, 0.2);
+      --shadow-sm: 0 4px 20px rgba(44, 30, 20, 0.03);
+      --shadow-md: 0 16px 40px rgba(44, 30, 20, 0.08);
+      --shadow: 0 25px 60px rgba(44, 30, 20, 0.08);
       --radius: 24px;
       --radius-sm: 14px;
-      --nav-bg: rgba(18, 14, 12, 0.85);
-      --footer-bg: hsl(20,20%,5%);
+      --nav-bg: rgba(253, 251, 247, 0.92);
+      --footer-bg: #f5f2eb;
       --green: #10b981;
       --yellow: #f59e0b;
-    }
-
-    /* ===== DESIGN TOKENS — LIGHT ===== */
-    html.light {
-      --primary: hsl(36, 75%, 35%);
-      --primary-light: hsl(42, 60%, 48%);
-      --primary-dark: hsl(24, 60%, 25%);
-      --accent: hsl(345, 45%, 45%);
-      --accent-rgb: 165, 73, 93;
-      --gold: hsl(42, 95%, 48%);
-      --bg-dark: hsl(36, 25%, 97%);
-      --bg-card: hsl(36, 20%, 100%);
-      --bg-card2: hsl(36, 15%, 93%);
-      --text-primary: hsl(20, 45%, 12%);
-      --text-secondary: hsl(20, 15%, 38%);
-      --text-muted: hsl(20, 10%, 55%);
-      --border: hsl(36, 15%, 86%);
-      --glass: rgba(0, 0, 0, 0.03);
-      --glass-border: rgba(0, 0, 0, 0.08);
-      --shadow: 0 20px 50px rgba(44, 30, 20, 0.08);
-      --nav-bg: rgba(253, 251, 247, 0.88);
-      --footer-bg: hsl(36, 20%, 93%);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -544,6 +524,134 @@
     .btn-checkout:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(37,211,102,0.45); }
     .btn-checkout svg { width: 22px; height: 22px; fill: white; }
 
+    /* Wishlist & Size Guide Additions */
+    .wishlist-toggle-card-btn:hover {
+      transform: scale(1.15) !important;
+      background: #ffffff !important;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15) !important;
+    }
+    .wishlist-toggle-card-btn:active {
+      transform: scale(0.95) !important;
+    }
+    .product-card:hover .quick-view-floating-btn {
+      opacity: 1 !important;
+      transform: translateX(-50%) translateY(0) !important;
+    }
+    
+    .size-table th, .size-table td {
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .size-table th {
+      background: var(--bg-card2);
+      color: var(--text-primary);
+    }
+    .size-table tr:hover {
+      background: rgba(196, 138, 136, 0.05);
+    }
+    
+    /* Wishlist Drawer specific layouts */
+    .wishlist-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .wishlist-item {
+      display: flex;
+      gap: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.9rem;
+      border-radius: var(--radius-sm);
+      align-items: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .wishlist-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .wishlist-item-img {
+      width: 65px;
+      height: 80px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .wishlist-item-details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .wishlist-item-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    .wishlist-item-price {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--primary-light);
+    }
+    .wishlist-item-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.3rem;
+    }
+    .btn-wishlist-to-cart {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-wishlist-to-cart:hover {
+      background: var(--primary-dark);
+    }
+    .btn-wishlist-remove {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-wishlist-remove:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    
+    /* Product card hover micro-animations */
+    .product-card {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      border-radius: var(--radius) !important;
+      overflow: hidden !important;
+      background: var(--bg-card) !important;
+    }
+    .product-card:hover {
+      transform: translateY(-8px) !important;
+      box-shadow: var(--shadow-md) !important;
+    }
+    .product-img {
+      overflow: hidden !important;
+      position: relative;
+    }
+    .product-img img {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .product-card:hover .product-img img {
+      transform: scale(1.05) !important;
+    }
+
     /* Customer Reviews */
     #reviews { background: var(--bg-card); }
     .reviews-container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 3rem; }
@@ -1019,12 +1127,15 @@
       <li><a href="https://wa.me/966568192263" target="_blank">تواصل خاص 📞</a></li>
     </ul>
     <div class="nav-controls">
+      <!-- WISHLIST NAV BUTTON -->
+      <button class="cart-btn" onclick="toggleWishlistDrawer(true)" aria-label="قائمة المفضلة" style="background:var(--glass); border:1px solid var(--glass-border); color:var(--text-primary); padding:0.6rem 1.2rem; border-radius:50px; display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-weight:700; font-family:'Cairo'; position:relative; transition:transform 0.3s, background 0.3s;">
+        <span>المفضلة ❤️</span>
+        <span class="cart-count" id="wishlist-count" style="background:var(--accent); color:white;">0</span>
+      </button>
+
       <button class="cart-btn" onclick="toggleCartDrawer(true)" aria-label="سلة المشتريات">
         <span>السلة 🛒</span>
         <span class="cart-count" id="cart-count">0</span>
-      </button>
-      <button class="theme-toggle" id="theme-toggle" aria-label="تبديل المظهر">
-        <div class="theme-toggle-thumb" id="theme-thumb">🌙</div>
       </button>
       
       <!-- USER AUTH CONTROLS -->
@@ -1235,6 +1346,98 @@
             <span>المتابعة لإتمام الدفع 💳</span>
           </button>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- WISHLIST DRAWER -->
+  <div class="cart-drawer" id="wishlist-drawer" style="right: auto; left: 0; transform: translateX(-100%);">
+    <div class="cart-header">
+      <h2>المفضلة ❤️</h2>
+      <button class="cart-close" onclick="toggleWishlistDrawer(false)" aria-label="إغلاق المفضلة">✕</button>
+    </div>
+    <div class="cart-body" style="padding: 1.5rem 1rem;">
+      <div id="wishlist-items-container">
+        <p style="text-align:center; color:var(--text-muted); margin-top:3rem;">المفضلة فارغة حالياً 🤍</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIZE GUIDE MODAL -->
+  <div class="modal" id="size-guide-modal">
+    <div class="modal-content" style="max-width: 580px; grid-template-columns: 1fr; padding: 2rem 1.5rem; max-height: 90vh; overflow-y: auto;">
+      <button class="modal-close" onclick="toggleSizeGuideModal(false)">✕</button>
+      <h2 style="text-align:center; margin-bottom:1.5rem; font-weight:800; font-family:'Cairo';">📐 دليل مقاسات العبايات وطريقة القياس</h2>
+      
+      <p style="font-size:0.9rem; color:var(--text-secondary); text-align:center; margin-bottom:1.5rem;">تعتمد العبايات السعودية القياس بالإنش (Inches). يرجى الاطلاع على الجدول والتعليمات بالأسفل لاختيار المقاس المثالي.</p>
+      
+      <table class="size-table" style="width:100%; border-collapse:collapse; margin-bottom:2rem; text-align:center; direction:rtl; font-family:'Cairo';">
+        <thead>
+          <tr style="background:var(--bg-card2); border-bottom:2px solid var(--border);">
+            <th style="padding:0.75rem; font-weight:700;">المقاس</th>
+            <th style="padding:0.75rem; font-weight:700;">الطول (إنش)</th>
+            <th style="padding:0.75rem; font-weight:700;">عرض الصدر (إنش)</th>
+            <th style="padding:0.75rem; font-weight:700;">طول الكم (إنش)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:0.6rem; font-weight:700;">50</td>
+            <td style="padding:0.6rem;">50</td>
+            <td style="padding:0.6rem;">20</td>
+            <td style="padding:0.6rem;">25</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:0.6rem; font-weight:700;">52</td>
+            <td style="padding:0.6rem;">52</td>
+            <td style="padding:0.6rem;">21</td>
+            <td style="padding:0.6rem;">26</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:0.6rem; font-weight:700;">54</td>
+            <td style="padding:0.6rem;">54</td>
+            <td style="padding:0.6rem;">22</td>
+            <td style="padding:0.6rem;">27</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:0.6rem; font-weight:700;">56</td>
+            <td style="padding:0.6rem;">56</td>
+            <td style="padding:0.6rem;">23</td>
+            <td style="padding:0.6rem;">28</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:0.6rem; font-weight:700;">58</td>
+            <td style="padding:0.6rem;">58</td>
+            <td style="padding:0.6rem;">24</td>
+            <td style="padding:0.6rem;">29</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:0.6rem; font-weight:700;">60</td>
+            <td style="padding:0.6rem;">60</td>
+            <td style="padding:0.6rem;">25</td>
+            <td style="padding:0.6rem;">30</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-weight:800; font-size:1.1rem; margin-bottom:1rem; border-right:3px solid var(--accent); padding-right:0.6rem;">💡 كيف تقيسين مقاسك بدقة؟</h3>
+      <ul style="list-style:none; padding-right:0.5rem; display:flex; flex-direction:column; gap:1rem; font-size:0.9rem;">
+        <li>
+          <strong>📏 1. الطول (Length):</strong>
+          <span style="display:block; color:var(--text-secondary); margin-top:0.2rem;">يقاس شريط القياس عمودياً من منتصف الكتف (من أعلى نقطة عند التقاء الرقبة بالكتف) نزولاً إلى كعب القدم أو الطول المرغوب للارتداء.</span>
+        </li>
+        <li>
+          <strong>📏 2. عرض الصدر (Bust Width):</strong>
+          <span style="display:block; color:var(--text-secondary); margin-top:0.2rem;">يقاس بشكل مسطح ومستقيم من تحت الإبط الأيمن إلى الإبط الأيسر مباشرة (على عباية قياس مريحة لديكِ).</span>
+        </li>
+        <li>
+          <strong>📏 3. طول الكم (Sleeve Length):</strong>
+          <span style="display:block; color:var(--text-secondary); margin-top:0.2rem;">يقاس من بداية عظمة الكتف (نقطة التقاء الكتف بالكم) نزولاً على طول الذراع وصولاً إلى الرسغ/المعصم.</span>
+        </li>
+      </ul>
+      
+      <div style="margin-top:1.5rem; background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:1rem; text-align:center;">
+        <span style="font-size:0.85rem; font-weight:700; color:var(--text-primary);">💡 نصيحة دار الغيد: إذا كنتِ محتارة بين مقاسين، ننصحكِ دائماً باختيار المقاس الأكبر لضمان الراحة وحرية الحركة في العبايات اليومية.</span>
       </div>
     </div>
   </div>
@@ -1533,7 +1736,10 @@
         
         <!-- Size selection -->
         <div class="option-group">
-          <span class="option-label">المقاس (انقري للاختيار) *</span>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="option-label">المقاس (انقري للاختيار) *</span>
+            <button onclick="toggleSizeGuideModal(true)" style="background:none; border:none; color:var(--accent); font-weight:700; font-family:'Cairo'; font-size:0.85rem; cursor:pointer; text-decoration:underline;">📐 دليل القياس</button>
+          </div>
           <div class="size-picker" id="modal-size-picker">
             <span class="size-option" onclick="selectSize(50)">50</span>
             <span class="size-option" onclick="selectSize(52)">52</span>
@@ -1547,7 +1753,7 @@
         <!-- Length selection -->
         <div class="option-group">
           <span class="option-label">الطول المطلوب *</span>
-          <select class="length-select" id="modal-length-select">
+          <select class="length-select" id="modal-length-select" style="background:var(--bg-card2); border:1px solid var(--border); border-radius:10px; padding:0.75rem 1rem; color:var(--text-primary); font-family:'Cairo'; font-size:0.9rem; width:100%; outline:none; transition:border-color 0.3s;">
             <option value="50">50 إنش</option>
             <option value="52">52 إنش</option>
             <option value="54">54 إنش</option>
@@ -1555,6 +1761,34 @@
             <option value="58">58 إنش</option>
             <option value="60">60 إنش</option>
           </select>
+        </div>
+
+        <!-- Closure selection -->
+        <div class="option-group">
+          <span class="option-label">نوع الإغلاق *</span>
+          <select class="length-select" id="modal-closure-select" style="background:var(--bg-card2); border:1px solid var(--border); border-radius:10px; padding:0.75rem 1rem; color:var(--text-primary); font-family:'Cairo'; font-size:0.9rem; width:100%; outline:none; transition:border-color 0.3s;">
+            <option value="طقطق" selected>طقطق (أزرار كبس مخفية)</option>
+            <option value="لف">لف (بدون إغلاق)</option>
+            <option value="سحاب مخفي">سحاب مخفي</option>
+            <option value="أزرار أمامية">أزرار أمامية ظاهرة</option>
+          </select>
+        </div>
+
+        <!-- Sheila selection -->
+        <div class="option-group">
+          <span class="option-label">نوع الطرحة الملحقة *</span>
+          <select class="length-select" id="modal-sheila-select" style="background:var(--bg-card2); border:1px solid var(--border); border-radius:10px; padding:0.75rem 1rem; color:var(--text-primary); font-family:'Cairo'; font-size:0.9rem; width:100%; outline:none; transition:border-color 0.3s;">
+            <option value="طرحة سادة مجانية" selected>طرحة سوداء سادة مجانية</option>
+            <option value="طرحة بالطرف">طرحة مطرزة بالطرف لتناسب العباية</option>
+            <option value="طرحة مطاط">طرحة مطاط مريحة</option>
+            <option value="بدون طرحة">بدون طرحة الملحقة</option>
+          </select>
+        </div>
+
+        <!-- Custom Notes -->
+        <div class="option-group">
+          <span class="option-label">تعديلات خاصة أو ملاحظات تفصيل (إن وجدت)</span>
+          <input type="text" id="modal-custom-notes" class="form-control" placeholder="مثال: تقصير الأكمام 1 إنش، فتحة جانبية صغيرة..." style="width:100%; margin-top:0.2rem;" />
         </div>
 
         <!-- Quantity & Add to cart -->
@@ -1716,6 +1950,17 @@
       cart = [];
     }
 
+    let wishlist = [];
+    try {
+      const savedWishlist = localStorage.getItem('dar_alghaid_wishlist');
+      if (savedWishlist) {
+        wishlist = JSON.parse(savedWishlist);
+      }
+    } catch (e) {
+      console.error("Error loading wishlist from LocalStorage:", e);
+      wishlist = [];
+    }
+
     // Fallback Data if Firebase is not connected or initialized
     const fallbackProducts = [
       {
@@ -1797,11 +2042,8 @@
       initZoomLens();
       hookAuthObserver();
       updateCartUI(); // Load and display saved cart contents automatically
-      
-      // Save cart state before page reload
-      window.addEventListener("beforeunload", () => {
-        saveCartToLocalStorage();
-      });
+      updateWishlistCountUI();
+      updateWishlistDrawerUI();
       
       // Scroll Reveal Trigger
       const scrollObserver = new IntersectionObserver((entries) => {
@@ -1975,9 +2217,13 @@
         
         return `
           <div class="product-card reveal visible">
-            <div class="product-img">
+            <div class="product-img" style="position:relative;">
               <img src="${p.imageUrl}" alt="${p.name}" loading="lazy" />
               ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+              <button class="wishlist-toggle-card-btn" onclick="toggleWishlist('${p.id || p.name}', event)" aria-label="أضف للمفضلة" style="position:absolute; top:12px; left:12px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.1); z-index:5; font-size:1.15rem; transition:transform 0.2s;">
+                ${wishlist.includes(p.id || p.name) ? '❤️' : '🤍'}
+              </button>
+              <button class="quick-view-floating-btn" onclick="openQuickView('${p.id || p.name}')" style="position:absolute; bottom:12px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--primary); color:white; border:none; padding:0.5rem 1rem; border-radius:30px; font-weight:700; font-family:'Cairo'; font-size:0.8rem; cursor:pointer; opacity:0; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index:5; white-space:nowrap; box-shadow:0 6px 15px rgba(0,0,0,0.15);">👁️ معاينة سريعة</button>
             </div>
             <div class="product-body">
               <span class="product-category">${catLabel}</span>
@@ -2136,6 +2382,19 @@
       badgeCont.innerHTML = prod.badge ? `<span class="section-tag">${prod.badge}</span>` : '';
       
       document.getElementById('modal-qty-input').value = 1;
+
+      // Reset customization selections
+      const closureEl = document.getElementById('modal-closure-select');
+      if (closureEl) closureEl.value = 'طقطق';
+      const sheilaEl = document.getElementById('modal-sheila-select');
+      if (sheilaEl) sheilaEl.value = 'طرحة سادة مجانية';
+      const notesEl = document.getElementById('modal-custom-notes');
+      if (notesEl) notesEl.value = '';
+
+      // Hide zoom lens
+      const lens = document.getElementById('zoom-lens');
+      if (lens) lens.style.display = 'none';
+
       document.getElementById('quick-view-modal').classList.add('active');
     }
 
@@ -2157,18 +2416,45 @@
       if (next >= 1 && next <= 10) inp.value = next;
     }
 
-    // ===== SHOPPING CART CONTROLLER =====
+    // ===== SHOPPING CART & WISHLIST DRAWER CONTROLLERS =====
     function toggleCartDrawer(open) {
-      document.getElementById('cart-drawer').classList.toggle('active', open);
+      const drawer = document.getElementById('cart-drawer');
+      if (drawer) drawer.classList.toggle('active', open);
     }
 
+    function toggleWishlistDrawer(open) {
+      const drawer = document.getElementById('wishlist-drawer');
+      if (drawer) drawer.classList.toggle('active', open);
+    }
+
+    function toggleSizeGuideModal(open) {
+      const modal = document.getElementById('size-guide-modal');
+      if (modal) modal.classList.toggle('active', open);
+    }
+
+    // ===== SHOPPING CART CONTROLLER =====
     function addModalItemToCart() {
       if (!currentSelectedProduct) return;
       
       const length = document.getElementById('modal-length-select').value;
       const qty = parseInt(document.getElementById('modal-qty-input').value);
       
-      const existing = cart.find(item => item.product.id === currentSelectedProduct.id && item.size === selectedSize && item.length === length);
+      // Get abaya customizations
+      const closureEl = document.getElementById('modal-closure-select');
+      const closure = closureEl ? closureEl.value : 'طقطق';
+      const sheilaEl = document.getElementById('modal-sheila-select');
+      const sheila = sheilaEl ? sheilaEl.value : 'طرحة سادة مجانية';
+      const customNotesEl = document.getElementById('modal-custom-notes');
+      const customNotes = customNotesEl ? customNotesEl.value.trim() : '';
+      
+      const existing = cart.find(item => 
+        item.product.id === currentSelectedProduct.id && 
+        item.size === selectedSize && 
+        item.length === length &&
+        item.closure === closure &&
+        item.sheila === sheila &&
+        item.customNotes === customNotes
+      );
       if (existing) {
         existing.qty += qty;
       } else {
@@ -2176,6 +2462,9 @@
           product: currentSelectedProduct,
           size: selectedSize,
           length: length,
+          closure: closure,
+          sheila: sheila,
+          customNotes: customNotes,
           qty: qty
         });
       }
@@ -2226,12 +2515,18 @@
       container.innerHTML = cart.map((item, idx) => {
         const itemTotal = item.product.price * item.qty;
         totalPrice += itemTotal;
+        
+        let metaText = `مقاس: ${item.size} | طول: ${item.length} إنش | كمية: ${item.qty}`;
+        if (item.closure) metaText += ` | إغلاق: ${item.closure}`;
+        if (item.sheila) metaText += ` | طرحة: ${item.sheila}`;
+        if (item.customNotes) metaText += ` | ملاحظات: ${item.customNotes}`;
+        
         return `
           <div class="cart-item">
             <div class="cart-item-img"><img src="${item.product.imageUrl}" alt="${item.product.name}" /></div>
             <div class="cart-item-details">
               <span class="cart-item-name">${item.product.name}</span>
-              <span class="cart-item-meta">مقاس: ${item.size} | طول: ${item.length} إنش | كمية: ${item.qty}</span>
+              <span class="cart-item-meta">${metaText}</span>
               <span class="cart-item-price">${itemTotal} ر.س</span>
             </div>
             <button class="cart-item-remove" onclick="removeCartItem(${idx})" aria-label="حذف">✕</button>
@@ -2249,6 +2544,130 @@
       cart.splice(idx, 1);
       updateCartUI();
       showToast("🗑️ تم حذف العباية من الحقيبة");
+    }
+
+    // ===== WISHLIST CONTROLLER =====
+    function toggleWishlist(productId, event) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      
+      const index = wishlist.indexOf(productId);
+      if (index === -1) {
+        wishlist.push(productId);
+        showToast("❤️ تمت إضافة العباية إلى قائمة المفضلة");
+      } else {
+        wishlist.splice(index, 1);
+        showToast("🤍 تمت إزالة العباية من المفضلة");
+      }
+      
+      saveWishlistToLocalStorage();
+      updateWishlistCountUI();
+      updateWishlistDrawerUI();
+      
+      // Re-render products to show updated heart buttons
+      renderProducts(localProducts.length > 0 ? localProducts : fallbackProducts);
+      
+      // Sync with database if logged in
+      syncWishlistToDatabase();
+    }
+
+    function saveWishlistToLocalStorage() {
+      try {
+        localStorage.setItem('dar_alghaid_wishlist', JSON.stringify(wishlist));
+      } catch (e) {
+        console.error("Error saving wishlist:", e);
+      }
+    }
+
+    function updateWishlistCountUI() {
+      const countEl = document.getElementById('wishlist-count');
+      if (countEl) {
+        countEl.textContent = wishlist.length;
+      }
+    }
+
+    function updateWishlistDrawerUI() {
+      const container = document.getElementById('wishlist-items-container');
+      if (!container) return;
+      
+      if (wishlist.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:3rem;">المفضلة فارغة حالياً 🤍</p>`;
+        return;
+      }
+      
+      // Get all product models
+      const allProds = localProducts.length > 0 ? localProducts : fallbackProducts;
+      
+      container.innerHTML = `<div class="wishlist-items">` + wishlist.map(id => {
+        const prod = allProds.find(p => p.id === id || p.name === id);
+        if (!prod) return '';
+        
+        return `
+          <div class="wishlist-item">
+            <div class="wishlist-item-img">
+              <img src="${prod.imageUrl}" alt="${prod.name}" />
+            </div>
+            <div class="wishlist-item-details">
+              <span class="wishlist-item-name">${prod.name}</span>
+              <span class="wishlist-item-price">${prod.price} ر.س</span>
+              <div class="wishlist-item-actions">
+                <button class="btn-wishlist-to-cart" onclick="addWishlistItemToCart('${id}')">🛒 إضافة للسلة</button>
+                <button class="btn-wishlist-remove" onclick="toggleWishlist('${id}')">إزالة</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('') + `</div>`;
+    }
+
+    function addWishlistItemToCart(id) {
+      const allProds = localProducts.length > 0 ? localProducts : fallbackProducts;
+      const prod = allProds.find(p => p.id === id || p.name === id);
+      if (!prod) return;
+      
+      // Check if already in cart with default settings
+      const existing = cart.find(item => item.product.id === prod.id && item.size === 56 && item.length === '56');
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          product: prod,
+          size: 56, // default size
+          length: "56", // default length
+          closure: "طقطق", // default closure
+          sheila: "طرحة سادة مجانية", // default sheila
+          customNotes: "",
+          qty: 1
+        });
+      }
+      
+      updateCartUI();
+      toggleCartDrawer(true);
+      toggleWishlistDrawer(false);
+      showToast("🌸 تم نقل العباية إلى السلة");
+    }
+
+    function syncWishlistToDatabase() {
+      if (currentUser) {
+        if (isFirebaseConfigured && typeof fbDb !== 'undefined') {
+          fbDb.ref('abaya_customers/' + currentUser.uid + '/wishlist').set(wishlist)
+            .catch(err => console.error("Firebase wishlist sync error:", err));
+        } else {
+          // Mock DB Sync
+          if (!currentUserDetails) currentUserDetails = {};
+          currentUserDetails.wishlist = wishlist;
+          localStorage.setItem('dar_alghaid_mock_user_details', JSON.stringify(currentUserDetails));
+          
+          const mockDb = JSON.parse(localStorage.getItem('dar_alghaid_mock_users_db')) || [];
+          const uIdx = mockDb.findIndex(u => u.uid === currentUser.uid);
+          if (uIdx !== -1) {
+            mockDb[uIdx].wishlist = wishlist;
+            localStorage.setItem('dar_alghaid_mock_users_db', JSON.stringify(mockDb));
+          }
+        }
+      }
     }
 
     // ===== SHIPPING & CHECKOUT PROCESS =====
@@ -2560,7 +2979,15 @@
       
       cart.forEach((item, index) => {
         const cost = item.product.price * item.qty;
-        orderList += `${index + 1}. *${item.product.name}*\n   - المقاس: ${item.size}\n   - الطول: ${item.length} إنش\n   - الكمية: ${item.qty}\n   - السعر: ${cost} ر.س\n`;
+        let details = `${index + 1}. *${item.product.name}*\n`;
+        details += `   - المقاس: ${item.size}\n`;
+        details += `   - الطول: ${item.length} إنش\n`;
+        if (item.closure) details += `   - نوع الإغلاق: ${item.closure}\n`;
+        if (item.sheila) details += `   - نوع الطرحة: ${item.sheila}\n`;
+        if (item.customNotes) details += `   - ملاحظات خاصة: ${item.customNotes}\n`;
+        details += `   - الكمية: ${item.qty}\n`;
+        details += `   - السعر: ${cost} ر.س\n`;
+        orderList += details;
       });
       
       const msg = `👑 *طلب شراء جديد من متجر دار الغيد للعبايات*
@@ -2647,31 +3074,16 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
       setTimeout(() => t.style.display = 'none', 3500);
     }
 
-    // Theme toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeThumb  = document.getElementById('theme-thumb');
+    // Theme toggle (Forced to Light luxury theme)
     const html = document.documentElement;
 
     function applyTheme(isLight) {
-      if (isLight) {
-        html.classList.add('light');
-        themeThumb.textContent = '☀️';
-      } else {
-        html.classList.remove('light');
-        themeThumb.textContent = '🌙';
-      }
+      html.classList.add('light');
     }
 
     function loadTheme() {
-      const savedTheme = localStorage.getItem('abaya-theme');
-      applyTheme(savedTheme !== 'dark');
+      applyTheme(true);
     }
-
-    themeToggle.addEventListener('click', () => {
-      const isLight = !html.classList.contains('light');
-      applyTheme(isLight);
-      localStorage.setItem('abaya-theme', isLight ? 'light' : 'dark');
-    });
 
     // Ambient Particles animation
     let particles = [];
@@ -2989,8 +3401,10 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
     // --- Save Profile Changes ---
     function saveCustomerProfile(e) {
       e.preventDefault();
-      const name = document.getElementById('profile-display-name').value.trim();
-      const phone = document.getElementById('profile-phone').value.trim();
+      const nameEl = document.getElementById('profile-display-name');
+      const phoneEl = document.getElementById('profile-phone');
+      const name = nameEl ? nameEl.value.trim() : '';
+      const phone = phoneEl ? phoneEl.value.trim() : '';
       
       if (!currentUser) return;
       
@@ -3014,7 +3428,8 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
     // --- Logout ---
     function handleUserLogout(e) {
       e.preventDefault();
-      document.getElementById('profile-dropdown').classList.remove('active');
+      const drop = document.getElementById('profile-dropdown');
+      if (drop) drop.classList.remove('active');
       firebase.auth().signOut().then(() => {
         showToast("🚪 تم تسجيل الخروج بنجاح.");
       });
@@ -3030,6 +3445,8 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
         const displayNameEl = document.getElementById('user-display-name');
         const avatarImg = document.getElementById('user-avatar');
         const dropdownEmail = document.getElementById('dropdown-user-email');
+        const nameInput = document.getElementById('c-name');
+        const phoneInput = document.getElementById('c-phone');
         
         if (user) {
           currentUser = user;
@@ -3037,31 +3454,44 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
           if (profileMenu) profileMenu.style.display = 'block';
           if (dropdownEmail) dropdownEmail.textContent = user.email;
           
-          document.getElementById('c-name').value = user.displayName || "";
+          if (nameInput) nameInput.value = user.displayName || "";
           
           fbDb.ref('abaya_customers/' + user.uid).on('value', snap => {
             const val = snap.val();
             if (val) {
               currentUserDetails = val;
               if (displayNameEl) displayNameEl.textContent = `أهلاً، ${val.name || 'بكِ'} ✨`;
-              if (val.phone) document.getElementById('c-phone').value = val.phone;
-              document.getElementById('c-name').value = val.name || user.displayName || "";
+              if (phoneInput && val.phone) phoneInput.value = val.phone;
+              if (nameInput) nameInput.value = val.name || user.displayName || "";
+              
+              // Load saved wishlist from database & merge
+              if (val.wishlist && Array.isArray(val.wishlist)) {
+                const merged = Array.from(new Set([...wishlist, ...val.wishlist]));
+                wishlist = merged;
+                saveWishlistToLocalStorage();
+                updateWishlistCountUI();
+                updateWishlistDrawerUI();
+                renderProducts(localProducts.length > 0 ? localProducts : fallbackProducts);
+              }
             } else {
               const name = user.displayName || "عميلة دار الغيد";
               fbDb.ref('abaya_customers/' + user.uid).set({
                 name: name,
                 email: user.email,
-                phone: ""
+                phone: "",
+                wishlist: wishlist
               });
               if (displayNameEl) displayNameEl.textContent = `أهلاً، ${name} ✨`;
             }
           });
 
-          if (user.photoURL) {
-            avatarImg.src = user.photoURL;
-            avatarImg.style.display = 'block';
-          } else {
-            avatarImg.style.display = 'none';
+          if (avatarImg) {
+            if (user.photoURL) {
+              avatarImg.src = user.photoURL;
+              avatarImg.style.display = 'block';
+            } else {
+              avatarImg.style.display = 'none';
+            }
           }
 
           const revNameInput = document.getElementById('review-name');
