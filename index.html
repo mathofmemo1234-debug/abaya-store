@@ -1375,6 +1375,71 @@
     </div>
   </div>
 
+  <!-- PRICE COMPARISON MODAL -->
+  <div class="modal" id="price-comparison-modal">
+    <div class="modal-content" style="max-width: 500px; grid-template-columns: 1fr; padding: 2rem 1.5rem; max-height: 90vh; overflow-y: auto;">
+      <button class="modal-close" onclick="togglePriceComparisonModal(false)">✕</button>
+      <h2 style="text-align:center; margin-bottom:1.2rem; font-weight:800; font-family:'Cairo';">🌐 مقارنة الأسعار العالمية للعباية</h2>
+      
+      <div id="compare-product-info" style="display:flex; gap:1rem; background:var(--bg-card2); padding:1rem; border-radius:12px; margin-bottom:1.5rem; align-items:center;">
+        <img id="compare-img" src="" alt="" style="width:70px; height:85px; border-radius:8px; object-fit:cover;" />
+        <div>
+          <h3 id="compare-title" style="font-size:1.05rem; font-weight:800; margin-bottom:0.25rem;">اسم المنتج</h3>
+          <span style="font-size:0.85rem; color:var(--text-secondary);">سعر دار الغيد المباشر: </span>
+          <strong id="compare-our-price" style="color:var(--primary-light); font-size:1.1rem; font-weight:800;">0 ر.س</strong>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <h4 style="font-weight:700; font-size:0.95rem; margin-bottom:1rem; border-right:3px solid var(--accent); padding-right:0.6rem;">📊 مقارنة الأسعار مع العلامات الفاخرة بالخارج:</h4>
+        
+        <div style="display:flex; flex-direction:column; gap:1.2rem;">
+          <!-- Dar Al-Ghayd Bar -->
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:0.3rem;">
+              <span>🌸 سعرنا (تفصيل مباشر من دار الغيد)</span>
+              <span id="compare-bar-our-val">320 ر.س</span>
+            </div>
+            <div style="background:var(--border); height:16px; border-radius:10px; overflow:hidden;">
+              <div id="compare-bar-our" style="background:linear-gradient(90deg, var(--primary), var(--primary-light)); width:30%; height:100%; border-radius:10px; transition:width 1s ease-out;"></div>
+            </div>
+          </div>
+
+          <!-- Dubai Boutique Bar -->
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.3rem;">
+              <span>🏢 بوتيكات مصممي دبي الفاخرة (دبي مول)</span>
+              <span id="compare-bar-dubai-val">890 ر.س</span>
+            </div>
+            <div style="background:var(--border); height:16px; border-radius:10px; overflow:hidden;">
+              <div id="compare-bar-dubai" style="background:#bfb199; width:80%; height:100%; border-radius:10px; transition:width 1s ease-out;"></div>
+            </div>
+          </div>
+
+          <!-- London Boutique Bar -->
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.3rem;">
+              <span>🇬🇧 متاجر لندن الراقية (Harrods / Harvey Nichols)</span>
+              <span id="compare-bar-london-val">1,150 ر.س</span>
+            </div>
+            <div style="background:var(--border); height:16px; border-radius:10px; overflow:hidden;">
+              <div id="compare-bar-london" style="background:#8a8070; width:100%; height:100%; border-radius:10px; transition:width 1s ease-out;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:rgba(196,138,136,0.08); border:1px dashed var(--accent); border-radius:12px; padding:1rem; margin-bottom:1.5rem; text-align:center;">
+        <span style="font-size:0.9rem; font-weight:800; color:var(--accent); display:block; margin-bottom:0.3rem;">🎉 وفرتِ أكثر من 60% معنا!</span>
+        <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.6;">نحن نصنع نفس الفخامة والأقمشة الكورية والفرنسية الأصلية بتفصيل خاص ومباشر، دون تكاليف الاستيراد والوسطاء ورسوم المعارض الدولية الفاخرة.</p>
+      </div>
+
+      <button id="btn-compare-action-buy" onclick="" class="btn-checkout" style="background:linear-gradient(135deg, var(--primary), var(--primary-light)); border:none; color:#12100e; font-weight:800; display:flex; align-items:center; justify-content:center; gap:0.6rem; cursor:pointer; width:100%; padding:0.85rem;">
+        <span>طلب تفصيل هذه العباية الآن 🛍️</span>
+      </button>
+    </div>
+  </div>
+
   <!-- SIZE GUIDE MODAL -->
   <div class="modal" id="size-guide-modal">
     <div class="modal-content" style="max-width: 580px; grid-template-columns: 1fr; padding: 2rem 1.5rem; max-height: 90vh; overflow-y: auto;">
@@ -2242,6 +2307,13 @@
               <h3 class="product-name">${highlightedName}</h3>
               <p class="product-desc">${highlightedDesc}</p>
               <div class="product-features">${tags}</div>
+              
+              <div class="compare-trigger-wrap" style="margin: 0.6rem 0; display: flex; justify-content: flex-start;">
+                <span class="compare-link" onclick="openPriceComparison('${p.id || p.name}', event)" style="font-size:0.78rem; color:var(--accent); font-weight:700; cursor:pointer; text-decoration:underline; display:inline-flex; align-items:center; gap:0.25rem; transition:color 0.2s;">
+                  🌐 مقارنة السعر بالخارج
+                </span>
+              </div>
+
               <div class="product-footer">
                 <div class="product-price">${Number(p.price).toLocaleString()} <small>ر.س</small></div>
                 <div class="btn-action-wrap">
@@ -2442,6 +2514,58 @@
     function toggleSizeGuideModal(open) {
       const modal = document.getElementById('size-guide-modal');
       if (modal) modal.classList.toggle('active', open);
+    }
+
+    function togglePriceComparisonModal(open) {
+      const modal = document.getElementById('price-comparison-modal');
+      if (modal) modal.classList.toggle('active', open);
+    }
+
+    function openPriceComparison(productId, event) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+      
+      const allProds = localProducts.length > 0 ? localProducts : fallbackProducts;
+      const prod = allProds.find(p => p.id === productId || p.name === productId);
+      if (!prod) return;
+
+      const compareImg = document.getElementById('compare-img');
+      const compareTitle = document.getElementById('compare-title');
+      const compareOurPrice = document.getElementById('compare-our-price');
+      const compareBarOurVal = document.getElementById('compare-bar-our-val');
+      const compareBarDubaiVal = document.getElementById('compare-bar-dubai-val');
+      const compareBarLondonVal = document.getElementById('compare-bar-london-val');
+      
+      const compareBarOur = document.getElementById('compare-bar-our');
+      const compareBarDubai = document.getElementById('compare-bar-dubai');
+      const compareBarLondon = document.getElementById('compare-bar-london');
+      const buyBtn = document.getElementById('btn-compare-action-buy');
+
+      if (compareImg) compareImg.src = prod.imageUrl;
+      if (compareTitle) compareTitle.textContent = prod.name;
+      if (compareOurPrice) compareOurPrice.textContent = `${prod.price} ر.س`;
+      if (compareBarOurVal) compareBarOurVal.textContent = `${prod.price} ر.س`;
+
+      const dubaiPrice = Math.round(prod.price * 2.6);
+      const londonPrice = Math.round(prod.price * 3.4);
+
+      if (compareBarDubaiVal) compareBarDubaiVal.textContent = `${dubaiPrice} ر.س`;
+      if (compareBarLondonVal) compareBarLondonVal.textContent = `${londonPrice} ر.س`;
+
+      if (compareBarOur) compareBarOur.style.width = `${Math.round((prod.price / londonPrice) * 100)}%`;
+      if (compareBarDubai) compareBarDubai.style.width = `${Math.round((dubaiPrice / londonPrice) * 100)}%`;
+      if (compareBarLondon) compareBarLondon.style.width = '100%';
+
+      if (buyBtn) {
+        buyBtn.onclick = () => {
+          togglePriceComparisonModal(false);
+          openQuickView(productId);
+        };
+      }
+
+      togglePriceComparisonModal(true);
     }
 
     // ===== SHOPPING CART CONTROLLER =====
