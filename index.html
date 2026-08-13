@@ -1408,23 +1408,25 @@
           <!-- Dubai Boutique Bar -->
           <div>
             <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.3rem;">
-              <span>🏢 بوتيكات مصممي دبي الفاخرة (دبي مول)</span>
+              <span>🏢 بوتيكات مصممي دبي الفاخرة (Ounass)</span>
               <span id="compare-bar-dubai-val">890 ر.س</span>
             </div>
             <div style="background:var(--border); height:16px; border-radius:10px; overflow:hidden;">
               <div id="compare-bar-dubai" style="background:#bfb199; width:80%; height:100%; border-radius:10px; transition:width 1s ease-out;"></div>
             </div>
+            <a id="compare-link-dubai" href="" target="_blank" style="font-size:0.78rem; color:var(--accent); text-decoration:underline; font-weight:700; display:inline-block; margin-top:0.3rem; font-family:'Cairo';">🔗 عرض العروض والموديلات المماثلة في أناس (Ounass)</a>
           </div>
 
           <!-- London Boutique Bar -->
           <div>
             <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.3rem;">
-              <span>🇬🇧 متاجر لندن الراقية (Harrods / Harvey Nichols)</span>
+              <span>🌐 مصممي الخليج والماركات الإقليمية (Boksha)</span>
               <span id="compare-bar-london-val">1,150 ر.س</span>
             </div>
             <div style="background:var(--border); height:16px; border-radius:10px; overflow:hidden;">
               <div id="compare-bar-london" style="background:#8a8070; width:100%; height:100%; border-radius:10px; transition:width 1s ease-out;"></div>
             </div>
+            <a id="compare-link-london" href="" target="_blank" style="font-size:0.78rem; color:var(--accent); text-decoration:underline; font-weight:700; display:inline-block; margin-top:0.3rem; font-family:'Cairo';">🔗 عرض العروض والموديلات المماثلة في بقشة (Boksha)</a>
           </div>
         </div>
       </div>
@@ -2539,9 +2541,14 @@
       const compareBarLondonVal = document.getElementById('compare-bar-london-val');
       
       const compareBarOur = document.getElementById('compare-bar-our');
-      const compareBarDubai = document.getElementById('compare-bar-dubai');
+      const compareBarDubai = document.getElementById('compare-bar-dark'); // Note: it is named compare-bar-dubai in html, let's keep name matching
+      const compareBarDubaiReal = document.getElementById('compare-bar-dubai');
       const compareBarLondon = document.getElementById('compare-bar-london');
       const buyBtn = document.getElementById('btn-compare-action-buy');
+
+      // Resolve links
+      const compareLinkDubai = document.getElementById('compare-link-dubai');
+      const compareLinkLondon = document.getElementById('compare-link-london');
 
       if (compareImg) compareImg.src = prod.imageUrl;
       if (compareTitle) compareTitle.textContent = prod.name;
@@ -2555,8 +2562,33 @@
       if (compareBarLondonVal) compareBarLondonVal.textContent = `${londonPrice} ر.س`;
 
       if (compareBarOur) compareBarOur.style.width = `${Math.round((prod.price / londonPrice) * 100)}%`;
-      if (compareBarDubai) compareBarDubai.style.width = `${Math.round((dubaiPrice / londonPrice) * 100)}%`;
+      if (compareBarDubaiReal) compareBarDubaiReal.style.width = `${Math.round((dubaiPrice / londonPrice) * 100)}%`;
       if (compareBarLondon) compareBarLondon.style.width = '100%';
+
+      // Set destination URLs
+      let dubaiUrl = "https://www.ounass.com.sa/women/clothing/abayas";
+      let londonUrl = "https://www.boksha.com/ar/abayas";
+
+      const targetId = prod.id || prod.name;
+      if (targetId.includes('1') || targetId.includes('الكلاسيك')) {
+        dubaiUrl = "https://www.ounass.com.sa/women/designers/rauaa-official/clothing/abayas";
+        londonUrl = "https://www.boksha.com/ar/abayas?category=1";
+      } else if (targetId.includes('2') || targetId.includes('الدانتيل')) {
+        dubaiUrl = "https://www.ounass.com.sa/women/designers/sh-collection/clothing/abayas";
+        londonUrl = "https://www.boksha.com/ar/abayas?category=1";
+      } else if (targetId.includes('3') || targetId.includes('السفر')) {
+        dubaiUrl = "https://www.ounass.com.sa/women/designers/ammaniyas/clothing/abayas";
+        londonUrl = "https://www.boksha.com/ar/abayas?category=2";
+      } else if (targetId.includes('4') || targetId.includes('البشت')) {
+        dubaiUrl = "https://www.ounass.com.sa/women/designers/aquillora/clothing/abayas";
+        londonUrl = "https://www.boksha.com/ar/abayas?category=1";
+      } else if (targetId.includes('5') || targetId.includes('الكتان')) {
+        dubaiUrl = "https://www.ounass.com.sa/women/designers/beige-collection/clothing/abayas";
+        londonUrl = "https://www.boksha.com/ar/abayas?category=3";
+      }
+
+      if (compareLinkDubai) compareLinkDubai.href = dubaiUrl;
+      if (compareLinkLondon) compareLinkLondon.href = londonUrl;
 
       if (buyBtn) {
         buyBtn.onclick = () => {
