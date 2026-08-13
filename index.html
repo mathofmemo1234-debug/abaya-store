@@ -2739,7 +2739,7 @@
     }
 
     function getShippingCostByCity(city) {
-      if (!city) return 0;
+      if (!city) return 30; // Default shipping cost before selecting a city
       switch (city) {
         case 'Jeddah': return 10;
         case 'Riyadh': return 20;
