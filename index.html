@@ -1205,8 +1205,7 @@
         </div>
       </div>
 
-      <!-- Hidden Google Translate Widget (driven programmatically) -->
-      <div id="google_translate_element" style="position:absolute; opacity:0; pointer-events:none; height:1px; overflow:hidden; top:60px; left:0; z-index:-1;"></div>
+
 
       <!-- USER AUTH CONTROLS -->
       <div id="user-auth-section" style="display: flex; align-items: center; position: relative;">
@@ -3802,16 +3801,6 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
       if (chevron) chevron.style.transform = langPickerOpen ? 'rotate(180deg)' : 'rotate(0deg)';
     }
 
-    function doGoogleTranslate(langCode) {
-      const combo = document.querySelector('.goog-te-combo');
-      if (combo) {
-        combo.value = langCode;
-        combo.dispatchEvent(new Event('change'));
-        return true;
-      }
-      return false;
-    }
-
     function selectLanguage(lang) {
       currentLangCode = lang.code;
       const flag   = document.getElementById('lang-picker-flag');
@@ -3825,22 +3814,28 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
         if (btn) btn.style.background = l.code === lang.code ? 'rgba(196,138,136,0.15)' : 'transparent';
       });
 
-      // Try immediately, then retry up to 20 times (widget may still be loading)
-      if (!doGoogleTranslate(lang.code)) {
-        let attempts = 0;
-        const interval = setInterval(() => {
-          attempts++;
-          const ok = doGoogleTranslate(lang.code);
-          if (ok || attempts >= 20) clearInterval(interval);
-        }, 150);
-      }
-
-      // Close picker
+      // Close picker first
       langPickerOpen = false;
       const panel  = document.getElementById('lang-picker-panel');
       const chevron = document.getElementById('lang-picker-chevron');
       if (panel) panel.style.display = 'none';
       if (chevron) chevron.style.transform = 'rotate(0deg)';
+
+      // Use Google Translate URL Proxy — 100% reliable, no widget needed
+      if (lang.code === 'ar') {
+        // Return to original Arabic page
+        const clean = window.location.href
+          .replace(/https?:\/\/translate\.google(?:apis)?\.com\/translate.*?u=/i, '')
+          .replace(/[?&]_x_tr_sl=[^&]*/gi, '')
+          .replace(/[?&]_x_tr_tl=[^&]*/gi, '')
+          .replace(/[?&]_x_tr_hl=[^&]*/gi, '')
+          .replace(/[?&]_x_tr_pto=[^&]*/gi, '');
+        window.location.href = clean || window.location.origin + window.location.pathname;
+      } else {
+        const pageUrl = encodeURIComponent(window.location.origin + window.location.pathname);
+        const proxyUrl = `https://translate.google.com/translate?sl=ar&tl=${lang.code}&hl=${lang.code}&u=${pageUrl}&client=tw-ob`;
+        window.location.href = proxyUrl;
+      }
     }
 
     // Close picker when clicking outside
@@ -3856,42 +3851,7 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
 
   </script>
 
-  <!-- ===== GOOGLE TRANSLATE WIDGET INIT ===== -->
-  <script>
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'ar',
-        includedLanguages: 'ar,en,fr,tr,ur,id,ms,zh-CN,de,es,it,ru,fa,hi',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false,
-        gaTrack: false
-      }, 'google_translate_element');
 
-      // Remove the Google Translate banner that shifts the body down
-      const removeBanner = () => {
-        const frame = document.getElementById(':1.container');
-        if (frame) frame.style.display = 'none';
-        document.body.style.top = '0px';
-        document.documentElement.style.setProperty('top', '0px', 'important');
-        const body = document.body;
-        if (body.style.top && body.style.top !== '0px') {
-          body.style.top = '0px';
-        }
-      };
-      setTimeout(removeBanner, 800);
-      setTimeout(removeBanner, 2000);
-    }
-
-    // Poll and strip the translate banner to prevent body offset
-    setInterval(() => {
-      const iframe = document.querySelector('.goog-te-banner-frame');
-      if (iframe) iframe.style.setProperty('display', 'none', 'important');
-      if (document.body.style.top && document.body.style.top !== '0px') {
-        document.body.style.setProperty('top', '0px', 'important');
-      }
-    }, 500);
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
 
 </body>
 </html>
