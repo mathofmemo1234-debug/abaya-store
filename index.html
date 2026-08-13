@@ -525,6 +525,46 @@
     .btn-checkout svg { width: 22px; height: 22px; fill: white; }
 
     /* Wishlist & Size Guide Additions */
+    /* Google Translate Widget Custom Styling */
+    #google_translate_element {
+      display: inline-block;
+    }
+    .goog-te-gadget {
+      font-family: 'Cairo', sans-serif !important;
+      font-size: 0.85rem !important;
+      color: var(--text-secondary) !important;
+    }
+    .goog-te-combo {
+      background: var(--bg-card2) !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text-primary) !important;
+      padding: 0.5rem 1.1rem !important;
+      border-radius: 50px !important;
+      font-family: 'Cairo', sans-serif !important;
+      font-size: 0.82rem !important;
+      font-weight: 700 !important;
+      outline: none !important;
+      cursor: pointer !important;
+      transition: border-color 0.3s !important;
+      display: inline-block !important;
+      vertical-align: middle !important;
+    }
+    .goog-te-combo:focus {
+      border-color: var(--accent) !important;
+    }
+    .goog-logo-link, .goog-te-gadget span {
+      display: none !important;
+    }
+    .goog-te-gadget {
+      color: transparent !important;
+    }
+    .goog-te-banner-frame {
+      display: none !important;
+    }
+    body {
+      top: 0px !important;
+    }
+
     .wishlist-toggle-card-btn:hover {
       transform: scale(1.15) !important;
       background: #ffffff !important;
@@ -1150,6 +1190,24 @@
         <span class="cart-count" id="cart-count">0</span>
       </button>
       
+      <!-- LANGUAGE TRANSLATOR WIDGET (Custom UI) -->
+      <div id="lang-picker-wrap" style="position:relative; display:inline-flex; align-items:center;">
+        <button id="lang-picker-btn" onclick="toggleLangPicker(event)" aria-label="تغيير لغة الموقع" style="background:var(--glass); border:1px solid var(--glass-border); color:var(--text-primary); padding:0.5rem 1rem; border-radius:50px; display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-weight:700; font-family:'Cairo'; font-size:0.82rem; transition:all 0.3s; white-space:nowrap;">
+          <span id="lang-picker-flag">🌐</span>
+          <span id="lang-picker-label">اللغة</span>
+          <svg style="width:14px; height:14px; transition:transform 0.3s;" id="lang-picker-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+
+        <!-- Language Popup Panel -->
+        <div id="lang-picker-panel" style="display:none; position:absolute; top:calc(100% + 10px); left:0; background:var(--bg-card); border:1px solid var(--border); border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.25); z-index:99999; min-width:220px; overflow:hidden; animation:fadeSlideIn 0.2s ease;">
+          <div style="padding:0.7rem 1rem; border-bottom:1px solid var(--border); font-size:0.78rem; color:var(--text-secondary); font-weight:700; font-family:'Cairo';">🌍 اختاري لغة الموقع</div>
+          <div style="max-height:320px; overflow-y:auto; padding:0.5rem;" id="lang-list"></div>
+        </div>
+      </div>
+
+      <!-- Hidden Google Translate Widget (driven programmatically) -->
+      <div id="google_translate_element" style="position:absolute; top:-9999px; left:-9999px; visibility:hidden;"></div>
+
       <!-- USER AUTH CONTROLS -->
       <div id="user-auth-section" style="display: flex; align-items: center; position: relative;">
         <button class="btn-auth" id="nav-login-btn" onclick="toggleAuthModal(true)">
@@ -3690,6 +3748,140 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
         modal.classList.remove('active');
       }
     }
+
+    // ===== LANGUAGE PICKER CONTROLLER =====
+    const LANGUAGES = [
+      { code: 'ar', label: 'العربية',     flag: '🇸🇦', nativeName: 'العربية' },
+      { code: 'en', label: 'English',     flag: '🇬🇧', nativeName: 'English' },
+      { code: 'fr', label: 'Français',    flag: '🇫🇷', nativeName: 'Français' },
+      { code: 'tr', label: 'Türkçe',      flag: '🇹🇷', nativeName: 'Türkçe' },
+      { code: 'ur', label: 'اردو',        flag: '🇵🇰', nativeName: 'اردو' },
+      { code: 'id', label: 'Indonesia',   flag: '🇮🇩', nativeName: 'Bahasa Indonesia' },
+      { code: 'ms', label: 'Melayu',      flag: '🇲🇾', nativeName: 'Bahasa Melayu' },
+      { code: 'zh-CN', label: '中文',     flag: '🇨🇳', nativeName: '中文 (简体)' },
+      { code: 'de', label: 'Deutsch',     flag: '🇩🇪', nativeName: 'Deutsch' },
+      { code: 'es', label: 'Español',     flag: '🇪🇸', nativeName: 'Español' },
+      { code: 'it', label: 'Italiano',    flag: '🇮🇹', nativeName: 'Italiano' },
+      { code: 'ru', label: 'Русский',     flag: '🇷🇺', nativeName: 'Русский' },
+      { code: 'fa', label: 'فارسی',       flag: '🇮🇷', nativeName: 'فارسی' },
+      { code: 'hi', label: 'हिन्दी',      flag: '🇮🇳', nativeName: 'हिन्दी' },
+    ];
+
+    let langPickerOpen = false;
+    let currentLangCode = 'ar';
+
+    function buildLangList() {
+      const list = document.getElementById('lang-list');
+      if (!list || list.children.length > 0) return;
+      LANGUAGES.forEach(lang => {
+        const btn = document.createElement('button');
+        btn.id = `lang-btn-${lang.code}`;
+        btn.setAttribute('data-lang', lang.code);
+        btn.onclick = () => selectLanguage(lang);
+        btn.style.cssText = `
+          width:100%; display:flex; align-items:center; gap:0.7rem;
+          padding:0.6rem 0.8rem; border:none; background:transparent;
+          border-radius:10px; cursor:pointer; font-family:'Cairo','Segoe UI',sans-serif;
+          font-size:0.9rem; color:var(--text-primary); text-align:right;
+          transition:background 0.2s; direction:rtl;
+        `;
+        btn.onmouseover = () => btn.style.background = 'var(--bg-card2)';
+        btn.onmouseleave = () => btn.style.background = 'transparent';
+        btn.innerHTML = `<span style="font-size:1.25rem">${lang.flag}</span><span>${lang.nativeName}</span>`;
+        list.appendChild(btn);
+      });
+    }
+
+    function toggleLangPicker(e) {
+      e && e.stopPropagation();
+      buildLangList();
+      langPickerOpen = !langPickerOpen;
+      const panel = document.getElementById('lang-picker-panel');
+      const chevron = document.getElementById('lang-picker-chevron');
+      if (panel) panel.style.display = langPickerOpen ? 'block' : 'none';
+      if (chevron) chevron.style.transform = langPickerOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    function selectLanguage(lang) {
+      currentLangCode = lang.code;
+      const flag   = document.getElementById('lang-picker-flag');
+      const label  = document.getElementById('lang-picker-label');
+      if (flag)  flag.textContent  = lang.flag;
+      if (label) label.textContent = lang.code === 'ar' ? 'اللغة' : lang.label;
+
+      // Highlight active
+      LANGUAGES.forEach(l => {
+        const btn = document.getElementById(`lang-btn-${l.code}`);
+        if (btn) btn.style.background = l.code === lang.code ? 'rgba(196,138,136,0.15)' : 'transparent';
+      });
+
+      // Drive the hidden Google Translate combo
+      const combo = document.querySelector('.goog-te-combo');
+      if (combo) {
+        combo.value = lang.code;
+        combo.dispatchEvent(new Event('change'));
+      } else if (lang.code === 'ar') {
+        // If widget not ready and user wants Arabic (original), reload
+        window.location.reload();
+      }
+
+      // Close picker
+      langPickerOpen = false;
+      const panel  = document.getElementById('lang-picker-panel');
+      const chevron = document.getElementById('lang-picker-chevron');
+      if (panel) panel.style.display = 'none';
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
+
+    // Close picker when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('lang-picker-wrap')?.contains(e.target)) {
+        langPickerOpen = false;
+        const panel  = document.getElementById('lang-picker-panel');
+        const chevron = document.getElementById('lang-picker-chevron');
+        if (panel) panel.style.display = 'none';
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+      }
+    });
+
   </script>
+
+  <!-- ===== GOOGLE TRANSLATE WIDGET INIT ===== -->
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'ar',
+        includedLanguages: 'ar,en,fr,tr,ur,id,ms,zh-CN,de,es,it,ru,fa,hi',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false,
+        gaTrack: false
+      }, 'google_translate_element');
+
+      // Remove the Google Translate banner that shifts the body down
+      const removeBanner = () => {
+        const frame = document.getElementById(':1.container');
+        if (frame) frame.style.display = 'none';
+        document.body.style.top = '0px';
+        document.documentElement.style.setProperty('top', '0px', 'important');
+        const body = document.body;
+        if (body.style.top && body.style.top !== '0px') {
+          body.style.top = '0px';
+        }
+      };
+      setTimeout(removeBanner, 800);
+      setTimeout(removeBanner, 2000);
+    }
+
+    // Poll and strip the translate banner to prevent body offset
+    setInterval(() => {
+      const iframe = document.querySelector('.goog-te-banner-frame');
+      if (iframe) iframe.style.setProperty('display', 'none', 'important');
+      if (document.body.style.top && document.body.style.top !== '0px') {
+        document.body.style.setProperty('top', '0px', 'important');
+      }
+    }, 500);
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
+
 </body>
 </html>
