@@ -3357,57 +3357,67 @@ _تمت العملية وتأكيد الفاتورة بنجاح. يرجى الب
 
     // Audio Player Toggle
     function initAudio() {
-      const audio = document.getElementById('bg-audio');
+      const audio    = document.getElementById('bg-audio');
       const audioBtn = document.getElementById('audio-toggle-btn');
       const playIcon = document.getElementById('audio-icon-play');
       const muteIcon = document.getElementById('audio-icon-mute');
-      let isMuted = true; // start muted to respect browsers autoplay policies
 
-      function updateUI() {
-        if (isMuted) {
-          muteIcon.style.display = 'block';
-          playIcon.style.display = 'none';
-          audioBtn.classList.remove('playing');
-        } else {
+      if (!audio || !audioBtn) return;
+
+      // Make sure the source is set
+      if (!audio.querySelector('source')?.src && !audio.src) {
+        audio.src = 'bg-music.mp3';
+      }
+
+      let userExplicitlyPaused = false;
+
+      function setPlayingUI(playing) {
+        if (playing) {
           muteIcon.style.display = 'none';
           playIcon.style.display = 'block';
           audioBtn.classList.add('playing');
+          audioBtn.title = 'إيقاف الموسيقى';
+        } else {
+          muteIcon.style.display = 'block';
+          playIcon.style.display = 'none';
+          audioBtn.classList.remove('playing');
+          audioBtn.title = 'تشغيل موسيقى هادئة 🎵';
         }
       }
 
-      // Play audio on first user click/interaction
-      const startPlayOnInteraction = () => {
-        if (audio.paused && isMuted) {
-          audio.play().then(() => {
-            isMuted = false;
-            updateUI();
-            console.log("Audio started on interaction!");
-          }).catch(err => {
-            console.log("Autoplay blocked on interaction:", err);
-          });
-        }
-        document.removeEventListener('click', startPlayOnInteraction);
-        document.removeEventListener('touchstart', startPlayOnInteraction);
-      };
+      // Sync UI if audio state changes externally
+      audio.addEventListener('play',  () => setPlayingUI(true));
+      audio.addEventListener('pause', () => setPlayingUI(false));
 
-      document.addEventListener('click', startPlayOnInteraction);
-      document.addEventListener('touchstart', startPlayOnInteraction);
-
+      // Button: always toggle
       audioBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (audio.paused) {
-          audio.play().then(() => {
-            isMuted = false;
-            updateUI();
-            showToast("🎵 تم تشغيل الموسيقى الهادئة الخلفية");
-          }).catch(err => console.error("Audio block:", err));
+          userExplicitlyPaused = false;
+          audio.play()
+            .then(() => showToast('🎵 تم تشغيل الموسيقى الهادئة'))
+            .catch(err => showToast('⚠️ تعذّر تشغيل الصوت: ' + err.message));
         } else {
+          userExplicitlyPaused = true;
           audio.pause();
-          isMuted = true;
-          updateUI();
-          showToast("🔇 تم كتم الموسيقى");
+          showToast('🔇 تم كتم الموسيقى');
         }
       });
+
+      // Auto-play on first interaction (respects browser autoplay policy)
+      const tryAutoPlay = () => {
+        if (audio.paused && !userExplicitlyPaused) {
+          audio.play().catch(() => {/* silently ignore if browser blocks */});
+        }
+        document.removeEventListener('click',      tryAutoPlay);
+        document.removeEventListener('scroll',     tryAutoPlay);
+        document.removeEventListener('touchstart', tryAutoPlay);
+        document.removeEventListener('keydown',    tryAutoPlay);
+      };
+      document.addEventListener('click',      tryAutoPlay, { once: true });
+      document.addEventListener('scroll',     tryAutoPlay, { once: true });
+      document.addEventListener('touchstart', tryAutoPlay, { once: true });
+      document.addEventListener('keydown',    tryAutoPlay, { once: true });
     }
 
     // Zoom Lens function for product modal
